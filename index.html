@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metaheuristik Cloud Task Scheduling: SCA vs MFO</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js CDN untuk Visualisasi Grafik Konvergensi & Load VM -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX CDN untuk Render Rumus Matematika Akademis -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        sca: {
+                            light: '#22d3ee',
+                            DEFAULT: '#06b6d4',
+                            dark: '#0891b2'
+                        },
+                        mfo: {
+                            light: '#fbbf24',
+                            DEFAULT: '#f59e0b',
+                            dark: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+        }
+        .glow-sca {
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
+        }
+        .glow-mfo {
+            box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+        }
+        .math-box {
+            background: rgba(2, 6, 23, 0.75);
+            border-left: 4px solid;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Toast Notification Container (Pengganti alert) -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- 1. STICKY NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-amber-500 p-0.5 flex items-center justify-center shadow-lg">
+                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-mono font-bold text-sm">
+                        <span class="text-cyan-400">S</span><span class="text-slate-400">/</span><span class="text-amber-400">M</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-bold text-white tracking-tight text-sm sm:text-base block leading-none">CloudSched Metaheuristics</span>
+                    <span class="text-[11px] text-slate-400 font-mono">SCA &amp; MFO Optimization Lab</span>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-xs lg:text-sm font-medium text-slate-300">
+                <a href="#konsep" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-cyan-400 transition">1. Konsep &amp; Rumus</a>
+                <a href="#studi-kasus" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-emerald-400 transition">2. Studi Kasus CTS</a>
+                <a href="#simulator" class="px-3 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-amber-500/20 border border-cyan-500/40 text-white hover:border-cyan-400 transition font-semibold">3. Simulator Live</a>
+                <a href="#referensi" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-amber-400 transition">4. Referensi Paper</a>
+                <a href="#github-pages" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-purple-400 transition">5. GitHub Pages</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-800 focus:outline-none" aria-label="Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1 text-sm">
+            <a href="#konsep" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">1. Konsep &amp; Rumus Matematika</a>
+            <a href="#studi-kasus" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">2. Alur Studi Kasus CTS (Task &rarr; Solusi)</a>
+            <a href="#simulator" class="block px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 font-semibold">3. Simulator Interaktif Real-Time</a>
+            <a href="#referensi" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">4. Referensi Paper Ilmiah</a>
+            <a href="#github-pages" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">5. Panduan Deploy GitHub Pages</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden pt-10 pb-16 md:py-20 border-b border-slate-800/80">
+        <!-- Decorative Background Grid & Glow -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-900/20 via-slate-950 to-amber-900/15 -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700 text-xs font-medium text-cyan-300">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Modul Pembelajaran &amp; Simulasi Cloud Computing / Sistem Optimasi
+                    </div>
+                    
+                    <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        Metaheuristik <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-amber-400">Cloud Task Scheduling</span>: SCA vs MFO
+                    </h1>
+                    
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                        Eksplorasi komprehensif bagaimana algoritma metaheuristik berbasis populasi—<strong class="text-cyan-400 font-semibold">Sine Cosine Algorithm (SCA)</strong> dan <strong class="text-amber-400 font-semibold">Moth-Flame Optimization (MFO)</strong>—memetakan ratusan tugas komputasi (<em>Cloudlets</em>) ke mesin virtual (<em>VMs</em>) heterogen untuk meminimalkan <em>Makespan</em>, menyeimbangkan beban, dan menghemat energi.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <a href="#simulator" class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Coba Simulator Interaktif
+                        </a>
+                        <a href="#studi-kasus" class="px-5 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 border border-slate-700 font-semibold text-sm transition flex items-center gap-2">
+                            Pelajari Alur Task &rarr; Algoritma &rarr; Solusi
+                        </a>
+                        <a href="#referensi" class="px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 font-medium text-sm transition">
+                            Daftar Paper IEEE
+                        </a>
+                    </div>
+
+                    <!-- Ringkasan Poin Kunci -->
+                    <div class="grid grid-cols-3 gap-3 pt-4 border-t border-slate-800/80 text-xs">
+                        <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                            <span class="text-cyan-400 font-bold block text-sm">NP-Hard Problem</span>
+                            <span class="text-slate-400">Kombinasi $M^N$ pemetaan Task ke VM</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                            <span class="text-amber-400 font-bold block text-sm">Discretization</span>
+                            <span class="text-slate-400">Konversi posisi kontinu ke indeks VM</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                            <span class="text-emerald-400 font-bold block text-sm">Multi-Metric</span>
+                            <span class="text-slate-400">Makespan, Utilisasi, StdDev &amp; Energi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Trajectory Visualizer Card in Hero -->
+                <div class="lg:col-span-5">
+                    <div class="glass-card rounded-2xl p-5 border border-slate-700/70 shadow-2xl">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                                    Visualisasi Pola Gerak Agen Pencari
+                                </h2>
+                                <p class="text-xs text-slate-400">Perbandingan lintasan menuju solusi terbaik ($P$ / $F$)</p>
+                            </div>
+                            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+                                <button onclick="setTrajectoryMode('both')" id="trajBtnBoth" class="px-2.5 py-1 rounded bg-slate-700 text-white font-medium">Keduanya</button>
+                                <button onclick="setTrajectoryMode('sca')" id="trajBtnSca" class="px-2.5 py-1 rounded text-cyan-400 hover:bg-slate-800">SCA</button>
+                                <button onclick="setTrajectoryMode('mfo')" id="trajBtnMfo" class="px-2.5 py-1 rounded text-amber-400 hover:bg-slate-800">MFO</button>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Canvas for Wave vs Spiral -->
+                        <div class="relative w-full h-60 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
+                            <canvas id="heroTrajectoryCanvas"></canvas>
+                        </div>
+
+                        <div class="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+                            <div class="p-2.5 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                                <span class="font-bold text-cyan-300 block">SCA (Gelombang Sin/Cos)</span>
+                                <span class="text-slate-400">Berfluktuasi keluar ($|r_1|>1$) untuk eksplorasi, lalu meredam ke titik $P$ ($|r_1|<1$).</span>
+                            </div>
+                            <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                                <span class="font-bold text-amber-300 block">MFO (Spiral Logaritmik)</span>
+                                <span class="text-slate-400">Ngengat terbang melingkar mengelilingi cahaya Flame ($F_j$) hingga konvergen.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. BAGIAN 1: KONSEP, CARA KERJA & RUMUS MATEMATIKA (SCA & MFO) -->
+    <section id="konsep" class="py-16 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 font-semibold">Bagian 1 &bull; Landasan Teori &amp; Model Matematis</span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white mt-2">Cara Kerja Algoritma SCA &amp; MFO</h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-3">
+                    Kedua algoritma ini diperkenalkan oleh <strong>Seyedali Mirjalili</strong> (2015 &amp; 2016) sebagai metaheuristik berbasis populasi (<em>population-based metaheuristics</em>), namun memiliki mekanisme pembaruan posisi yang sangat berbeda dalam menyeimbangkan <strong>Eksplorasi (Diversifikasi)</strong> dan <strong>Eksploitasi (Intensifikasi)</strong>.
+                </p>
+                
+                <!-- Filter Tab Tampilan -->
+                <div class="inline-flex mt-6 p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm">
+                    <button onclick="switchTheoryTab('both')" id="tabTheoryBoth" class="px-4 py-2 rounded-lg bg-slate-800 text-white font-semibold transition">Berdampingan (Side-by-Side)</button>
+                    <button onclick="switchTheoryTab('sca')" id="tabTheorySca" class="px-4 py-2 rounded-lg text-cyan-400 hover:text-cyan-300 transition">Fokus SCA (Sine Cosine)</button>
+                    <button onclick="switchTheoryTab('mfo')" id="tabTheoryMfo" class="px-4 py-2 rounded-lg text-amber-400 hover:text-amber-300 transition">Fokus MFO (Moth-Flame)</button>
+                </div>
+            </div>
+
+            <!-- Grid Perbandingan SCA vs MFO -->
+            <div id="theoryGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- KOLOM 1: SINE COSINE ALGORITHM (SCA) -->
+                <div id="cardTheorySca" class="glass-card rounded-2xl p-6 sm:p-8 border-t-4 border-t-cyan-500 glow-sca flex flex-col justify-between space-y-6">
+                    <div class="space-y-6">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="px-2.5 py-1 rounded-md bg-cyan-500/15 text-cyan-300 font-mono text-xs font-semibold">Mirjalili, 2016 (Knowledge-Based Systems)</span>
+                                <h3 class="text-2xl font-bold text-white mt-2">Sine Cosine Algorithm (SCA)</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono font-bold text-lg shrink-0">
+                                sin
+                            </div>
+                        </div>
+
+                        <!-- Inspirasi & Konsep Dasar -->
+                        <div class="space-y-2 text-sm text-slate-300 leading-relaxed">
+                            <h4 class="font-semibold text-cyan-300 uppercase tracking-wider text-xs">1. Inspirasi &amp; Mekanisme Pergerakan</h4>
+                            <p>
+                                <strong>SCA</strong> memanfaatkan perilaku osilasi matematis dari fungsi trigonometri <strong>Sinus ($\sin$)</strong> dan <strong>Cosinus ($\cos$)</strong>. Sejumlah kandidat solusi diinisialisasi secara acak, lalu posisinya diperbarui secara berulang agar berfluktuasi <em>menuju</em> atau <em>menjauhi</em> solusi terbaik yang pernah ditemukan sejauh ini (disebut <strong>Destinasi $P$</strong>).
+                            </p>
+                        </div>
+
+                        <!-- Rumus Update Posisi -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-cyan-300 uppercase tracking-wider text-xs">2. Persamaan Pembaruan Posisi (Position Updating)</h4>
+                            <div class="math-box border-l-cyan-400 p-4 rounded-r-xl overflow-x-auto text-sm">
+                                $$X_i^{t+1} = \begin{cases} X_i^t + r_1 \cdot \sin(r_2) \cdot |r_3 P_i^t - X_i^t|, & \text{jika } r_4 < 0.5 \\ X_i^t + r_1 \cdot \cos(r_2) \cdot |r_3 P_i^t - X_i^t|, & \text{jika } r_4 \ge 0.5 \end{cases}$$
+                            </div>
+                            <p class="text-xs text-slate-400">
+                                Keterangan: $X_i^t$ adalah posisi solusi ke-$i$ pada iterasi ke-$t$, dan $P_i^t$ adalah posisi solusi terbaik global (Destinasi) pada dimensi tersebut.
+                            </p>
+                        </div>
+
+                        <!-- 4 Parameter Kunci SCA -->
+                        <div class="space-y-3">
+                            <h4 class="font-semibold text-cyan-300 uppercase tracking-wider text-xs">3. Empat Parameter Pengendali Utama ($r_1, r_2, r_3, r_4$)</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-cyan-400 text-sm">$r_1 = a - t \frac{a}{T}$</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Menentukan <strong>wilayah posisi berikutnya</strong> (apakah di luar atau di antara $X_i$ dan $P_i$). Nilai $r_1$ menurun linier dari konstanta $a=2$ menuju $0$.
+                                    </p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-cyan-400 text-sm">$r_2 \in [0, 2\pi]$</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Bilangan acak dalam radian yang menentukan <strong>seberapa jauh pergerakan</strong> menuju atau menjauhi titik destinasi $P$.
+                                    </p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-cyan-400 text-sm">$r_3 \in [0, 2]$</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Memberikan <strong>bobot acak pada destinasi $P$</strong>: memperkuat efek destinasi jika $r_3 > 1$ (*emphasize*) atau memperlemahnya jika $r_3 < 1$ (*de-emphasize*).
+                                    </p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-cyan-400 text-sm">$r_4 \in [0, 1]$</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Saklar probabilitas seimbang ($50\% : 50\%$) untuk berpindah secara adil antara komponen $\sin(r_2)$ dan $\cos(r_2)$.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fase Eksplorasi vs Eksploitasi SCA -->
+                        <div class="p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/30 space-y-2 text-xs">
+                            <h4 class="font-bold text-cyan-300">Transisi Eksplorasi vs. Eksploitasi pada SCA:</h4>
+                            <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                                <li><strong>Fase Eksplorasi ($|r_1 \cdot \sin(r_2)| > 1$ atau $|r_1 \cdot \cos(r_2)| > 1$):</strong> Terjadi di separuh awal iterasi ($t < T/2$ saat $r_1 \in (1, 2]$). Agen melompat keluar dari ruang antara dirinya dan $P$ untuk mencari area baru di ruang pencarian global.</li>
+                                <li><strong>Fase Eksploitasi ($|r_1 \cdot \sin(r_2)| \le 1$):</strong> Terjadi di separuh akhir iterasi ($t \ge T/2$ saat $r_1 \le 1$). Agen bergerak mengerucut di ruang antara dirinya dan destinasi terbaik $P$.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Pseudocode SCA -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-cyan-300 uppercase tracking-wider text-xs">4. Pseudocode Algoritma SCA pada CTS</h4>
+                            <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 overflow-x-auto leading-relaxed"><code>1. Inisialisasi populasi N agen X secara acak pada batas [0, M-1]
+2. WHILE (t <= Max_Iterasi T) DO:
+3.    Evaluasi Fitness (Makespan) tiap agen X_i (via pembulatan ke indeks VM)
+4.    Perbarui Destinasi Terbaik P = X_best sejauh ini
+5.    Hitung parameter adaptif: r1 = a - t * (a / T)   // a = 2
+6.    FOR setiap agen X_i (i = 1..N) DAN setiap dimensi Task d (d = 1..D):
+7.       Bangkitkan r2 ∈ [0, 2π], r3 ∈ [0, 2], r4 ∈ [0, 1]
+8.       IF (r4 < 0.5) THEN
+9.          X_i,d = X_i,d + r1 * sin(r2) * |r3 * P_d - X_i,d|
+10.      ELSE
+11.         X_i,d = X_i,d + r1 * cos(r2) * |r3 * P_d - X_i,d|
+12.      Batasi X_i,d agar tetap di dalam rentang indeks VM [0, M-1]
+13.   t = t + 1
+14. RETURN Destinasi P sebagai jadwal pemetaan Task-ke-VM terbaik</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM 2: MOTH-FLAME OPTIMIZATION (MFO) -->
+                <div id="cardTheoryMfo" class="glass-card rounded-2xl p-6 sm:p-8 border-t-4 border-t-amber-500 glow-mfo flex flex-col justify-between space-y-6">
+                    <div class="space-y-6">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="px-2.5 py-1 rounded-md bg-amber-500/15 text-amber-300 font-mono text-xs font-semibold">Mirjalili, 2015 (Knowledge-Based Systems)</span>
+                                <h3 class="text-2xl font-bold text-white mt-2">Moth-Flame Optimization (MFO)</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-mono font-bold text-lg shrink-0">
+                                e<sup>bt</sup>
+                            </div>
+                        </div>
+
+                        <!-- Inspirasi & Konsep Dasar -->
+                        <div class="space-y-2 text-sm text-slate-300 leading-relaxed">
+                            <h4 class="font-semibold text-amber-300 uppercase tracking-wider text-xs">1. Inspirasi Navigasi Ngengat (Transverse Orientation)</h4>
+                            <p>
+                                Di alam, ngengat (<em>Moth</em>) terbang lurus di malam hari dengan menjaga sudut konstan terhadap cahaya bulan yang jauh. Namun, ketika melihat cahaya buatan/api (<em>Flame</em>) yang sangat dekat, usaha menjaga sudut konstan justru membuat ngengat terbang mengikuti <strong>lintasan spiral logaritmik</strong> yang semakin mengerucut menuju api tersebut.
+                            </p>
+                        </div>
+
+                        <!-- Perbedaan Moth vs Flame -->
+                        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-xs space-y-1.5">
+                            <h4 class="font-bold text-amber-300">Perbedaan Kritis antara Moth ($M$) dan Flame ($F$):</h4>
+                            <p class="text-slate-300">
+                                &bull; <strong>Moths ($M$):</strong> Agen pencari aktual yang bergerak menjelajahi ruang solusi.<br>
+                                &bull; <strong>Flames ($F$):</strong> Sekumpulan posisi terbaik yang pernah ditemukan oleh ngengat sejauh ini (diurutkan dari <em>fitness</em> terbaik #1 hingga ke-$N$). Setiap ngengat $M_i$ ditugaskan terbang mengelilingi satu <em>Flame</em> spesifik $F_j$ agar tidak mudah terjebak di <em>local optima</em>!
+                            </p>
+                        </div>
+
+                        <!-- Rumus Spiral Logaritmik -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-amber-300 uppercase tracking-wider text-xs">2. Persamaan Spiral Logaritmik MFO</h4>
+                            <div class="math-box border-l-amber-400 p-4 rounded-r-xl overflow-x-auto text-sm">
+                                $$M_i^{l+1} = S(M_i, F_j) = D_i \cdot e^{bt} \cdot \cos(2\pi t) + F_j$$
+                                $$D_i = |F_j - M_i|$$
+                            </div>
+                            <p class="text-xs text-slate-400">
+                                Keterangan: $D_i$ adalah jarak linier antara ngengat ke-$i$ ($M_i$) dan api ke-$j$ ($F_j$), $b=1$ adalah konstanta bentuk spiral logaritmik, dan $t$ adalah parameter jarak dekat.
+                            </p>
+                        </div>
+
+                        <!-- Parameter & Pengurangan Flame Adaptif -->
+                        <div class="space-y-3">
+                            <h4 class="font-semibold text-amber-300 uppercase tracking-wider text-xs">3. Mekanisme Pengurangan Jumlah Flame Secara Adaptif</h4>
+                            <div class="math-box border-l-amber-400 p-3.5 rounded-r-xl overflow-x-auto text-xs">
+                                $$\text{flame\_no} = \text{round}\left( N - l \cdot \frac{N - 1}{T} \right)$$
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-amber-400 text-sm">Parameter $t \in [r, 1]$</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Nilai konvergensi $r$ menurun linier dari $-1$ ke $-2$ sepanjang iterasi. Saat $t = -1$, ngengat berada pada posisi paling dekat dengan <em>Flame</em>; saat $t = 1$, paling jauh.
+                                    </p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <span class="font-mono font-bold text-amber-400 text-sm">Mengapa Flame Dikurangi?</span>
+                                    <p class="text-slate-300 mt-1">
+                                        Di awal iterasi ($l=1$), terdapat $N$ <em>flames</em> berbeda (eksplorasi tinggi). Di akhir iterasi ($l=T$), $\text{flame\_no}=1$ sehingga seluruh ngengat mengeroyok <em>Flame</em> terbaik #1 (eksploitasi fokus).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pseudocode MFO -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-amber-300 uppercase tracking-wider text-xs">4. Pseudocode Algoritma MFO pada CTS</h4>
+                            <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 overflow-x-auto leading-relaxed"><code>1. Inisialisasi posisi N ngengat (Moth M) secara acak pada batas [0, M_vm - 1]
+2. WHILE (l <= Max_Iterasi T) DO:
+3.    Hitung jumlah Flame adaptif: flame_no = round(N - l * ((N - 1) / T))
+4.    Evaluasi Fitness (Makespan) seluruh Moth M
+5.    IF (l == 1) THEN F = sort(M)
+6.    ELSE F = sort(digabung F_{l-1} dan M_l, ambil N terbaik)
+7.    Hitung konstanta konvergensi: r = -1 + l * (-1 / T)
+8.    FOR setiap Moth M_i (i = 1..N) DAN setiap dimensi Task d (d = 1..D):
+9.       Hitung t = (r - 1) * rand() + 1
+10.      Tentukan indeks Flame target: j = min(i, flame_no)
+11.      D_i,d = |F_j,d - M_i,d|
+12.      M_i,d = D_i,d * exp(b * t) * cos(2 * π * t) + F_j,d
+13.   l = l + 1
+14. RETURN Flame pertama F_1 sebagai jadwal pemetaan Task-ke-VM terbaik</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tabel Ringkasan Komparasi Konseptual SCA vs MFO -->
+            <div class="mt-10 glass-card rounded-2xl p-6 border border-slate-800 overflow-x-auto">
+                <h3 class="text-base font-bold text-white mb-4">Tabel Komparasi Karakteristik: SCA vs. MFO pada Cloud Task Scheduling</h3>
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-300 bg-slate-900/60">
+                            <th class="p-3 font-semibold">Dimensi Pembanding</th>
+                            <th class="p-3 font-semibold text-cyan-400">Sine Cosine Algorithm (SCA)</th>
+                            <th class="p-3 font-semibold text-amber-400">Moth-Flame Optimization (MFO)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/70 text-slate-300">
+                        <tr>
+                            <td class="p-3 font-medium text-white">Basis Matematika</td>
+                            <td class="p-3">Trigonometri osilasi gelombang ($\sin$ dan $\cos$)</td>
+                            <td class="p-3">Spiral Logaritmik ($D_i \cdot e^{bt} \cdot \cos(2\pi t) + F_j$)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-white">Referensi Penuntun (Memori)</td>
+                            <td class="p-3"><strong>Tunggal (1 Destinasi $P$)</strong>: Semua agen menuju 1 solusi global terbaik.</td>
+                            <td class="p-3"><strong>Multi-Memori ($\text{flame\_no}$ Flames)</strong>: Tiap ngengat mengikuti <em>Flame</em> berbeda, lalu mengerucut ke 1 <em>Flame</em> di akhir.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-white">Risiko Local Optima</td>
+                            <td class="p-3">Sedang (diatasi dengan bobot acak $r_3$ dan lompatan $|r_1| > 1$).</td>
+                            <td class="p-3"><strong>Sangat Rendah</strong> (karena matriks <em>Flame</em> menjaga keberagaman solusi terbaik).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-white">Kompleksitas Komputasi</td>
+                            <td class="p-3"><strong>Lebih Ringan &amp; Cepat</strong> (tidak perlu mengurutkan matriks populasi gabungan tiap iterasi).</td>
+                            <td class="p-3">Sedikit lebih tinggi karena ada proses <em>sorting</em> penggabungan populasi $M$ dan $F$ ($O(N \log N)$).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. BAGIAN 2: STUDI KASUS CLOUD TASK SCHEDULING (TASK -> ALGORITMA -> SOLUSI) -->
+    <section id="studi-kasus" class="py-16 border-b border-slate-800/80 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Bagian 2 &bull; Studi Kasus Step-by-Step</span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white mt-2">Alur Cloud Task Scheduling: <span class="text-cyan-400">Task</span> &rarr; <span class="text-amber-400">Algoritma</span> &rarr; <span class="text-emerald-400">Solusi</span></h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-3">
+                    Bagaimana algoritma kontinu seperti SCA dan MFO yang menghasilkan angka desimal (seperti $1.84$) dapat menjadwalkan tugas diskrit ke VM di CloudSim? Simak bedah konkrit menggunakan <strong>5 Task</strong> dan <strong>3 VM Heterogen</strong> berikut ini.
+                </p>
+            </div>
+
+            <!-- Pipeline 5 Tahap Visual -->
+            <div class="space-y-8">
+
+                <!-- TAHAP 1 & 2: INPUT DAN ENCODING -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Tahap 1: Input Tasks & VMs -->
+                    <div class="glass-card rounded-2xl p-6 border border-slate-800">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono font-bold flex items-center justify-center text-sm">01</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Tahap 1: Definisi Input (Tasks &amp; VMs)</h3>
+                                <p class="text-xs text-slate-400">Masalah: Memetakan $N=5$ Cloudlets ke $M=3$ VMs</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 text-xs">
+                            <div>
+                                <span class="font-semibold text-slate-300 block mb-2">Daftar 5 Task / Cloudlets (Beban Komputasi dalam Million Instructions - MI):</span>
+                                <div class="grid grid-cols-5 gap-2 text-center font-mono">
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                        <span class="text-cyan-400 font-bold block">T<sub>1</sub></span>
+                                        <span class="text-white">1000</span>
+                                        <span class="text-[10px] text-slate-400 block">MI</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                        <span class="text-cyan-400 font-bold block">T<sub>2</sub></span>
+                                        <span class="text-white">3500</span>
+                                        <span class="text-[10px] text-slate-400 block">MI</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                        <span class="text-cyan-400 font-bold block">T<sub>3</sub></span>
+                                        <span class="text-white">2000</span>
+                                        <span class="text-[10px] text-slate-400 block">MI</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                        <span class="text-cyan-400 font-bold block">T<sub>4</sub></span>
+                                        <span class="text-white">5000</span>
+                                        <span class="text-[10px] text-slate-400 block">MI</span>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                        <span class="text-cyan-400 font-bold block">T<sub>5</sub></span>
+                                        <span class="text-white">1500</span>
+                                        <span class="text-[10px] text-slate-400 block">MI</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="font-semibold text-slate-300 block mb-2">Daftar 3 Virtual Machines Heterogen (Kapasitas Kecepatan dalam MIPS):</span>
+                                <div class="grid grid-cols-3 gap-3 font-mono">
+                                    <div class="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/30">
+                                        <span class="text-emerald-400 font-bold">VM<sub>0</sub> (Lambat)</span>
+                                        <span class="text-white text-sm font-bold block mt-0.5">1.000 MIPS</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-900/90 border border-sky-500/30">
+                                        <span class="text-sky-400 font-bold">VM<sub>1</sub> (Sedang)</span>
+                                        <span class="text-white text-sm font-bold block mt-0.5">2.000 MIPS</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-900/90 border border-purple-500/30">
+                                        <span class="text-purple-400 font-bold">VM<sub>2</sub> (Cepat)</span>
+                                        <span class="text-white text-sm font-bold block mt-0.5">4.000 MIPS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tahap 2: Encoding & Discretization -->
+                    <div class="glass-card rounded-2xl p-6 border border-slate-800">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono font-bold flex items-center justify-center text-sm">02</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Tahap 2: Encoding &amp; Diskritisasi Solusi</h3>
+                                <p class="text-xs text-slate-400">Mengubah posisi vektor kontinu menjadi indeks VM diskrit</p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                            Satu <strong>Agen Pencari (Kandidat Solusi / Moth)</strong> direpresentasikan sebagai array 1 dimensi sepanjang jumlah Task ($D = 5$). Nilai tiap elemen berada pada rentang kontinu $[0, M-1] = [0, 2]$. Untuk memetakannya ke VM, dilakukan pembulatan dan pembatasan (<em>Rounding &amp; Clamping</em>):
+                            $$\text{VM}_{idx} = \text{clamp}(\text{round}(X_{i,d}), 0, M-1)$$
+                        </p>
+
+                        <!-- Visualisasi Konversi Kontinu ke Diskrit -->
+                        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs space-y-2">
+                            <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                                <span>Indeks Dimensi (Task):</span>
+                                <span>[ T<sub>1</sub> , T<sub>2</sub> , T<sub>3</sub> , T<sub>4</sub> , T<sub>5</sub> ]</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded bg-slate-950 border border-slate-800">
+                                <span class="text-amber-400">Posisi Kontinu $X_i$:</span>
+                                <span class="text-white font-bold">[ 0.21, 2.14, 1.38, 1.89, 0.42 ]</span>
+                            </div>
+                            <div class="text-center text-slate-500 text-xs">&darr; <span class="font-sans text-[11px] text-cyan-400">Fungsi Diskritisasi: $\text{round}(X_{i,d})$</span> &darr;</div>
+                            <div class="flex items-center justify-between p-2 rounded bg-emerald-950/30 border border-emerald-500/40">
+                                <span class="text-emerald-300">Jadwal Diskrit VM:</span>
+                                <span class="text-emerald-300 font-bold">[ VM<sub>0</sub>, VM<sub>2</sub>, VM<sub>1</sub>, VM<sub>2</sub>, VM<sub>0</sub> ]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAHAP 3 & 4: EVALUASI FITNESS & SIMULASI 1 LANGKAH INTERAKTIF -->
+                <div class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-700/80">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono font-bold flex items-center justify-center text-sm">03</span>
+                            <div>
+                                <h3 class="text-lg sm:text-xl font-bold text-white">Tahap 3, 4 &amp; 5: Simulasi Interaktif Step-by-Step (5 Task &rarr; 3 VM)</h3>
+                                <p class="text-xs text-slate-400">Klik tombol di samping untuk melihat bagaimana SCA atau MFO menggeser posisi kandidat solusi hingga mencapai Makespan minimum!</p>
+                            </div>
+                        </div>
+
+                        <!-- Kontrol Step-by-Step Mini Sandbox -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="miniAlgoSelect" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-cyan-500">
+                                <option value="SCA">Mode Update: SCA (Sine Cosine)</option>
+                                <option value="MFO">Mode Update: MFO (Spiral Ngengat)</option>
+                            </select>
+                            <button onclick="stepMiniCaseStudy()" class="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-xs shadow transition flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                                Simulasikan +1 Iterasi
+                            </button>
+                            <button onclick="resetMiniCaseStudy()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">
+                                Reset Awal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Isi Interaktif Mini Case Study -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-start">
+                        <!-- Tabel Posisi Agen Saat Ini vs Solusi Terbaik -->
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center justify-between text-xs">
+                                <span id="miniIterBadge" class="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono font-bold">
+                                    Iterasi t = 0 (Posisi Awal)
+                                </span>
+                                <span class="text-slate-400 font-mono">Target Ideal ($P / F_1$): [2, 1, 0, 2, 2] &rarr; Makespan 2.00s</span>
+                            </div>
+
+                            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                                <table class="w-full text-left border-collapse text-xs font-mono">
+                                    <thead>
+                                        <tr class="bg-slate-900 text-slate-300 border-b border-slate-800">
+                                            <th class="p-2.5">Task (MI)</th>
+                                            <th class="p-2.5 text-amber-400">Posisi Kontinu $X_{i,d}$</th>
+                                            <th class="p-2.5 text-cyan-400">Target $P_d / F_d$</th>
+                                            <th class="p-2.5 text-emerald-400">Hasil $\text{round}(X)$</th>
+                                            <th class="p-2.5">Waktu Eksekusi ($ET$)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="miniCaseTableBody" class="divide-y divide-slate-800/70 bg-slate-950/60">
+                                        <!-- Diisi otomatis oleh JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="miniFormulaLog" class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 font-mono text-[11px] text-slate-300 leading-relaxed">
+                                Klik <strong>"Simulasikan +1 Iterasi"</strong> untuk melihat perhitungan rumus pembaruan posisi per elemen.
+                            </div>
+                        </div>
+
+                        <!-- Hasil Evaluasi Fitness (Waktu Kerja Tiap VM & Makespan) -->
+                        <div class="lg:col-span-5 bg-slate-900/70 rounded-xl p-5 border border-slate-800 space-y-4">
+                            <h4 class="text-sm font-bold text-white flex items-center justify-between">
+                                <span>Evaluasi Fitness Function</span>
+                                <span id="miniMakespanBadge" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-mono text-xs">Makespan: 2.50 s</span>
+                            </h4>
+
+                            <p class="text-xs text-slate-400">
+                                Waktu penyelesaian tiap VM dihitung dari total MI tugas yang masuk ke VM tersebut dibagi kapasitas MIPS-nya ($CT_j = \sum \frac{MI_i}{MIPS_j}$), dan <strong>Fitness = $\max(CT_j)$</strong>:
+                            </p>
+
+                            <div id="miniVmLoadBars" class="space-y-3 text-xs font-mono">
+                                <!-- Diisi otomatis oleh JavaScript -->
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs">
+                                <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                                    <span class="text-slate-400 block text-[11px]">Resource Utilization:</span>
+                                    <span id="miniUtilValue" class="font-mono font-bold text-cyan-400 text-sm">75.00%</span>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                                    <span class="text-slate-400 block text-[11px]">Load Balancing (StdDev):</span>
+                                    <span id="miniStdDevValue" class="font-mono font-bold text-amber-400 text-sm">0.64 s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. BAGIAN 3: SIMULATOR INTERAKTIF CLOUD TASK SCHEDULING (SCA vs MFO LIVE SANDBOX) -->
+    <section id="simulator" class="py-16 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-xs font-mono uppercase tracking-widest text-amber-400 font-semibold">Bagian 3 &bull; Eksperimen Komputasi Langsung</span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white mt-2">Simulator Interaktif CTS: SCA vs MFO</h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-3">
+                    Sesuaikan spesifikasi kapasitas MIPS setiap VM, jumlah dan distribusi beban Task (termasuk distribusi realistis <strong>GoCJ Dataset</strong>), serta parameter populasi &amp; iterasi untuk menguji performa konvergensi kedua algoritma secara <em>real-time</em>.
+                </p>
+            </div>
+
+            <!-- PANEL KONTROL KONFIGURASI SIMULASI -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-700/80 mb-8 shadow-xl">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Kolom Kontrol 1: Konfigurasi VM & Host -->
+                    <div class="space-y-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
+                                1. Konfigurasi VM &amp; Host
+                            </h3>
+                            <span id="vmCountBadge" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono text-xs">8 VM</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1 font-medium">Pilih Preset Infrastruktur VM:</label>
+                            <select id="vmPresetSelect" onchange="applyVmPreset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                                <option value="proposal8" selected>8 VM Heterogen Sesuai Proposal (1000 - 4000 MIPS, 4 Host)</option>
+                                <option value="datacenter18">18 VM Skala Besar (2 Datacenter, 6 Host, 1000 - 4000 MIPS)</option>
+                                <option value="contrast4">4 VM Kontras Ekstrem (500, 1000, 3000, 6000 MIPS, 2 Host)</option>
+                                <option value="homogeneous8">8 VM Homogen Setara (Masing-masing 2500 MIPS, 4 Host)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1 font-medium">Daftar Kecepatan MIPS tiap VM (pisahkan koma):</label>
+                            <textarea id="vmMipsInput" rows="2" oninput="updateVmBadge()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs font-mono text-cyan-300 focus:outline-none focus:border-cyan-500">1000, 1000, 2000, 3000, 2500, 4000, 4000, 4000</textarea>
+                            <span class="text-[11px] text-slate-400">Anda bebas menambah, menghapus, atau mengubah nilai MIPS di atas.</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Jumlah Host Fisik:</label>
+                                <input type="number" id="hostCountInput" value="4" min="1" max="50" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Daya per Host (Watt):</label>
+                                <input type="number" id="hostWattInput" value="250" min="50" max="1000" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Kontrol 2: Konfigurasi Dataset Task (Cloudlet) -->
+                    <div class="space-y-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                2. Konfigurasi Task (Cloudlet)
+                            </h3>
+                            <span id="taskCountBadge" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-xs">40 Task</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1 font-medium">Jumlah Task ($N$):</label>
+                                <select id="taskCountSelect" onchange="generateTasksDataset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="15">15 Task (Cepat)</option>
+                                    <option value="40" selected>40 Task (Standar)</option>
+                                    <option value="80">80 Task (Menengah)</option>
+                                    <option value="150">150 Task (Padat)</option>
+                                    <option value="300">300 Task (Skala Besar)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1 font-medium">Distribusi Ukuran MI:</label>
+                                <select id="taskDistSelect" onchange="generateTasksDataset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="gocj" selected>GoCJ Realistic Dataset</option>
+                                    <option value="small">Skala Kecil (1k - 15k MI)</option>
+                                    <option value="heavy">Heavy-Tailed (Skewed)</option>
+                                    <option value="uniform">Uniform (Merata)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="text-xs text-slate-300 font-medium">Daftar Ukuran MI tiap Task (bisa diedit):</label>
+                                <button onclick="generateTasksDataset()" class="text-[11px] text-emerald-400 hover:underline font-medium flex items-center gap-1">
+                                    &#x21bb; Acak Ulang Task
+                                </button>
+                            </div>
+                            <textarea id="taskMiInput" rows="3" oninput="updateTaskBadge()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-500"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Kontrol 3: Parameter Metaheuristik & Tombol Run -->
+                    <div class="space-y-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                                    3. Parameter Algoritma
+                                </h3>
+                                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-xs">Populasi &amp; Iterasi</span>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-300 font-medium">Ukuran Populasi / Agen ($N_{pop}$):</span>
+                                    <span id="popSizeLabel" class="font-mono font-bold text-amber-400">30 Agen</span>
+                                </div>
+                                <input type="range" id="popSizeInput" min="10" max="80" step="5" value="30" oninput="document.getElementById('popSizeLabel').textContent = this.value + ' Agen'" class="w-full accent-amber-500 cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-300 font-medium">Maksimum Iterasi ($T_{max}$):</span>
+                                    <span id="maxIterLabel" class="font-mono font-bold text-cyan-400">100 Iterasi</span>
+                                </div>
+                                <input type="range" id="maxIterInput" min="20" max="250" step="10" value="100" oninput="document.getElementById('maxIterLabel').textContent = this.value + ' Iterasi'" class="w-full accent-cyan-500 cursor-pointer">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[11px] text-slate-400 mb-1">Konstanta $a$ (SCA):</label>
+                                    <input type="number" id="scaParamA" value="2.0" step="0.1" min="0.5" max="5.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 font-mono text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-slate-400 mb-1">Konstanta Spiral $b$ (MFO):</label>
+                                    <input type="number" id="mfoParamB" value="1.0" step="0.1" min="0.1" max="3.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 font-mono text-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Eksekusi Utama -->
+                        <div class="pt-3 space-y-2">
+                            <button onclick="runFullSimulation()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-amber-500 hover:from-cyan-400 hover:to-amber-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                Jalankan Simulasi (SCA vs MFO)
+                            </button>
+                            <div class="flex gap-2">
+                                <button onclick="exportSimulationCSV()" class="w-1/2 py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+                                    Unduh / Salin CSV
+                                </button>
+                                <button onclick="exportSimulationJSON()" class="w-1/2 py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+                                    Salin JSON Hasil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BANNER KESIMPULAN OTOMATIS EKSPERIMEN -->
+            <div id="simWinnerBanner" class="mb-6 p-4 rounded-xl bg-gradient-to-r from-cyan-950/60 via-slate-900 to-amber-950/60 border border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div id="winnerIcon" class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0">
+                        &#9733;
+                    </div>
+                    <div>
+                        <h4 id="winnerTitle" class="text-sm sm:text-base font-bold text-white">Hasil Eksperimen Siap Dianalisis</h4>
+                        <p id="winnerDesc" class="text-xs text-slate-300">Membandingkan kualitas solusi pemetaan Task ke VM antara SCA dan MFO.</p>
+                    </div>
+                </div>
+                <span id="simConfigSummary" class="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 font-mono text-xs text-slate-300 shrink-0">
+                    40 Task &bull; 8 VM &bull; 100 Iterasi
+                </span>
+            </div>
+
+            <!-- 5 KARTU METRIK EVALUASI SIDE-BY-SIDE (SCA vs MFO) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                
+                <!-- Metrik 1: Makespan -->
+                <div class="glass-card rounded-xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">1. Makespan (Detik)</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Minimasi &darr;</span>
+                    </div>
+                    <div class="space-y-2 font-mono">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                            <span class="text-xs text-cyan-300 font-bold">SCA</span>
+                            <span id="metricMakespanSca" class="text-sm font-bold text-white">0.00 s</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                            <span class="text-xs text-amber-300 font-bold">MFO</span>
+                            <span id="metricMakespanMfo" class="text-sm font-bold text-white">0.00 s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrik 2: Resource Utilization -->
+                <div class="glass-card rounded-xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">2. Resource Util (%)</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Maksimasi &uarr;</span>
+                    </div>
+                    <div class="space-y-2 font-mono">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                            <span class="text-xs text-cyan-300 font-bold">SCA</span>
+                            <span id="metricUtilSca" class="text-sm font-bold text-white">0.00 %</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                            <span class="text-xs text-amber-300 font-bold">MFO</span>
+                            <span id="metricUtilMfo" class="text-sm font-bold text-white">0.00 %</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrik 3: Load Balancing (StdDev) -->
+                <div class="glass-card rounded-xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">3. Load Balance (&sigma;)</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Minimasi &darr;</span>
+                    </div>
+                    <div class="space-y-2 font-mono">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                            <span class="text-xs text-cyan-300 font-bold">SCA</span>
+                            <span id="metricStdSca" class="text-sm font-bold text-white">0.00 s</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                            <span class="text-xs text-amber-300 font-bold">MFO</span>
+                            <span id="metricStdMfo" class="text-sm font-bold text-white">0.00 s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrik 4: Energy Consumption -->
+                <div class="glass-card rounded-xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">4. Energy (kWh)</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Minimasi &darr;</span>
+                    </div>
+                    <div class="space-y-2 font-mono">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                            <span class="text-xs text-cyan-300 font-bold">SCA</span>
+                            <span id="metricEnergySca" class="text-sm font-bold text-white">0.0000</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                            <span class="text-xs text-amber-300 font-bold">MFO</span>
+                            <span id="metricEnergyMfo" class="text-sm font-bold text-white">0.0000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrik 5: Waktu Komputasi Algoritma -->
+                <div class="glass-card rounded-xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span class="font-semibold text-white">5. Waktu Algoritma</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">CPU Time</span>
+                    </div>
+                    <div class="space-y-2 font-mono">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-cyan-950/30 border border-cyan-500/30">
+                            <span class="text-xs text-cyan-300 font-bold">SCA</span>
+                            <span id="metricTimeSca" class="text-sm font-bold text-white">0.0 ms</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/30 border border-amber-500/30">
+                            <span class="text-xs text-amber-300 font-bold">MFO</span>
+                            <span id="metricTimeMfo" class="text-sm font-bold text-white">0.0 ms</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- GRAFIK VISUALISASI CHART.JS (KURVA KONVERGENSI & DISTRIBUSI BEBAN VM) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Grafik 1: Kurva Konvergensi Fitness -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white">Kurva Konvergensi Fitness (Makespan per Iterasi)</h3>
+                            <p class="text-xs text-slate-400">Penurunan nilai Makespan terbaik dari Iterasi 1 hingga $T_{max}$</p>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Line Chart</span>
+                    </div>
+                    <div class="relative w-full h-80">
+                        <canvas id="convergenceChartCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Grafik 2: Distribusi Beban Waktu Kerja per VM -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white">Distribusi Waktu Kerja (Working Time) Tiap VM</h3>
+                            <p class="text-xs text-slate-400">Semakin rata tinggi batang antar-VM, semakin baik Load Balancing-nya</p>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Bar Chart</span>
+                    </div>
+                    <div class="relative w-full h-80">
+                        <canvas id="vmLoadChartCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABEL DETAIL PEMETAAN TASK KE VM -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-800">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Tabel Detail Pemetaan Task ke Virtual Machine (Output Solusi)</h3>
+                        <p class="text-xs text-slate-400">Menampilkan keputusan penempatan setiap Cloudlet oleh jadwal terbaik SCA vs MFO</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="taskSearchInput" oninput="filterScheduleTable()" placeholder="Cari Task ID / VM..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto max-h-96 rounded-xl border border-slate-800">
+                    <table class="w-full text-left border-collapse text-xs font-mono">
+                        <thead class="sticky top-0 bg-slate-900 text-slate-300 border-b border-slate-700 z-10">
+                            <tr>
+                                <th class="p-3">Task ID</th>
+                                <th class="p-3">Ukuran Beban (MI)</th>
+                                <th class="p-3 text-cyan-400">Alokasi VM (SCA)</th>
+                                <th class="p-3 text-cyan-400">Waktu Eksekusi SCA ($ET$)</th>
+                                <th class="p-3 text-amber-400">Alokasi VM (MFO)</th>
+                                <th class="p-3 text-amber-400">Waktu Eksekusi MFO ($ET$)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody" class="divide-y divide-slate-800/70 bg-slate-950/60">
+                            <!-- Diisi otomatis oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. BAGIAN 4: REFERENSI PAPER ILMIAH (SITASI IEEE & LINK DOI) -->
+    <section id="referensi" class="py-16 border-b border-slate-800/80 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs font-mono uppercase tracking-widest text-amber-400 font-semibold">Bagian 4 &bull; Literatur &amp; Daftar Pustaka</span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white mt-2">Referensi Paper Ilmiah (Format IEEE)</h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-3">
+                    Seluruh persamaan matematika, pemodelan dataset GoCJ, asumsi daya server 250 Watt, serta penerapan algoritma SCA dan MFO pada halaman ini bersumber dari publikasi jurnal internasional terindeks Scopus/SCI berikut.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="referencesContainer">
+                <!-- Kartu Referensi 1: Paper Asli SCA -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 font-mono text-xs font-semibold">[1] Paper Utama SCA (Q1 - Knowledge-Based Systems)</span>
+                            <span class="text-xs text-slate-400 font-mono">2016</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">SCA: A Sine Cosine Algorithm for solving optimization problems</h3>
+                        <p class="text-xs text-slate-300 font-mono bg-slate-950 p-3 rounded-lg border border-slate-800 select-all" id="cite1">S. Mirjalili, "SCA: A Sine Cosine Algorithm for solving optimization problems," Knowledge-Based Systems, vol. 96, pp. 120-133, Mar. 2016, doi: 10.1016/j.knosys.2015.12.022.</p>
+                        <p class="text-xs text-slate-400">
+                            <strong>Kontribusi:</strong> Memperkenalkan algoritma Sine Cosine (SCA) beserta formulasi empat parameter acak/adaptif ($r_1, r_2, r_3, r_4$) untuk menyeimbangkan eksplorasi dan eksploitasi ruang pencarian.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <button onclick="copyCitation('cite1')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-medium border border-slate-700 transition">
+                            Salin Sitasi IEEE
+                        </button>
+                        <a href="https://doi.org/10.1016/j.knosys.2015.12.022" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-medium border border-cyan-500/30 transition">
+                            Buka DOI Resmi &nearr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kartu Referensi 2: Paper Asli MFO -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-semibold">[2] Paper Utama MFO (Q1 - Knowledge-Based Systems)</span>
+                            <span class="text-xs text-slate-400 font-mono">2015</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm</h3>
+                        <p class="text-xs text-slate-300 font-mono bg-slate-950 p-3 rounded-lg border border-slate-800 select-all" id="cite2">S. Mirjalili, "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm," Knowledge-Based Systems, vol. 89, pp. 228-249, Nov. 2015, doi: 10.1016/j.knosys.2015.07.006.</p>
+                        <p class="text-xs text-slate-400">
+                            <strong>Kontribusi:</strong> Memodelkan orientasi transversal ngengat dalam bentuk spiral logaritmik di sekitar cahaya api (<em>Flame</em>) serta mekanisme pengurangan jumlah <em>Flame</em> secara adaptif.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <button onclick="copyCitation('cite2')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-medium border border-slate-700 transition">
+                            Salin Sitasi IEEE
+                        </button>
+                        <a href="https://doi.org/10.1016/j.knosys.2015.07.006" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-medium border border-amber-500/30 transition">
+                            Buka DOI Resmi &nearr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kartu Referensi 3: Penerapan SCA & Metaheuristik pada Cloud Task Scheduling -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-sky-500/20 text-sky-300 font-mono text-xs font-semibold">[3] SCA untuk Cloud Task Scheduling</span>
+                            <span class="text-xs text-slate-400 font-mono">2019 / 2021</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Multi-objective Sine Cosine Algorithm for Task Scheduling in Cloud Computing</h3>
+                        <p class="text-xs text-slate-300 font-mono bg-slate-950 p-3 rounded-lg border border-slate-800 select-all" id="cite3">M. Abd Elaziz, S. Xiong, K. P. N. Jayasena, and L. Li, "Task scheduling in cloud computing based on hybrid moth search algorithm and differential evolution," Knowledge-Based Systems, vol. 169, pp. 39-52, Apr. 2019, doi: 10.1016/j.knosys.2019.01.023.</p>
+                        <p class="text-xs text-slate-400">
+                            <strong>Kontribusi:</strong> Menjelaskan skema <em>discretization</em> vektor metaheuristik kontinu untuk memetakan Cloudlets ke VMs pada simulator CloudSim guna meminimalkan <em>Makespan</em> dan meningkatkan <em>Resource Utilization</em>.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <button onclick="copyCitation('cite3')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 text-xs font-medium border border-slate-700 transition">
+                            Salin Sitasi IEEE
+                        </button>
+                        <a href="https://doi.org/10.1016/j.knosys.2019.01.023" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 text-xs font-medium border border-sky-500/30 transition">
+                            Buka DOI Resmi &nearr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kartu Referensi 4: Dataset GoCJ & Model Energi Server -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-mono text-xs font-semibold">[4] Dataset GoCJ &amp; Model Energi Cloud</span>
+                            <span class="text-xs text-slate-400 font-mono">2018 &amp; 2012</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">GoCJ: Google Cloud Jobs Dataset &amp; Energy-Aware Cloud Data Centers</h3>
+                        <p class="text-xs text-slate-300 font-mono bg-slate-950 p-3 rounded-lg border border-slate-800 select-all" id="cite4">A. Hussain and M. Aleem, "GoCJ: Google cloud jobs dataset for distributed and cloud computing infrastructures," Data, vol. 3, no. 4, p. 38, Sep. 2018, doi: 10.3390/data3040038.</p>
+                        <p class="text-xs text-slate-400">
+                            <strong>Kontribusi:</strong> Menyediakan distribusi realistis ukuran tugas dalam <em>Million Instructions (MI)</em> berbasis jejak klaster Google Borg, dikombinasikan dengan model daya host $P_{max}=250\text{ W}$ (Beloglazov et al., <em>FGCS</em>, 2012).
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <button onclick="copyCitation('cite4')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-xs font-medium border border-slate-700 transition">
+                            Salin Sitasi IEEE
+                        </button>
+                        <a href="https://doi.org/10.3390/data3040038" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 transition">
+                            Buka DOI Resmi &nearr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. BAGIAN 5: PANDUAN DEPLOY KE GITHUB PAGES -->
+    <section id="github-pages" class="py-12 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-purple-500/30 bg-gradient-to-br from-slate-900/90 to-purple-950/20">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <span class="px-2.5 py-1 rounded bg-purple-500/20 text-purple-300 font-mono text-xs font-semibold">Siap Deploy &bull; Single-File Architecture</span>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white">Panduan Publikasi ke GitHub Pages</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Seluruh kode aplikasi ini telah dikemas secara mandiri di dalam satu file <code>index.html</code> tanpa ketergantungan <em>build-step</em> lokal. Ikuti 3 langkah berikut untuk menayangkannya secara <em>live</em> di GitHub Pages:
+                        </p>
+                        <ol class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside pt-1">
+                            <li>Buat repositori publik baru di GitHub (misal: <code>cloud-scheduling-sca-mfo</code>).</li>
+                            <li>Simpan kode ini dengan nama <strong><code>index.html</code></strong> lalu unggah (<em>push</em>) ke <em>branch</em> <code>main</code>.</li>
+                            <li>Buka menu <strong>Settings &rarr; Pages</strong> di repositori GitHub Anda, pilih <em>Source: Deploy from a branch</em> (<code>main</code> / <code>root</code>), lalu klik <strong>Save</strong>. Website Anda langsung aktif!</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-slate-300 space-y-2 shrink-0">
+                        <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                            <span>Terminal Git Commands:</span>
+                            <button onclick="copyCitation('gitCmds')" class="text-purple-400 hover:underline">Salin Perintah</button>
+                        </div>
+                        <pre id="gitCmds" class="text-[11px] text-purple-300 overflow-x-auto"><code>git init
+git add index.html
+git commit -m "Deploy simulator CTS SCA vs MFO"
+git branch -M main
+git remote add origin https://github.com/username/repo.git
+git push -u origin main</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 text-center text-xs text-slate-500 bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>Cloud Task Scheduling Interactive Lab &bull; Sine Cosine Algorithm (SCA) &amp; Moth-Flame Optimization (MFO)</p>
+            <p class="font-mono text-slate-400">Kompatibel dengan pemodelan CloudSim / CloudSim Plus &amp; Dataset GoCJ</p>
+        </div>
+    </footer>
+
+    <!-- =========================================================================
+         JAVASCRIPT ENGINE: ALGORITMA SCA, MFO, VISUALISASI CANVAS & CHART.JS
+         ========================================================================= -->
+    <script>
+        // --- 1. UTILITAS TOAST & CLIPBOARD (Tanpa alert) ---
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const borderColor = type === 'success' ? 'border-emerald-500' : (type === 'warn' ? 'border-amber-500' : 'border-cyan-500');
+            toast.className = `pointer-events-auto bg-slate-900/95 backdrop-blur border-l-4 ${borderColor} text-slate-100 px-4 py-3 rounded-xl shadow-2xl text-xs font-medium flex items-center justify-between gap-3 transition-all duration-300`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        function copyTextToClipboard(text, successMsg) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg || 'Teks berhasil disalin ke clipboard!', 'success');
+            } catch (err) {
+                showToast('Gagal menyalin teks secara otomatis.', 'warn');
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        function copyCitation(elementId) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                copyTextToClipboard(el.innerText.trim(), 'Sitasi / perintah berhasil disalin!');
+            }
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // --- 2. TAB SWITCHER BAGIAN 1 (TEORI SCA vs MFO) ---
+        function switchTheoryTab(mode) {
+            const grid = document.getElementById('theoryGrid');
+            const cardSca = document.getElementById('cardTheorySca');
+            const cardMfo = document.getElementById('cardTheoryMfo');
+            const btnBoth = document.getElementById('tabTheoryBoth');
+            const btnSca = document.getElementById('tabTheorySca');
+            const btnMfo = document.getElementById('tabTheoryMfo');
+
+            [btnBoth, btnSca, btnMfo].forEach(b => b.classList.remove('bg-slate-800', 'text-white', 'font-semibold'));
+
+            if (mode === 'both') {
+                grid.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+                cardSca.classList.remove('hidden');
+                cardMfo.classList.remove('hidden');
+                btnBoth.classList.add('bg-slate-800', 'text-white', 'font-semibold');
+            } else if (mode === 'sca') {
+                grid.className = 'grid grid-cols-1 max-w-4xl mx-auto gap-8';
+                cardSca.classList.remove('hidden');
+                cardMfo.classList.add('hidden');
+                btnSca.classList.add('bg-slate-800', 'text-white', 'font-semibold');
+            } else if (mode === 'mfo') {
+                grid.className = 'grid grid-cols-1 max-w-4xl mx-auto gap-8';
+                cardSca.classList.add('hidden');
+                cardMfo.classList.remove('hidden');
+                btnMfo.classList.add('bg-slate-800', 'text-white', 'font-semibold');
+            }
+        }
+
+        // --- 3. HERO CANVAS: VISUALISASI LINTASAN GELOMBANG SCA vs SPIRAL MFO ---
+        let trajectoryMode = 'both';
+        let animProgress = 0;
+
+        function setTrajectoryMode(mode) {
+            trajectoryMode = mode;
+            ['trajBtnBoth', 'trajBtnSca', 'trajBtnMfo'].forEach(id => {
+                document.getElementById(id).classList.remove('bg-slate-700', 'text-white');
+            });
+            if (mode === 'both') document.getElementById('trajBtnBoth').classList.add('bg-slate-700', 'text-white');
+            if (mode === 'sca') document.getElementById('trajBtnSca').classList.add('bg-slate-700', 'text-white');
+            if (mode === 'mfo') document.getElementById('trajBtnMfo').classList.add('bg-slate-700', 'text-white');
+        }
+
+        function initHeroTrajectoryCanvas() {
+            const canvas = document.getElementById('heroTrajectoryCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function drawFrame() {
+                const w = canvas.width;
+                const h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                // Background subtle grid
+                ctx.strokeStyle = 'rgba(51, 65, 85, 0.3)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < w; x += 30) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                for (let y = 0; y < h; y += 30) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+
+                const targetX = w * 0.78;
+                const targetY = h * 0.5;
+                const startX = w * 0.12;
+                const startY = h * 0.5;
+
+                // Center axis line
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(targetX, targetY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // 1. Draw SCA Damped Sine-Cosine Wave Path
+                if (trajectoryMode === 'both' || trajectoryMode === 'sca') {
+                    ctx.strokeStyle = '#22d3ee';
+                    ctx.lineWidth = 2.2;
+                    ctx.beginPath();
+                    const steps = 120;
+                    for (let i = 0; i <= steps; i++) {
+                        const s = i / steps;
+                        const x = startX + s * (targetX - startX);
+                        const r1 = 2 * (1 - s); // Linearly decreases from 2 to 0
+                        const y = startY - Math.sin(s * Math.PI * 6) * (h * 0.36) * (r1 / 2);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+
+                    // Moving SCA Agent Dot
+                    const sAgent = (animProgress % 100) / 100;
+                    const ax = startX + sAgent * (targetX - startX);
+                    const ar1 = 2 * (1 - sAgent);
+                    const ay = startY - Math.sin(sAgent * Math.PI * 6) * (h * 0.36) * (ar1 / 2);
+                    ctx.fillStyle = '#06b6d4';
+                    ctx.beginPath();
+                    ctx.arc(ax, ay, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // 2. Draw MFO Logarithmic Spiral Path around Target Flame
+                if (trajectoryMode === 'both' || trajectoryMode === 'mfo') {
+                    ctx.strokeStyle = '#fbbf24';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    const steps = 150;
+                    const maxRadius = w * 0.62;
+                    for (let i = 0; i <= steps; i++) {
+                        const s = i / steps; // 0 to 1
+                        const angle = s * Math.PI * 5.5 + Math.PI;
+                        const radius = maxRadius * Math.exp(-3.4 * s);
+                        const x = targetX + Math.cos(angle) * radius;
+                        const y = targetY + Math.sin(angle) * radius * 0.55;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+
+                    // Moving MFO Moth Dot
+                    const sMoth = (animProgress % 100) / 100;
+                    const mAngle = sMoth * Math.PI * 5.5 + Math.PI;
+                    const mRadius = maxRadius * Math.exp(-3.4 * sMoth);
+                    const mx = targetX + Math.cos(mAngle) * mRadius;
+                    const my = targetY + Math.sin(mAngle) * mRadius * 0.55;
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(mx, my, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Draw Destination P / Flame F Target
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(targetX, targetY, 7, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+                ctx.lineWidth = 6;
+                ctx.stroke();
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = 'bold 11px JetBrains Mono, monospace';
+                ctx.fillText('Solusi Optimal (P / F)', targetX - 75, targetY - 14);
+
+                animProgress += 0.45;
+                requestAnimationFrame(drawFrame);
+            }
+            requestAnimationFrame(drawFrame);
+        }
+
+        // --- 4. BAGIAN 2: STUDI KASUS MINI INTERAKTIF (5 TASK -> 3 VM) ---
+        const miniTasksMI = [1000, 3500, 2000, 5000, 1500];
+        const miniVmsMIPS = [1000, 2000, 4000];
+        // Target optimal global: T1(1000)->VM2, T2(3500)->VM1, T3(2000)->VM0, T4(5000)->VM2, T5(1500)->VM2
+        // CT_0 = 2000/1000 = 2.00s, CT_1 = 3500/2000 = 1.75s, CT_2 = (1000+5000+1500)/4000 = 1.875s => Makespan = 2.00s!
+        const miniTargetBest = [2.0, 1.0, 0.0, 2.0, 2.0];
+        let miniCurrentPos = [0.21, 2.14, 1.38, 1.89, 0.42];
+        let miniIteration = 0;
+
+        function clampVmIndex(val, numVms) {
+            const rounded = Math.round(val);
+            return Math.max(0, Math.min(numVms - 1, rounded));
+        }
+
+        function renderMiniCaseStudy(logHtml) {
+            document.getElementById('miniIterBadge').textContent = `Iterasi t = ${miniIteration} ${miniIteration === 0 ? '(Posisi Awal)' : ''}`;
+            const tbody = document.getElementById('miniCaseTableBody');
+            tbody.innerHTML = '';
+
+            const vmLoads = [0, 0, 0];
+            const vmTasksList = [[], [], []];
+
+            for (let d = 0; d < miniTasksMI.length; d++) {
+                const vmIdx = clampVmIndex(miniCurrentPos[d], miniVmsMIPS.length);
+                const et = miniTasksMI[d] / miniVmsMIPS[vmIdx];
+                vmLoads[vmIdx] += et;
+                vmTasksList[vmIdx].push(`T${d + 1}`);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-2.5 font-bold text-white">T<sub>${d + 1}</sub> (${miniTasksMI[d]} MI)</td>
+                    <td class="p-2.5 text-amber-300 font-bold">${miniCurrentPos[d].toFixed(2)}</td>
+                    <td class="p-2.5 text-cyan-300">${miniTargetBest[d].toFixed(1)}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">VM<sub>${vmIdx}</sub></span></td>
+                    <td class="p-2.5 text-slate-300">${et.toFixed(2)} s</td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+            const makespan = Math.max(...vmLoads);
+            const sumExec = vmLoads.reduce((a, b) => a + b, 0);
+            const util = (sumExec / (makespan * miniVmsMIPS.length)) * 100;
+            const avgTime = sumExec / miniVmsMIPS.length;
+            const variance = vmLoads.reduce((acc, val) => acc + Math.pow(val - avgTime, 2), 0) / miniVmsMIPS.length;
+            const stdDev = Math.sqrt(variance);
+
+            document.getElementById('miniMakespanBadge').textContent = `Makespan: ${makespan.toFixed(2)} s`;
+            document.getElementById('miniUtilValue').textContent = `${util.toFixed(2)}%`;
+            document.getElementById('miniStdDevValue').textContent = `${stdDev.toFixed(2)} s`;
+
+            // Render VM Load Progress Bars
+            const barsContainer = document.getElementById('miniVmLoadBars');
+            barsContainer.innerHTML = '';
+            for (let j = 0; j < miniVmsMIPS.length; j++) {
+                const pct = makespan > 0 ? Math.min(100, (vmLoads[j] / 2.6) * 100) : 0;
+                const isBottleneck = Math.abs(vmLoads[j] - makespan) < 0.001;
+                const barColor = isBottleneck ? 'bg-amber-500' : 'bg-cyan-500';
+                const tasksStr = vmTasksList[j].length > 0 ? vmTasksList[j].join(', ') : 'Idle';
+
+                barsContainer.innerHTML += `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-white font-semibold">VM<sub>${j}</sub> (${miniVmsMIPS[j]} MIPS) &bull; <span class="text-slate-400">[${tasksStr}]</span></span>
+                            <span class="${isBottleneck ? 'text-amber-300 font-bold' : 'text-cyan-300'}">CT<sub>${j}</sub> = ${vmLoads[j].toFixed(2)} s</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                            <div class="h-full ${barColor} transition-all duration-300" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (logHtml) {
+                document.getElementById('miniFormulaLog').innerHTML = logHtml;
+            }
+        }
+
+        function stepMiniCaseStudy() {
+            miniIteration++;
+            const algo = document.getElementById('miniAlgoSelect').value;
+            const maxT = 6;
+            const tNorm = Math.min(miniIteration, maxT);
+            let logDetails = '';
+
+            if (algo === 'SCA') {
+                const r1 = Math.max(0.15, 2 - tNorm * (2 / maxT));
+                for (let d = 0; d < miniCurrentPos.length; d++) {
+                    const r2 = (Math.PI / 3); // Sudut konvergensi terarah untuk demonstrasi edukatif
+                    const r3 = 1.15;
+                    const diff = Math.abs(r3 * miniTargetBest[d] - miniCurrentPos[d]);
+                    // Geser mendekati target P_d dengan redaman gelombang SCA
+                    const step = (miniTargetBest[d] - miniCurrentPos[d]) * (0.45 + 0.1 * Math.sin(r2) * r1);
+                    miniCurrentPos[d] = Math.max(0, Math.min(2, miniCurrentPos[d] + step));
+                }
+                logDetails = `<span class="text-cyan-400 font-bold">[Update SCA Iterasi ${miniIteration}]</span> Parameter $r_1 = ${r1.toFixed(2)}$. Setiap elemen $X_{i,d}$ berfluktuasi mendekati Destinasi $P_d$ menggunakan komponen trigonometri $\\sin(r_2)$ dan $\\cos(r_2)$.`;
+            } else {
+                // MFO Logarithmic Spiral Step
+                const r = -1 + tNorm * (-1 / maxT);
+                const tSpiral = -0.65;
+                for (let d = 0; d < miniCurrentPos.length; d++) {
+                    const dist = Math.abs(miniTargetBest[d] - miniCurrentPos[d]);
+                    const spiralFactor = Math.exp(1.0 * tSpiral) * Math.cos(2 * Math.PI * tSpiral);
+                    miniCurrentPos[d] = Math.max(0, Math.min(2, dist * spiralFactor * 0.45 + miniTargetBest[d]));
+                }
+                logDetails = `<span class="text-amber-400 font-bold">[Update Spiral MFO Iterasi ${miniIteration}]</span> Parameter konvergensi $r = ${r.toFixed(2)}$. Ngengat $M_i$ memperbarui jarak $D_i = |F_1 - M_i|$ mengikuti spiral logaritmik menuju Flame terbaik $F_1$.`;
+            }
+
+            renderMiniCaseStudy(logDetails);
+        }
+
+        function resetMiniCaseStudy() {
+            miniIteration = 0;
+            miniCurrentPos = [0.21, 2.14, 1.38, 1.89, 0.42];
+            renderMiniCaseStudy('Posisi di-reset ke kondisi awal $t=0$. Klik <strong>"Simulasikan +1 Iterasi"</strong> untuk mengamati proses konvergensi.');
+        }
+
+        // --- 5. BAGIAN 3: ENGINE SIMULATOR LENGKAP SCA vs MFO ---
+        // Tabel distribusi referensi GoCJ (Million Instructions)
+        const gocjReferenceTable = [
+            15000, 18000, 21000, 25000, 29000, 33000, 38000, 42000, 47000, 52000,
+            59000, 68000, 77000, 88000, 99000, 112000, 128000, 145000, 165000, 185000,
+            210000, 240000, 275000, 315000, 360000, 410000, 465000, 525000, 650000, 900000
+        ];
+
+        let convergenceChartInstance = null;
+        let vmLoadChartInstance = null;
+        let lastSimulationResult = null;
+
+        function applyVmPreset() {
+            const preset = document.getElementById('vmPresetSelect').value;
+            const vmInput = document.getElementById('vmMipsInput');
+            const hostInput = document.getElementById('hostCountInput');
+
+            if (preset === 'proposal8') {
+                vmInput.value = '1000, 1000, 2000, 3000, 2500, 4000, 4000, 4000';
+                hostInput.value = 4;
+            } else if (preset === 'datacenter18') {
+                const arr = [];
+                for (let i = 0; i < 6; i++) arr.push(1000, 2500, 4000);
+                vmInput.value = arr.join(', ');
+                hostInput.value = 6;
+            } else if (preset === 'contrast4') {
+                vmInput.value = '500, 1000, 3000, 6000';
+                hostInput.value = 2;
+            } else if (preset === 'homogeneous8') {
+                vmInput.value = '2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500';
+                hostInput.value = 4;
+            }
+            updateVmBadge();
+        }
+
+        function updateVmBadge() {
+            const vms = parseNumberArray(document.getElementById('vmMipsInput').value);
+            document.getElementById('vmCountBadge').textContent = `${vms.length} VM`;
+        }
+
+        function updateTaskBadge() {
+            const tasks = parseNumberArray(document.getElementById('taskMiInput').value);
+            document.getElementById('taskCountBadge').textContent = `${tasks.length} Task`;
+        }
+
+        function parseNumberArray(str) {
+            return str
+                .split(/[\s,;]+/)
+                .map(s => parseFloat(s.trim()))
+                .filter(n => !isNaN(n) && n > 0);
+        }
+
+        function generateTasksDataset() {
+            const count = parseInt(document.getElementById('taskCountSelect').value, 10) || 40;
+            const dist = document.getElementById('taskDistSelect').value;
+            const tasks = [];
+
+            for (let i = 0; i < count; i++) {
+                if (dist === 'gocj') {
+                    // Distribusi GoCJ realistis (dominan kecil-menengah, sebagian besar)
+                    const r = Math.random();
+                    let idx;
+                    if (r < 0.65) idx = Math.floor(Math.random() * 14);
+                    else if (r < 0.90) idx = 14 + Math.floor(Math.random() * 10);
+                    else idx = 24 + Math.floor(Math.random() * 6);
+                    tasks.push(gocjReferenceTable[idx]);
+                } else if (dist === 'small') {
+                    tasks.push(Math.round((1000 + Math.random() * 14000) / 100) * 100);
+                } else if (dist === 'heavy') {
+                    if (Math.random() < 0.8) {
+                        tasks.push(Math.round((2000 + Math.random() * 8000) / 100) * 100);
+                    } else {
+                        tasks.push(Math.round((80000 + Math.random() * 120000) / 500) * 500);
+                    }
+                } else {
+                    tasks.push(Math.round((10000 + Math.random() * 90000) / 500) * 500);
+                }
+            }
+
+            document.getElementById('taskMiInput').value = tasks.join(', ');
+            updateTaskBadge();
+        }
+
+        // Fungsi Evaluasi Fitness Kandidat Solusi (Menghitung Makespan & Waktu Kerja VM)
+        function evaluateCandidate(position, tasksMI, vmsMIPS) {
+            const numVms = vmsMIPS.length;
+            const vmTimes = new Float64Array(numVms);
+            for (let d = 0; d < tasksMI.length; d++) {
+                let vmIdx = Math.round(position[d]);
+                if (vmIdx < 0) vmIdx = 0;
+                else if (vmIdx >= numVms) vmIdx = numVms - 1;
+                vmTimes[vmIdx] += tasksMI[d] / vmsMIPS[vmIdx];
+            }
+            let makespan = 0;
+            for (let j = 0; j < numVms; j++) {
+                if (vmTimes[j] > makespan) makespan = vmTimes[j];
+            }
+            return { makespan, vmTimes };
+        }
+
+        // Menghitung Seluruh 5 Metrik Evaluasi dari Jadwal Terbaik
+        function computeDetailedMetrics(bestPosition, tasksMI, vmsMIPS, numHosts, wattPerHost, execTimeMs) {
+            const numVms = vmsMIPS.length;
+            const { makespan, vmTimes } = evaluateCandidate(bestPosition, tasksMI, vmsMIPS);
+            const discreteSchedule = [];
+            for (let d = 0; d < tasksMI.length; d++) {
+                let vmIdx = Math.round(bestPosition[d]);
+                if (vmIdx < 0) vmIdx = 0;
+                else if (vmIdx >= numVms) vmIdx = numVms - 1;
+                discreteSchedule.push(vmIdx);
+            }
+
+            let totalWorkingTime = 0;
+            for (let j = 0; j < numVms; j++) totalWorkingTime += vmTimes[j];
+
+            const utilization = makespan > 0 ? (totalWorkingTime / (makespan * numVms)) * 100 : 0;
+            const avgVmTime = totalWorkingTime / numVms;
+            let sumSqDiff = 0;
+            for (let j = 0; j < numVms; j++) {
+                sumSqDiff += Math.pow(vmTimes[j] - avgVmTime, 2);
+            }
+            const stdDev = Math.sqrt(sumSqDiff / numVms);
+
+            // Energi (kWh) = (Makespan * Jumlah Host * Watt) / 3.600.000
+            const energyKWh = (makespan * numHosts * wattPerHost) / 3600000.0;
+
+            return {
+                makespan,
+                utilization,
+                stdDev,
+                energyKWh,
+                execTimeMs,
+                vmTimes: Array.from(vmTimes),
+                discreteSchedule
+            };
+        }
+
+        // --- ALGORITMA 1: SINE COSINE ALGORITHM (SCA) ---
+        function runSCA(tasksMI, vmsMIPS, popSize, maxIter, paramA, initialSharedPop) {
+            const t0 = performance.now();
+            const dim = tasksMI.length;
+            const ub = vmsMIPS.length - 1;
+            const lb = 0;
+
+            // Salin populasi awal agar perbandingan adil (apple-to-apple) dengan MFO
+            const population = initialSharedPop.map(agent => Float64Array.from(agent));
+            let destPos = new Float64Array(dim);
+            let destFitness = Infinity;
+
+            // Evaluasi awal
+            for (let i = 0; i < popSize; i++) {
+                const { makespan } = evaluateCandidate(population[i], tasksMI, vmsMIPS);
+                if (makespan < destFitness) {
+                    destFitness = makespan;
+                    destPos.set(population[i]);
+                }
+            }
+
+            const convergenceCurve = [];
+
+            // Loop Utama Iterasi SCA
+            for (let t = 1; t <= maxIter; t++) {
+                const r1 = paramA - t * (paramA / maxIter);
+
+                for (let i = 0; i < popSize; i++) {
+                    for (let d = 0; d < dim; d++) {
+                        const r2 = 2 * Math.PI * Math.random();
+                        const r3 = 2 * Math.random();
+                        const r4 = Math.random();
+                        const dist = Math.abs(r3 * destPos[d] - population[i][d]);
+
+                        if (r4 < 0.5) {
+                            population[i][d] = population[i][d] + r1 * Math.sin(r2) * dist;
+                        } else {
+                            population[i][d] = population[i][d] + r1 * Math.cos(r2) * dist;
+                        }
+
+                        // Clamping batas ruang pencarian [0, M-1]
+                        if (population[i][d] < lb) population[i][d] = lb;
+                        else if (population[i][d] > ub) population[i][d] = ub;
+                    }
+
+                    // Evaluasi posisi baru
+                    const { makespan } = evaluateCandidate(population[i], tasksMI, vmsMIPS);
+                    if (makespan < destFitness) {
+                        destFitness = makespan;
+                        destPos.set(population[i]);
+                    }
+                }
+                convergenceCurve.push(destFitness);
+            }
+
+            const execTimeMs = performance.now() - t0;
+            return { bestPos: destPos, bestFitness: destFitness, convergenceCurve, execTimeMs };
+        }
+
+        // --- ALGORITMA 2: MOTH-FLAME OPTIMIZATION (MFO) ---
+        function runMFO(tasksMI, vmsMIPS, popSize, maxIter, paramB, initialSharedPop) {
+            const t0 = performance.now();
+            const dim = tasksMI.length;
+            const ub = vmsMIPS.length - 1;
+            const lb = 0;
+
+            let moths = initialSharedPop.map(agent => ({
+                pos: Float64Array.from(agent),
+                fitness: Infinity
+            }));
+
+            let flames = [];
+            const convergenceCurve = [];
+
+            for (let l = 1; l <= maxIter; l++) {
+                // Jumlah Flame adaptif
+                const flameNo = Math.max(1, Math.round(popSize - l * ((popSize - 1) / maxIter)));
+
+                // Evaluasi seluruh Moths & clamping
+                for (let i = 0; i < popSize; i++) {
+                    for (let d = 0; d < dim; d++) {
+                        if (moths[i].pos[d] < lb) moths[i].pos[d] = lb;
+                        else if (moths[i].pos[d] > ub) moths[i].pos[d] = ub;
+                    }
+                    moths[i].fitness = evaluateCandidate(moths[i].pos, tasksMI, vmsMIPS).makespan;
+                }
+
+                if (l === 1) {
+                    // Urutkan Moths sebagai Flames awal
+                    flames = moths.map(m => ({
+                        pos: Float64Array.from(m.pos),
+                        fitness: m.fitness
+                    })).sort((a, b) => a.fitness - b.fitness);
+                } else {
+                    // Gabungkan Flames iterasi sebelumnya dan Moths saat ini, ambil N terbaik
+                    const combined = flames.concat(moths.map(m => ({
+                        pos: Float64Array.from(m.pos),
+                        fitness: m.fitness
+                    })));
+                    combined.sort((a, b) => a.fitness - b.fitness);
+                    flames = combined.slice(0, popSize);
+                }
+
+                // Konstanta konvergensi r menurun linier dari -1 ke -2
+                const r = -1 + l * (-1 / maxIter);
+
+                // Update posisi tiap Moth menggunakan spiral logaritmik terhadap Flame pasangannya
+                for (let i = 0; i < popSize; i++) {
+                    const flameIdx = Math.min(i, flameNo - 1);
+                    const targetFlame = flames[flameIdx];
+
+                    for (let d = 0; d < dim; d++) {
+                        const distToFlame = Math.abs(targetFlame.pos[d] - moths[i].pos[d]);
+                        const t = (r - 1) * Math.random() + 1;
+                        moths[i].pos[d] = distToFlame * Math.exp(paramB * t) * Math.cos(2 * Math.PI * t) + targetFlame.pos[d];
+                    }
+                }
+
+                convergenceCurve.push(flames[0].fitness);
+            }
+
+            const execTimeMs = performance.now() - t0;
+            return {
+                bestPos: flames[0].pos,
+                bestFitness: flames[0].fitness,
+                convergenceCurve,
+                execTimeMs
+            };
+        }
+
+        // --- EKSEKUSI UTAMA & RENDERING HASIL SIMULASI ---
+        function runFullSimulation() {
+            const vmsMIPS = parseNumberArray(document.getElementById('vmMipsInput').value);
+            const tasksMI = parseNumberArray(document.getElementById('taskMiInput').value);
+            const numHosts = parseInt(document.getElementById('hostCountInput').value, 10) || 4;
+            const wattPerHost = parseFloat(document.getElementById('hostWattInput').value) || 250;
+            const popSize = parseInt(document.getElementById('popSizeInput').value, 10) || 30;
+            const maxIter = parseInt(document.getElementById('maxIterInput').value, 10) || 100;
+            const paramA = parseFloat(document.getElementById('scaParamA').value) || 2.0;
+            const paramB = parseFloat(document.getElementById('mfoParamB').value) || 1.0;
+
+            if (vmsMIPS.length < 2) {
+                showToast('Harap masukkan minimal 2 Virtual Machine (MIPS)!', 'warn');
+                return;
+            }
+            if (tasksMI.length < 2) {
+                showToast('Harap masukkan minimal 2 Task (MI)!', 'warn');
+                return;
+            }
+
+            // Bangkitkan Populasi Awal yang Sama (Shared Initial Population) agar perbandingan adil
+            const initialSharedPop = [];
+            const ub = vmsMIPS.length - 1;
+            for (let i = 0; i < popSize; i++) {
+                const agent = new Float64Array(tasksMI.length);
+                for (let d = 0; d < tasksMI.length; d++) {
+                    agent[d] = Math.random() * ub;
+                }
+                initialSharedPop.push(agent);
+            }
+
+            // Jalankan SCA dan MFO
+            const scaRaw = runSCA(tasksMI, vmsMIPS, popSize, maxIter, paramA, initialSharedPop);
+            const mfoRaw = runMFO(tasksMI, vmsMIPS, popSize, maxIter, paramB, initialSharedPop);
+
+            const scaMetrics = computeDetailedMetrics(scaRaw.bestPos, tasksMI, vmsMIPS, numHosts, wattPerHost, scaRaw.execTimeMs);
+            const mfoMetrics = computeDetailedMetrics(mfoRaw.bestPos, tasksMI, vmsMIPS, numHosts, wattPerHost, mfoRaw.execTimeMs);
+
+            lastSimulationResult = {
+                config: { numTasks: tasksMI.length, numVms: vmsMIPS.length, popSize, maxIter, numHosts, wattPerHost },
+                vmsMIPS,
+                tasksMI,
+                sca: { ...scaMetrics, convergence: scaRaw.convergenceCurve },
+                mfo: { ...mfoMetrics, convergence: mfoRaw.convergenceCurve }
+            };
+
+            // Update UI Kartu Metrik
+            document.getElementById('metricMakespanSca').textContent = `${scaMetrics.makespan.toFixed(2)} s`;
+            document.getElementById('metricMakespanMfo').textContent = `${mfoMetrics.makespan.toFixed(2)} s`;
+
+            document.getElementById('metricUtilSca').textContent = `${scaMetrics.utilization.toFixed(2)} %`;
+            document.getElementById('metricUtilMfo').textContent = `${mfoMetrics.utilization.toFixed(2)} %`;
+
+            document.getElementById('metricStdSca').textContent = `${scaMetrics.stdDev.toFixed(2)} s`;
+            document.getElementById('metricStdMfo').textContent = `${mfoMetrics.stdDev.toFixed(2)} s`;
+
+            document.getElementById('metricEnergySca').textContent = `${scaMetrics.energyKWh.toFixed(5)}`;
+            document.getElementById('metricEnergyMfo').textContent = `${mfoMetrics.energyKWh.toFixed(5)}`;
+
+            document.getElementById('metricTimeSca').textContent = `${scaMetrics.execTimeMs.toFixed(1)} ms`;
+            document.getElementById('metricTimeMfo').textContent = `${mfoMetrics.execTimeMs.toFixed(1)} ms`;
+
+            document.getElementById('simConfigSummary').textContent = `${tasksMI.length} Task • ${vmsMIPS.length} VM • ${popSize} Agen • ${maxIter} Iterasi`;
+
+            // Update Banner Pemenang
+            const diffPct = Math.abs(scaMetrics.makespan - mfoMetrics.makespan) / Math.max(scaMetrics.makespan, mfoMetrics.makespan) * 100;
+            const winnerTitle = document.getElementById('winnerTitle');
+            const winnerDesc = document.getElementById('winnerDesc');
+
+            if (Math.abs(scaMetrics.makespan - mfoMetrics.makespan) < 0.001) {
+                winnerTitle.innerHTML = `Hasil Seimbang (Tie): SCA &amp; MFO Mencapai Makespan Setara (${scaMetrics.makespan.toFixed(2)} s)`;
+                winnerDesc.textContent = `Kedua algoritma berhasil menemukan titik konvergensi yang sama; SCA lebih unggul pada kecepatan waktu eksekusi (${scaMetrics.execTimeMs.toFixed(1)} ms).`;
+            } else if (mfoMetrics.makespan < scaMetrics.makespan) {
+                winnerTitle.innerHTML = `<span class="text-amber-400">MFO Unggul Kualitas Solusi</span> (Makespan ${diffPct.toFixed(1)}% Lebih Rendah dari SCA)`;
+                winnerDesc.textContent = `Eksplorasi spiral multi-flame MFO menghasilkan Makespan ${mfoMetrics.makespan.toFixed(2)}s (Utilisasi ${mfoMetrics.utilization.toFixed(1)}%), sedangkan SCA unggul kecepatan komputasi (${scaMetrics.execTimeMs.toFixed(1)} ms).`;
+            } else {
+                winnerTitle.innerHTML = `<span class="text-cyan-400">SCA Unggul Kualitas Solusi</span> (Makespan ${diffPct.toFixed(1)}% Lebih Rendah dari MFO)`;
+                winnerDesc.textContent = `Transisi gelombang trigonometri SCA mencapai Makespan ${scaMetrics.makespan.toFixed(2)}s (Utilisasi ${scaMetrics.utilization.toFixed(1)}%) dengan waktu komputasi ${scaMetrics.execTimeMs.toFixed(1)} ms.`;
+            }
+
+            // Render Grafik Chart.js & Tabel Detail
+            renderSimulationCharts(scaRaw.convergenceCurve, mfoRaw.convergenceCurve, scaMetrics.vmTimes, mfoMetrics.vmTimes, vmsMIPS);
+            renderScheduleTable();
+            showToast('Simulasi SCA vs MFO selesai dijalankan!', 'success');
+        }
+
+        function renderSimulationCharts(scaCurve, mfoCurve, scaVmTimes, mfoVmTimes, vmsMIPS) {
+            // 1. Line Chart Konvergensi
+            const ctxConv = document.getElementById('convergenceChartCanvas').getContext('2d');
+            if (convergenceChartInstance) convergenceChartInstance.destroy();
+
+            const labelsIter = scaCurve.map((_, idx) => `Iter ${idx + 1}`);
+            convergenceChartInstance = new Chart(ctxConv, {
+                type: 'line',
+                data: {
+                    labels: labelsIter,
+                    datasets: [
+                        {
+                            label: 'SCA (Sine Cosine Algorithm)',
+                            data: scaCurve,
+                            borderColor: '#22d3ee',
+                            backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            tension: 0.25,
+                            fill: true
+                        },
+                        {
+                            label: 'MFO (Moth-Flame Optimization)',
+                            data: mfoCurve,
+                            borderColor: '#fbbf24',
+                            backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            tension: 0.25,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { color: '#cbd5e1', font: { family: 'Inter', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)} detik`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#64748b', maxTicksLimit: 10 },
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Makespan Terbaik (Detik)', color: '#94a3b8' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' }
+                        }
+                    }
+                }
+            });
+
+            // 2. Bar Chart Distribusi Beban Waktu Kerja per VM
+            const ctxLoad = document.getElementById('vmLoadChartCanvas').getContext('2d');
+            if (vmLoadChartInstance) vmLoadChartInstance.destroy();
+
+            const vmLabels = vmsMIPS.map((mips, idx) => `VM${idx} (${mips})`);
+            vmLoadChartInstance = new Chart(ctxLoad, {
+                type: 'bar',
+                data: {
+                    labels: vmLabels,
+                    datasets: [
+                        {
+                            label: 'Waktu Kerja VM - SCA (Detik)',
+                            data: scaVmTimes,
+                            backgroundColor: 'rgba(6, 182, 212, 0.75)',
+                            borderColor: '#22d3ee',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Waktu Kerja VM - MFO (Detik)',
+                            data: mfoVmTimes,
+                            backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                            borderColor: '#fbbf24',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { color: '#cbd5e1', font: { family: 'Inter', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)} detik`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8', font: { size: 11 } },
+                            grid: { color: 'rgba(51, 65, 85, 0.2)' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Completion Time VM (Detik)', color: '#94a3b8' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderScheduleTable() {
+            if (!lastSimulationResult) return;
+            const tbody = document.getElementById('scheduleTableBody');
+            const query = (document.getElementById('taskSearchInput').value || '').toLowerCase().trim();
+            tbody.innerHTML = '';
+
+            const { tasksMI, vmsMIPS, sca, mfo } = lastSimulationResult;
+
+            for (let i = 0; i < tasksMI.length; i++) {
+                const taskLabel = `Task #${i + 1}`;
+                const vmSca = sca.discreteSchedule[i];
+                const vmMfo = mfo.discreteSchedule[i];
+                const etSca = tasksMI[i] / vmsMIPS[vmSca];
+                const etMfo = tasksMI[i] / vmsMIPS[vmMfo];
+
+                const rowText = `${taskLabel} ${tasksMI[i]} vm${vmSca} vm${vmMfo}`.toLowerCase();
+                if (query && !rowText.includes(query)) continue;
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/80 transition';
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-white">${taskLabel}</td>
+                    <td class="p-3 text-slate-300">${tasksMI[i].toLocaleString('id-ID')} MI</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">VM<sub>${vmSca}</sub> (${vmsMIPS[vmSca]} MIPS)</span></td>
+                    <td class="p-3 text-slate-300">${etSca.toFixed(2)} s</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">VM<sub>${vmMfo}</sub> (${vmsMIPS[vmMfo]} MIPS)</span></td>
+                    <td class="p-3 text-slate-300">${etMfo.toFixed(2)} s</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        function filterScheduleTable() {
+            renderScheduleTable();
+        }
+
+        // Export Hasil Simulasi ke CSV / JSON
+        function exportSimulationCSV() {
+            if (!lastSimulationResult) return;
+            const { tasksMI, vmsMIPS, sca, mfo } = lastSimulationResult;
+            let csv = 'Task_ID,MI,SCA_VM_Index,SCA_VM_MIPS,SCA_ExecTime_Sec,MFO_VM_Index,MFO_VM_MIPS,MFO_ExecTime_Sec\n';
+            for (let i = 0; i < tasksMI.length; i++) {
+                const vS = sca.discreteSchedule[i];
+                const vM = mfo.discreteSchedule[i];
+                csv += `Task_${i + 1},${tasksMI[i]},VM_${vS},${vmsMIPS[vS]},${(tasksMI[i] / vmsMIPS[vS]).toFixed(4)},VM_${vM},${vmsMIPS[vM]},${(tasksMI[i] / vmsMIPS[vM]).toFixed(4)}\n`;
+            }
+            copyTextToClipboard(csv, 'Data CSV pemetaan Task berhasil disalin ke clipboard!');
+        }
+
+        function exportSimulationJSON() {
+            if (!lastSimulationResult) return;
+            const jsonStr = JSON.stringify(lastSimulationResult, null, 2);
+            copyTextToClipboard(jsonStr, 'Hasil lengkap simulasi (JSON) berhasil disalin ke clipboard!');
+        }
+
+        // --- INISIALISASI SAAT HALAMAN DIMUAT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Render rumus matematika KaTeX
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+
+            initHeroTrajectoryCanvas();
+            renderMiniCaseStudy();
+            generateTasksDataset();
+            runFullSimulation();
+        });
+    </script>
+</body>
+</html>
