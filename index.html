@@ -110,7 +110,6 @@
                 <a href="#studi-kasus" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-emerald-400 transition">2. Studi Kasus CTS</a>
                 <a href="#simulator" class="px-3 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-amber-500/20 border border-cyan-500/40 text-white hover:border-cyan-400 transition font-semibold">3. Simulator Live</a>
                 <a href="#referensi" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-amber-400 transition">4. Referensi Paper</a>
-                <a href="#github-pages" class="px-3 py-2 rounded-lg hover:bg-slate-800/70 hover:text-purple-400 transition">5. GitHub Pages</a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -127,7 +126,6 @@
             <a href="#studi-kasus" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">2. Alur Studi Kasus CTS (Task &rarr; Solusi)</a>
             <a href="#simulator" class="block px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 font-semibold">3. Simulator Interaktif Real-Time</a>
             <a href="#referensi" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">4. Referensi Paper Ilmiah</a>
-            <a href="#github-pages" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200">5. Panduan Deploy GitHub Pages</a>
         </div>
     </header>
 
@@ -1097,41 +1095,6 @@
                         <a href="https://doi.org/10.3390/data3040038" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 transition">
                             Buka DOI Resmi &nearr;
                         </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. BAGIAN 5: PANDUAN DEPLOY KE GITHUB PAGES -->
-    <section id="github-pages" class="py-12 border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-purple-500/30 bg-gradient-to-br from-slate-900/90 to-purple-950/20">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                    <div class="space-y-2 max-w-2xl">
-                        <span class="px-2.5 py-1 rounded bg-purple-500/20 text-purple-300 font-mono text-xs font-semibold">Siap Deploy &bull; Single-File Architecture</span>
-                        <h3 class="text-xl sm:text-2xl font-bold text-white">Panduan Publikasi ke GitHub Pages</h3>
-                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                            Seluruh kode aplikasi ini telah dikemas secara mandiri di dalam satu file <code>index.html</code> tanpa ketergantungan <em>build-step</em> lokal. Ikuti 3 langkah berikut untuk menayangkannya secara <em>live</em> di GitHub Pages:
-                        </p>
-                        <ol class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside pt-1">
-                            <li>Buat repositori publik baru di GitHub (misal: <code>cloud-scheduling-sca-mfo</code>).</li>
-                            <li>Simpan kode ini dengan nama <strong><code>index.html</code></strong> lalu unggah (<em>push</em>) ke <em>branch</em> <code>main</code>.</li>
-                            <li>Buka menu <strong>Settings &rarr; Pages</strong> di repositori GitHub Anda, pilih <em>Source: Deploy from a branch</em> (<code>main</code> / <code>root</code>), lalu klik <strong>Save</strong>. Website Anda langsung aktif!</li>
-                        </ol>
-                    </div>
-
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-slate-300 space-y-2 shrink-0">
-                        <div class="flex items-center justify-between text-slate-400 text-[11px]">
-                            <span>Terminal Git Commands:</span>
-                            <button onclick="copyCitation('gitCmds')" class="text-purple-400 hover:underline">Salin Perintah</button>
-                        </div>
-                        <pre id="gitCmds" class="text-[11px] text-purple-300 overflow-x-auto"><code>git init
-git add index.html
-git commit -m "Deploy simulator CTS SCA vs MFO"
-git branch -M main
-git remote add origin https://github.com/username/repo.git
-git push -u origin main</code></pre>
                     </div>
                 </div>
             </div>
