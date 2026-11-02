@@ -75,10 +75,6 @@
                 <a href="#konsep" class="hover:text-sky-600 transition">1. Konsep Alur</a>
                 <a href="#studi-kasus" class="hover:text-sky-600 transition">2. Simulasi Konkrit</a>
                 <a href="#simulator" class="hover:text-sky-600 transition">3. Eksperimen Skala Besar</a>
-                <a href="ISI_LINK_PDF_LOG_PROMPT_KAMU_DISINI" target="_blank" class="px-4 py-2 ml-2 bg-slate-800 text-sky-400 rounded-lg border border-slate-700 hover:bg-slate-700 hover:text-sky-300 transition flex items-center gap-2 shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Lihat Log Prompt
-                </a>
             </nav>
         </div>
     </header>
@@ -779,7 +775,8 @@
                     }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8', font:{size:10}}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
                 });
 
-                btnText.innerHTML = `Run Eksperimen Komparasi Kembali`;
+                // Teks Tombol dikembalikan agar konsisten dan tidak pakai kata "Kembali"
+                btnText.innerHTML = `Run Eksperimen Komparasi`;
                 showToast('<strong>Analisis Selesai!</strong> Hasil simulasi metaheuristik berhasil diperbarui.', 'success');
             }, 600);
         }
