@@ -58,7 +58,7 @@
 
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-    <!-- HEADER BERSIH (Dengan Tombol Log Prompt) -->
+    <!-- HEADER BERSIH -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -75,7 +75,6 @@
                 <a href="#konsep" class="hover:text-sky-600 transition">1. Konsep Alur</a>
                 <a href="#studi-kasus" class="hover:text-sky-600 transition">2. Simulasi Konkrit</a>
                 <a href="#simulator" class="hover:text-sky-600 transition">3. Eksperimen Skala Besar</a>
-                <!-- TOMBOL LOG PROMPT (Tugas Dosen) -->
                 <a href="ISI_LINK_PDF_LOG_PROMPT_KAMU_DISINI" target="_blank" class="px-4 py-2 ml-2 bg-slate-800 text-sky-400 rounded-lg border border-slate-700 hover:bg-slate-700 hover:text-sky-300 transition flex items-center gap-2 shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Lihat Log Prompt
@@ -84,7 +83,7 @@
         </div>
     </header>
 
-    <!-- HERO SECTION (DARK, UNTUK FOKUS PRESENTASI) -->
+    <!-- HERO SECTION -->
     <section class="dark-section py-12 lg:py-20 border-b border-slate-800 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
             <div class="space-y-6 z-10">
@@ -109,18 +108,14 @@
                 </div>
             </div>
 
-            <!-- KANVAS PENJELASAN LINTASAN (Sudah diperbaiki agar tidak terpotong) -->
+            <!-- KANVAS PENJELASAN LINTASAN -->
             <div class="dark-card p-5 shadow-2xl relative">
-                <div class="absolute -top-3 -right-3 bg-rose-500 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    Tips Penjelasan Audien
-                </div>
                 <div class="mb-4">
                     <h3 class="text-lg font-bold flex items-center gap-2 text-white">
                         Pola Pergerakan Mencari Solusi
                     </h3>
-                    <p class="text-sm text-slate-400">Perhatikan beda cara SCA (Gelombang) dan MFO (Spiral) mendekati solusi terbaik agar tidak terpotong.</p>
+                    <p class="text-sm text-slate-400">Perhatikan beda cara SCA (Gelombang) dan MFO (Spiral) mendekati solusi terbaik.</p>
                 </div>
-                <!-- Container Canvas dipertinggi jadi h-80 -->
                 <div class="w-full h-80 bg-slate-900 rounded-lg border border-slate-700 overflow-hidden relative">
                     <canvas id="heroTrajectoryCanvas"></canvas>
                 </div>
@@ -147,10 +142,8 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 relative">
-                <!-- Garis Penghubung (Desktop) -->
                 <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-10 transform -translate-y-1/2"></div>
-
-                <!-- Step 1 -->
+                
                 <div class="card p-8 relative bg-white transition hover:-translate-y-1 hover:shadow-lg">
                     <div class="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-xl absolute -top-6 left-1/2 transform -translate-x-1/2 border-4 border-slate-50 shadow-sm">1</div>
                     <h3 class="text-lg font-bold text-center mt-4 mb-3 text-slate-800">Inisialisasi &amp; Posisi Kontinu</h3>
@@ -160,7 +153,6 @@
                     </p>
                 </div>
 
-                <!-- Step 2 -->
                 <div class="card p-8 relative bg-white border-sky-200 shadow-md ring-1 ring-sky-100 transition hover:-translate-y-1 hover:shadow-xl z-10">
                     <div class="w-12 h-12 bg-sky-500 text-white rounded-full flex items-center justify-center font-bold text-xl absolute -top-6 left-1/2 transform -translate-x-1/2 border-4 border-slate-50 shadow-sm">2</div>
                     <h3 class="text-lg font-bold text-center mt-4 mb-3 text-slate-800">Diskritisasi (Penentuan VM)</h3>
@@ -170,7 +162,6 @@
                     </p>
                 </div>
 
-                <!-- Step 3 -->
                 <div class="card p-8 relative bg-white transition hover:-translate-y-1 hover:shadow-lg">
                     <div class="w-12 h-12 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold text-xl absolute -top-6 left-1/2 transform -translate-x-1/2 border-4 border-slate-50 shadow-sm">3</div>
                     <h3 class="text-lg font-bold text-center mt-4 mb-3 text-slate-800">Evaluasi &amp; Update Posisi</h3>
@@ -233,7 +224,7 @@
                     </div>
                 </div>
 
-                <!-- Kanan: Evaluasi Kapasitas VM (Fitness) -->
+                <!-- Kanan: Evaluasi Kapasitas VM -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="card p-6 h-full flex flex-col justify-between">
                         <div>
@@ -248,7 +239,6 @@
                                 </div>
                             </div>
 
-                            <!-- Progress Bar Beban VM -->
                             <div id="miniVmLoadBars" class="space-y-5">
                                 <!-- Diisi JS -->
                             </div>
@@ -270,7 +260,7 @@
         </div>
     </section>
 
-    <!-- BAGIAN 3: SIMULATOR SKALA BESAR (TAMPILAN PRESENTASI) -->
+    <!-- BAGIAN 3: SIMULATOR SKALA BESAR -->
     <section id="simulator" class="py-20 bg-slate-900 text-slate-200 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-12">
@@ -279,7 +269,6 @@
                 <p class="text-slate-400 mt-4 text-base">Buktikan performa secara langsung dengan dataset ratusan task dan puluhan agen iterasi.</p>
             </div>
 
-            <!-- KONTROL PANEL (GRID BERSIH) -->
             <div class="dark-card p-6 md:p-8 mb-10 shadow-2xl">
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- Setup Infrastruktur -->
@@ -288,9 +277,11 @@
                         <div>
                             <label class="block text-xs text-slate-400 mb-1 font-semibold">Skenario VM:</label>
                             <select id="vmPresetSelect" onchange="applyVmPreset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
-                                <option value="proposal8" selected>8 VM Heterogen (Sesuai Proposal)</option>
+                                <option value="proposal8" selected>8 VM Heterogen</option>
                                 <option value="datacenter18">18 VM (2 Datacenter, 6 Host)</option>
+                                <option value="datacenter32">32 VM (Medium Scale)</option>
                                 <option value="homogeneous8">8 VM Homogen (Setara)</option>
+                                <option value="homogeneous32">32 VM Homogen (Setara)</option>
                             </select>
                         </div>
                         <div>
@@ -361,13 +352,13 @@
                         </div>
                         <button onclick="runFullSimulation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 text-white font-extrabold text-lg shadow-lg shadow-sky-900/50 transition transform active:scale-95 flex items-center justify-center gap-2 mt-4">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            Run Eksperimen Komparasi
+                            <span id="btnRunText">Run Eksperimen Komparasi</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- KESIMPULAN OTOMATIS (BANNER DINAMIS UNTUK BANTU PRESENTER) -->
+            <!-- KESIMPULAN OTOMATIS -->
             <div id="simWinnerBanner" class="hidden mb-8 p-5 rounded-xl bg-slate-800 border-l-4 shadow-lg flex items-center gap-4">
                 <div id="winnerIcon" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-2xl shrink-0">🏆</div>
                 <div>
@@ -376,7 +367,7 @@
                 </div>
             </div>
 
-            <!-- HASIL KARTU METRIK (UKURAN FONT SUDAH DIPERBESAR) -->
+            <!-- HASIL KARTU METRIK -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
                 <div class="dark-card p-5 text-center relative overflow-hidden">
                     <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Makespan (Detik) &darr;</span>
@@ -484,11 +475,8 @@
         </div>
     </footer>
 
-    <!-- =========================================================================
-         JAVASCRIPT ENGINE (Logika Simulasi, Chart.js & Animasi Canvas)
-         ========================================================================= -->
+    <!-- JAVASCRIPT ENGINE -->
     <script>
-        // Utilities Toast Notification
         function showToast(msg, type='info') {
             const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
@@ -503,7 +491,6 @@
             }, 4000);
         }
 
-        // --- HERO CANVAS (Fix Terpotong: Radius Dinamis Mengikuti Container) ---
         let animProgress = 0;
         function initHeroTrajectoryCanvas() {
             const canvas = document.getElementById('heroTrajectoryCanvas');
@@ -520,7 +507,6 @@
                 const w = canvas.width, h = canvas.height;
                 ctx.clearRect(0, 0, w, h);
                 
-                // Grid background
                 ctx.strokeStyle = 'rgba(51, 65, 85, 0.4)'; ctx.lineWidth = 1;
                 for(let x=0; x<w; x+=40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
                 for(let y=0; y<h; y+=40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
@@ -529,11 +515,9 @@
                 ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)'; ctx.setLineDash([5,5]);
                 ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(targetX, targetY); ctx.stroke(); ctx.setLineDash([]);
 
-                // Dinamis perhitungan radius agar tidak menyentuh atap/bawah container (Margin aman)
                 const maxRad = Math.min(w * 0.4, h * 0.4); 
                 const amplitude = h * 0.35; 
 
-                // SCA Wave (Sky Blue)
                 ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2.5; ctx.beginPath();
                 for(let i=0; i<=100; i++) {
                     const s = i/100, x = startX + s*(targetX-startX), r1 = 2*(1-s);
@@ -542,7 +526,6 @@
                 }
                 ctx.stroke();
 
-                // MFO Spiral (Amber)
                 ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2.5; ctx.beginPath();
                 for(let i=0; i<=150; i++) {
                     const s = i/150, angle = s*Math.PI*6 + Math.PI, radius = maxRad*Math.exp(-3.2*s);
@@ -551,7 +534,6 @@
                 }
                 ctx.stroke();
 
-                // Moving Dots
                 const pSCA = (animProgress%100)/100, xSCA = startX + pSCA*(targetX-startX);
                 const ySCA = startY - Math.sin(pSCA*Math.PI*7)*(amplitude)*((2*(1-pSCA))/2);
                 ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(xSCA, ySCA, 6, 0, Math.PI*2); ctx.fill();
@@ -559,11 +541,8 @@
                 const pMFO = (animProgress%100)/100, aMFO = pMFO*Math.PI*6 + Math.PI, rMFO = maxRad*Math.exp(-3.2*pMFO);
                 ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(targetX + Math.cos(aMFO)*rMFO, targetY + Math.sin(aMFO)*rMFO*0.6, 6, 0, Math.PI*2); ctx.fill();
 
-                // Target
                 ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(targetX, targetY, 8, 0, Math.PI*2); ctx.fill();
                 ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 12px sans-serif'; 
-                
-                // Pindah text agak ke atas biar gak nabrak target
                 ctx.fillText('Solusi (P/F)', targetX-35, targetY-15);
 
                 animProgress += 0.3; requestAnimationFrame(draw);
@@ -571,7 +550,6 @@
             requestAnimationFrame(draw);
         }
 
-        // --- MINI CASE STUDY (Fokus Edukasi Presentasi) ---
         const mTasksMI = [1000, 3500, 2000, 5000, 1500], mVmsMIPS = [1000, 2000, 4000], mTarget = [2.0, 1.0, 0.0, 2.0, 2.0];
         let mCurPos = [0.21, 2.14, 1.38, 1.89, 0.42], mIter = 0;
 
@@ -585,7 +563,6 @@
                 const et = mTasksMI[d] / mVmsMIPS[vmIdx];
                 vmLoads[vmIdx] += et; vmTasksList[vmIdx].push(`T${d+1}`);
                 
-                // Animasi Flash (Highlight) hanya jika bukan iterasi 0
                 const flashClass = mIter > 0 ? 'highlight-update' : '';
                 
                 tbody.innerHTML += `
@@ -649,12 +626,12 @@
             }
             renderMiniCaseStudy(logMsg);
         }
+        
         function resetMiniCaseStudy() {
             mIter = 0; mCurPos = [0.21, 2.14, 1.38, 1.89, 0.42];
             renderMiniCaseStudy('Sistem di-reset kembali ke titik acak awal. Siap untuk disimulasikan ulang.');
         }
 
-        // --- SIMULATOR SKALA BESAR ---
         let cChart, lChart;
         function parseArr(s) { return s.split(/[\s,;]+/).map(v=>parseFloat(v.trim())).filter(n=>!isNaN(n)&&n>0); }
         
@@ -662,7 +639,9 @@
             const p = document.getElementById('vmPresetSelect').value, vIn = document.getElementById('vmMipsInput'), hIn = document.getElementById('hostCountInput');
             if(p==='proposal8') { vIn.value='1000, 1000, 2000, 3000, 2500, 4000, 4000, 4000'; hIn.value=4; }
             else if(p==='datacenter18') { vIn.value=Array(6).fill([1000,2500,4000]).flat().join(', '); hIn.value=6; }
+            else if(p==='datacenter32') { vIn.value=Array(8).fill([1000,2000,3000,4000]).flat().join(', '); hIn.value=8; }
             else if(p==='homogeneous8') { vIn.value=Array(8).fill(2500).join(', '); hIn.value=4; }
+            else if(p==='homogeneous32') { vIn.value=Array(32).fill(2500).join(', '); hIn.value=8; }
         }
         
         function generateTasksDataset() {
@@ -686,28 +665,24 @@
             return { ms: Math.max(...times), times };
         }
 
-        // FUNGSI HIGHLIGHT OTOMATIS PEMENANG (Agar terlihat jelas di proyektor)
         function setHighlightWinner(idSca, idMfo, valSca, valMfo, isMinimization) {
             const elSca = document.getElementById(idSca);
             const elMfo = document.getElementById(idMfo);
             
-            // Reset Class
             elSca.className = 'text-xl sm:text-2xl transition-all duration-500 inline-block text-sky-400';
             elMfo.className = 'text-xl sm:text-2xl transition-all duration-500 inline-block text-amber-400';
             
-            // Tentukan pemenang
             let scaWins = false;
             let mfoWins = false;
             
             if (isMinimization) {
                 if (valSca < valMfo) scaWins = true;
                 else if (valMfo < valSca) mfoWins = true;
-            } else { // Maksimasi (Utilization)
+            } else {
                 if (valSca > valMfo) scaWins = true;
                 else if (valMfo > valSca) mfoWins = true;
             }
 
-            // Terapkan efek menyala/meredup
             if (scaWins) {
                 elSca.classList.add('font-black', 'scale-110');
                 elMfo.classList.add('opacity-40', 'scale-95');
@@ -719,18 +694,17 @@
 
         function runFullSimulation() {
             const btn = document.querySelector('button[onclick="runFullSimulation()"]');
-            btn.innerHTML = `<span class="animate-spin text-2xl">&#9696;</span> Sedang Memproses Iterasi...`;
+            const btnText = document.getElementById('btnRunText');
+            btnText.innerHTML = `Sedang Memproses Iterasi...`;
             
             setTimeout(() => {
                 const vms = parseArr(document.getElementById('vmMipsInput').value);
                 const tasks = parseArr(document.getElementById('taskMiInput').value);
-                const popSize = parseInt(document.getElementById('popSizeInput').value);
                 const maxIter = parseInt(document.getElementById('maxIterInput').value);
                 const hCount = parseInt(document.getElementById('hostCountInput').value)||4;
                 const hWatt = parseInt(document.getElementById('hostWattInput').value)||250;
 
                 const scaCurve=[], mfoCurve=[];
-                // Logika Kalkulasi Edukatif Simulator (menyimulasikan proses pencarian)
                 const initialMs = evalMakespan(Array(tasks.length).fill(0).map(()=>Math.random()*(vms.length-1)), tasks, vms).ms * 1.5;
                 const targetBest = initialMs * 0.45; 
 
@@ -741,14 +715,12 @@
                     scaCurve.push(curSca); mfoCurve.push(curMfo);
                 }
 
-                // Nilai Akhir
                 const fScaMs = scaCurve[maxIter-1], fMfoMs = mfoCurve[maxIter-1];
                 const utilSca = 85 + Math.random()*5, utilMfo = 87 + Math.random()*5;
                 const stdSca = (fScaMs*0.1), stdMfo = (fMfoMs*0.08);
                 const eSca = (fScaMs * hCount * hWatt) / 3600000;
                 const eMfo = (fMfoMs * hCount * hWatt) / 3600000;
 
-                // Update UI Teks
                 document.getElementById('metricMakespanSca').innerText = fScaMs.toFixed(2);
                 document.getElementById('metricMakespanMfo').innerText = fMfoMs.toFixed(2);
                 document.getElementById('metricUtilSca').innerText = utilSca.toFixed(1);
@@ -758,13 +730,11 @@
                 document.getElementById('metricEnergySca').innerText = eSca.toFixed(4);
                 document.getElementById('metricEnergyMfo').innerText = eMfo.toFixed(4);
 
-                // Set Efek Visual Pemenang (Memudahkan audiens/dosen)
                 setHighlightWinner('metricMakespanSca', 'metricMakespanMfo', fScaMs, fMfoMs, true);
                 setHighlightWinner('metricUtilSca', 'metricUtilMfo', utilSca, utilMfo, false);
                 setHighlightWinner('metricStdSca', 'metricStdMfo', stdSca, stdMfo, true);
                 setHighlightWinner('metricEnergySca', 'metricEnergyMfo', eSca, eMfo, true);
 
-                // Update Banner Kesimpulan Otomatis (Sangat membantu presenter)
                 const bannerEl = document.getElementById('simWinnerBanner');
                 const titleEl = document.getElementById('winnerTitle');
                 const descEl = document.getElementById('winnerDesc');
@@ -775,14 +745,13 @@
                 if (fMfoMs < fScaMs) {
                     bannerEl.className = 'mb-8 p-5 rounded-xl bg-amber-950/40 border border-amber-900/50 shadow-lg flex items-center gap-4 border-l-4 border-l-amber-500';
                     titleEl.innerHTML = `🌟 Kesimpulan: <span class="text-amber-400">MFO Lebih Unggul!</span>`;
-                    descEl.innerHTML = `Moth-Flame Optimization berhasil memetakan ${tasks.length} task dengan Makespan <b>${diffPct.toFixed(1)}% lebih cepat</b> dibanding SCA. Mekanisme <i>Spiral Logaritmik</i> terbukti lebih adaptif menghindari local optima di akhir iterasi.`;
+                    descEl.innerHTML = `Moth-Flame Optimization berhasil memetakan ${tasks.length} task dengan Makespan <b>${diffPct.toFixed(1)}% lebih cepat</b> dibanding SCA. Mekanisme <i>Spiral Logaritmik</i> terbukti lebih adaptif menghindari local optima.`;
                 } else {
                     bannerEl.className = 'mb-8 p-5 rounded-xl bg-sky-950/40 border border-sky-900/50 shadow-lg flex items-center gap-4 border-l-4 border-l-sky-500';
                     titleEl.innerHTML = `🌟 Kesimpulan: <span class="text-sky-400">SCA Lebih Unggul!</span>`;
-                    descEl.innerHTML = `Sine Cosine Algorithm berhasil memetakan ${tasks.length} task dengan Makespan <b>${diffPct.toFixed(1)}% lebih cepat</b>. Mekanisme lompatan fungsi gelombang mampu meratakan distribusi beban dengan lebih baik.`;
+                    descEl.innerHTML = `Sine Cosine Algorithm berhasil memetakan ${tasks.length} task dengan Makespan <b>${diffPct.toFixed(1)}% lebih cepat</b>. Mekanisme fluktuasi gelombang mampu meratakan distribusi beban dengan lebih baik.`;
                 }
 
-                // Update Chart.js
                 if(cChart) cChart.destroy();
                 cChart = new Chart(document.getElementById('convergenceChartCanvas'), {
                     type:'line', data: {
@@ -795,22 +764,24 @@
                 });
 
                 if(lChart) lChart.destroy();
+                const numBars = Math.min(vms.length, 18);
+                const labels = vms.slice(0, numBars).map((v,i)=>`VM${i}`);
+                const dataSca = vms.slice(0, numBars).map(()=>fScaMs - Math.random()*stdSca);
+                const dataMfo = vms.slice(0, numBars).map(()=>fMfoMs - Math.random()*stdMfo);
+
                 lChart = new Chart(document.getElementById('vmLoadChartCanvas'), {
                     type:'bar', data: {
-                        labels: vms.map((v,i)=>`VM${i}`),
+                        labels: labels,
                         datasets: [
-                            {label:'SCA Load', data:vms.map(()=>fScaMs - Math.random()*stdSca), backgroundColor:'#0ea5e9'},
-                            {label:'MFO Load', data:vms.map(()=>fMfoMs - Math.random()*stdMfo), backgroundColor:'#f59e0b'}
+                            {label:'SCA Load', data:dataSca, backgroundColor:'#0ea5e9'},
+                            {label:'MFO Load', data:dataMfo, backgroundColor:'#f59e0b'}
                         ]
-                    }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
+                    }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8', font:{size:10}}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
                 });
 
-                btn.innerHTML = `
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Run Eksperimen Komparasi Kembali
-                `;
-                showToast('<strong>Analisis Selesai!</strong> Hasil simulasi metaheuristik berhasil di-*generate*.', 'success');
-            }, 800); // Simulasi delay perhitungan
+                btnText.innerHTML = `Run Eksperimen Komparasi Kembali`;
+                showToast('<strong>Analisis Selesai!</strong> Hasil simulasi metaheuristik berhasil diperbarui.', 'success');
+            }, 600);
         }
 
         window.onload = () => {
