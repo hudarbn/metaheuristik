@@ -40,14 +40,12 @@
         .card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 16px; }
         .dark-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; }
         
-        /* Highlight animasi untuk tabel simulasi */
         .highlight-update { animation: flashCell 1.5s ease-out; }
         @keyframes flashCell {
             0% { background-color: rgba(14, 165, 233, 0.3); transform: scale(1.02); }
             100% { background-color: transparent; transform: scale(1); }
         }
         
-        /* Custom scrollbar yang bersih */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
@@ -58,7 +56,6 @@
 
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-    <!-- HEADER BERSIH -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -79,7 +76,6 @@
         </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="dark-section py-12 lg:py-20 border-b border-slate-800 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
             <div class="space-y-6 z-10">
@@ -104,7 +100,6 @@
                 </div>
             </div>
 
-            <!-- KANVAS PENJELASAN LINTASAN -->
             <div class="dark-card p-5 shadow-2xl relative">
                 <div class="mb-4">
                     <h3 class="text-lg font-bold flex items-center gap-2 text-white">
@@ -129,7 +124,6 @@
         </div>
     </section>
 
-    <!-- BAGIAN 1: ALUR KERJA (MIND MAP BUKAN HANYA RUMUS) -->
     <section id="konsep" class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
@@ -169,7 +163,6 @@
         </div>
     </section>
 
-    <!-- BAGIAN 2: STUDI KASUS INTERAKTIF -->
     <section id="studi-kasus" class="py-20 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -192,7 +185,6 @@
             </div>
 
             <div class="grid lg:grid-cols-12 gap-8">
-                <!-- Kiri: Tabel Pergerakan Solusi -->
                 <div class="lg:col-span-7">
                     <div class="card overflow-hidden h-full flex flex-col">
                         <div class="bg-slate-800 px-6 py-4 flex justify-between items-center text-white">
@@ -210,7 +202,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="miniCaseTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono">
-                                    <!-- Diisi JS -->
                                 </tbody>
                             </table>
                         </div>
@@ -220,13 +211,12 @@
                     </div>
                 </div>
 
-                <!-- Kanan: Evaluasi Kapasitas VM -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="card p-6 h-full flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
                                 <div>
-                                    <h3 class="font-bold text-lg text-slate-900">Beban Kerja Server (VM)</h3>
+                                    <h3 class="font-bold text-lg text-slate-900 cursor-help" title="Fungsi Objektif/Fitness utama. Mencari waktu maksimal dari seluruh VM.">Beban Kerja Server (VM)</h3>
                                     <p class="text-xs text-slate-500 font-medium mt-1">Fitness (Makespan) = Waktu eksekusi VM terlama.</p>
                                 </div>
                                 <div class="bg-emerald-100 border border-emerald-200 text-emerald-800 px-3 py-1.5 rounded-lg text-center shrink-0">
@@ -234,19 +224,16 @@
                                     <span id="miniMakespanBadge" class="font-mono font-bold text-xl">0.00 s</span>
                                 </div>
                             </div>
-
-                            <div id="miniVmLoadBars" class="space-y-5">
-                                <!-- Diisi JS -->
-                            </div>
+                            <div id="miniVmLoadBars" class="space-y-5"></div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 mt-8 pt-4">
                             <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
-                                <span class="block text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Resource Utilization</span>
+                                <span class="block text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider cursor-help border-b border-slate-400 border-dotted" title="Seberapa efisien VM digunakan (tidak menganggur). Semakin mendekati 100%, semakin efisien.">Resource Utilization</span>
                                 <span id="miniUtilValue" class="font-mono font-bold text-slate-800 text-xl">0%</span>
                             </div>
                             <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
-                                <span class="block text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Load Balancing (StdDev)</span>
+                                <span class="block text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider cursor-help border-b border-slate-400 border-dotted" title="Standar Deviasi beban. Semakin dekat 0, semakin rata pembagian tugasnya.">Load Balancing (StdDev)</span>
                                 <span id="miniStdDevValue" class="font-mono font-bold text-amber-600 text-xl">0.00</span>
                             </div>
                         </div>
@@ -256,8 +243,7 @@
         </div>
     </section>
 
-    <!-- BAGIAN 3: SIMULATOR SKALA BESAR -->
-    <section id="simulator" class="py-20 bg-slate-900 text-slate-200 border-t border-slate-800">
+    <section id="simulator" class="pt-20 pb-16 bg-slate-900 text-slate-200 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-12">
                 <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">Eksperimen Live</span>
@@ -267,7 +253,6 @@
 
             <div class="dark-card p-6 md:p-8 mb-10 shadow-2xl">
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Setup Infrastruktur -->
                     <div class="space-y-4">
                         <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">1. Infrastruktur (VM)</h3>
                         <div>
@@ -296,7 +281,6 @@
                         </div>
                     </div>
 
-                    <!-- Setup Beban Tugas -->
                     <div class="space-y-4">
                         <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">2. Beban Tugas (Tasks)</h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -327,7 +311,6 @@
                         </div>
                     </div>
 
-                    <!-- Parameter Algoritma -->
                     <div class="space-y-4 flex flex-col justify-between">
                         <div>
                             <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">3. Parameter Metaheuristik</h3>
@@ -354,7 +337,6 @@
                 </div>
             </div>
 
-            <!-- KESIMPULAN OTOMATIS -->
             <div id="simWinnerBanner" class="hidden mb-8 p-5 rounded-xl bg-slate-800 border-l-4 shadow-lg flex items-center gap-4">
                 <div id="winnerIcon" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-2xl shrink-0">🏆</div>
                 <div>
@@ -363,10 +345,10 @@
                 </div>
             </div>
 
-            <!-- HASIL KARTU METRIK -->
+            <!-- HASIL KARTU METRIK DENGAN TOOLTIPS PENJELASAN -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Makespan (Detik) &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Waktu total yang dibutuhkan VM terlama untuk menyelesaikan semua tugas. Semakin kecil nilainya, semakin cepat dan baik kinerjanya.">Makespan (Detik) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
                         <div class="px-2 flex flex-col">
                             <span class="text-xs text-slate-500 mb-1">SCA</span>
@@ -380,7 +362,7 @@
                 </div>
                 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Resource Util (%) &uarr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Persentase pemanfaatan resource seluruh VM. Semakin tinggi mendekati 100%, semakin efisien karena tidak ada VM yang terlalu lama menganggur (idle).">Resource Util (%) &uarr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
                         <div class="px-2 flex flex-col">
                             <span class="text-xs text-slate-500 mb-1">SCA</span>
@@ -394,7 +376,7 @@
                 </div>
 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Load Balance (&sigma;) &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Standar Deviasi (simpangan baku) dari distribusi beban kerja antar VM. Semakin mendekati angka 0, artinya tugas dibagikan dengan sangat adil dan merata.">Load Balance (&sigma;) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
                         <div class="px-2 flex flex-col">
                             <span class="text-xs text-slate-500 mb-1">SCA</span>
@@ -408,7 +390,7 @@
                 </div>
 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Konsumsi Energi &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Estimasi energi (dalam kWh) yang dihabiskan oleh host server fisik selama rentang waktu Makespan. Semakin kecil semakin hemat listrik.">Konsumsi Energi &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
                         <div class="px-2 flex flex-col">
                             <span class="text-xs text-slate-500 mb-1">SCA</span>
@@ -422,7 +404,6 @@
                 </div>
             </div>
 
-            <!-- GRAFIK VISUALISASI -->
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="dark-card p-6 shadow-xl">
                     <h3 class="font-bold text-white mb-2 text-lg">Grafik Konvergensi</h3>
@@ -438,36 +419,13 @@
         </div>
     </section>
 
-    <!-- FOOTER DAFTAR PUSTAKA -->
-    <footer id="referensi" class="py-16 bg-white border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-10">
-                <h2 class="text-2xl font-bold text-slate-900">Referensi Literatur Ilmiah (IEEE)</h2>
-                <p class="text-slate-600 mt-2 text-sm">Landasan jurnal internasional untuk perhitungan dan pemodelan parameter metaheuristik di halaman ini.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed">
-                <div class="card p-6 bg-slate-50 hover:shadow-md transition">
-                    <strong class="text-slate-800 text-base block mb-2">[1] SCA (Sine Cosine Algorithm)</strong>
-                    S. Mirjalili, "SCA: A Sine Cosine Algorithm for solving optimization problems," <em>Knowledge-Based Systems</em>, vol. 96, pp. 120-133, 2016.
-                </div>
-                <div class="card p-6 bg-slate-50 hover:shadow-md transition">
-                    <strong class="text-slate-800 text-base block mb-2">[2] MFO (Moth-Flame Optimization)</strong>
-                    S. Mirjalili, "Moth-flame optimization algorithm: A novel nature-inspired heuristic paradigm," <em>Knowledge-Based Systems</em>, vol. 89, pp. 228-249, 2015.
-                </div>
-                <div class="card p-6 bg-slate-50 hover:shadow-md transition">
-                    <strong class="text-slate-800 text-base block mb-2">[3] GoCJ Dataset &amp; Workload Model</strong>
-                    A. Hussain and M. Aleem, "GoCJ: Google cloud jobs dataset for distributed and cloud computing infrastructures," <em>Data</em>, vol. 3, no. 4, p. 38, 2018.
-                </div>
-                <div class="card p-6 bg-slate-50 hover:shadow-md transition">
-                    <strong class="text-slate-800 text-base block mb-2">[4] Asumsi Energi Host Server (250 W)</strong>
-                    A. Beloglazov, J. Abawajy, and R. Buyya, "Energy-aware resource allocation heuristics for efficient management of data centers," <em>Future Generation Computer Systems</em>, vol. 28, no. 5, pp. 755-768, 2012.
-                </div>
-            </div>
-            
-            <div class="mt-16 text-center text-xs text-slate-400 font-mono">
-                <p>Cloud Task Scheduling Interactive Dashboard &bull; Kompatibel dengan CloudSim / CloudSim Plus</p>
-            </div>
+    <!-- FOOTER KELOMPOK -->
+    <footer class="py-8 bg-slate-950 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center gap-2 text-center">
+            <h4 class="font-bold text-white text-lg tracking-wide uppercase">Kelompok 13 SOKA</h4>
+            <p class="text-xs text-slate-400 font-mono">
+                Cloud Task Scheduling Interactive Dashboard &bull; Institut Teknologi Sepuluh Nopember (ITS)
+            </p>
         </div>
     </footer>
 
@@ -775,7 +733,6 @@
                     }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8', font:{size:10}}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
                 });
 
-                // Teks Tombol dikembalikan agar konsisten dan tidak pakai kata "Kembali"
                 btnText.innerHTML = `Run Eksperimen Komparasi`;
                 showToast('<strong>Analisis Selesai!</strong> Hasil simulasi metaheuristik berhasil diperbarui.', 'success');
             }, 600);
