@@ -124,57 +124,7 @@
         </div>
     </section>
 
-    <!-- KARTU TEORI BARU: PERBANDINGAN ALGORITMA -->
-    <section class="py-16 bg-slate-100 border-t border-b border-slate-200 shadow-inner">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <h2 class="text-3xl font-bold text-slate-900">Mengapa MFO Lebih Sering Menang?</h2>
-                <p class="text-slate-600 mt-3 text-base">Perbandingan keunggulan teori pencarian (Eksplorasi vs Eksploitasi) antara kedua algoritma dalam menyelesaikan penjadwalan VM.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-                <!-- Kad Teori SCA -->
-                <div class="p-6 sm:p-8 rounded-2xl bg-white border border-sky-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
-                    <div class="absolute top-0 right-0 bg-sky-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">SCA</div>
-                    <h3 class="text-2xl font-extrabold text-slate-800 mb-5">Sine Cosine Algorithm</h3>
-                    <ul class="space-y-4 text-sm text-slate-600 leading-relaxed">
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">🌊</span> 
-                            <div><strong class="text-slate-800">Eksplorasi Kuat:</strong> Sangat baik melompat ke berbagai ruang pencarian awal menggunakan fungsi matematika sinus/kosinus. Mencegah agen terjebak di titik buntu terlalu cepat.</div>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">⚠️</span> 
-                            <div><strong class="text-slate-800">Kelemahan:</strong> Kurang akurat pada fase akhir (eksploitasi lemah). Saat hampir menemukan waktu (Makespan) terbaik, SCA kurang tajam untuk menajamkan nilai tersebut (sering terjebak pada <i>Local Optima</i>).</div>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">⚙️</span> 
-                            <div><strong class="text-slate-800">Parameter Dinamis:</strong> $r_1$ (Amplitudo/Jarak langkah) yang semakin mengecil seiring bertambahnya iterasi.</div>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Kad Teori MFO -->
-                <div class="p-6 sm:p-8 rounded-2xl bg-white border border-amber-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
-                    <div class="absolute top-0 right-0 bg-amber-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">MFO</div>
-                    <h3 class="text-2xl font-extrabold text-slate-800 mb-5">Moth-Flame Optimization</h3>
-                    <ul class="space-y-4 text-sm text-slate-600 leading-relaxed">
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">🎯</span> 
-                            <div><strong class="text-slate-800">Eksploitasi Tajam:</strong> Bergerak secara logaritmik berputar mendekati "Api" (Solusi Terbaik). Menjadikannya sangat stabil untuk menekan Makespan sekecil mungkin di akhir iterasi.</div>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">🏆</span> 
-                            <div><strong class="text-slate-800">Keunggulan Memori:</strong> MFO menyimpan riwayat solusi terbaik di dalam matriks khusus bernama <i>Flames</i>. Agen (Ngengat) selalu berpatokan pada rekor terbaik tersebut.</div>
-                        </li>
-                        <li class="flex gap-3 items-start">
-                            <span class="text-xl shrink-0 mt-0.5">⚙️</span> 
-                            <div><strong class="text-slate-800">Parameter Dinamis:</strong> Jumlah Api (Flames) yang semakin menurun untuk memaksa seluruh agen berpusat pada satu titik optimum tunggal.</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="konsep" class="py-20 bg-slate-50">
+    <section id="konsep" class="py-20 bg-slate-50 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <h2 class="text-3xl font-bold text-slate-900">Bagaimana Konsep Kerjanya?</h2>
@@ -463,6 +413,56 @@
                     <h3 class="font-bold text-white mb-2 text-lg">Distribusi Waktu Kerja per VM</h3>
                     <p class="text-sm text-slate-400 mb-6">Melihat pemerataan beban. Semakin rata (sama tinggi) batang ini, semakin baik pembagiannya.</p>
                     <div class="w-full h-80"><canvas id="vmLoadChartCanvas"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAGIAN BARU: ANALISIS TEORITIS (KESIMPULAN) DITARUH DI PALING BAWAH -->
+    <section class="py-16 bg-slate-100 border-t border-slate-200 shadow-inner">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">Analisis Teoritis: Eksplorasi vs Eksploitasi</h2>
+                <p class="text-slate-600 mt-3 text-base">Mengapa MFO cenderung lebih unggul pada simulasi skala besar di atas? Berikut adalah perbandingan karakteristik dasarnya.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+                <!-- Kartu Teori SCA -->
+                <div class="p-6 sm:p-8 rounded-2xl bg-white border border-sky-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
+                    <div class="absolute top-0 right-0 bg-sky-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">SCA</div>
+                    <h3 class="text-2xl font-extrabold text-slate-800 mb-5">Sine Cosine Algorithm</h3>
+                    <ul class="space-y-4 text-sm text-slate-600 leading-relaxed">
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">🌊</span> 
+                            <div><strong class="text-slate-800">Eksplorasi Kuat:</strong> Sangat baik melompat ke berbagai ruang pencarian awal menggunakan fungsi matematika sinus/kosinus. Mencegah agen terjebak di titik buntu terlalu cepat.</div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">⚠️</span> 
+                            <div><strong class="text-slate-800">Kelemahan (Eksploitasi Lemah):</strong> Kurang akurat pada fase akhir. Saat hampir menemukan waktu (Makespan) terbaik, SCA kurang tajam untuk menajamkan nilai tersebut (sering terjebak pada <i>Local Optima</i>).</div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">⚙️</span> 
+                            <div><strong class="text-slate-800">Parameter Dinamis:</strong> Parameter $r_1$ (Amplitudo/Jarak langkah) secara statis semakin mengecil seiring bertambahnya iterasi.</div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Kartu Teori MFO -->
+                <div class="p-6 sm:p-8 rounded-2xl bg-white border border-amber-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">MFO</div>
+                    <h3 class="text-2xl font-extrabold text-slate-800 mb-5">Moth-Flame Optimization</h3>
+                    <ul class="space-y-4 text-sm text-slate-600 leading-relaxed">
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">🎯</span> 
+                            <div><strong class="text-slate-800">Eksploitasi Tajam:</strong> Bergerak secara logaritmik berputar mendekati "Api" (Solusi Terbaik). Menjadikannya sangat stabil untuk menekan Makespan sekecil mungkin di iterasi-iterasi akhir.</div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">🏆</span> 
+                            <div><strong class="text-slate-800">Keunggulan Memori (Flames):</strong> MFO menyimpan riwayat solusi terbaik di dalam matriks khusus. Agen (Ngengat) selalu berpatokan pada rekor terbaik tersebut untuk konvergensi.</div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <span class="text-xl shrink-0 mt-0.5">⚙️</span> 
+                            <div><strong class="text-slate-800">Parameter Dinamis:</strong> Jumlah Api (Flames) semakin menurun untuk memaksa seluruh agen berpusat pada satu titik optimum tunggal.</div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
