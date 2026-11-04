@@ -602,7 +602,13 @@
                     </div>
                 `;
             }
-            if(logHtml) document.getElementById('miniFormulaLog').innerHTML = logHtml;
+            if(logHtml) {
+    const logEl = document.getElementById('miniFormulaLog');
+    logEl.innerHTML = logHtml;
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(logEl, { delimiters: [{left:'$$',right:'$$',display:true}, {left:'$',right:'$',display:false}]});
+    }
+}
         }
 
         function stepMiniCaseStudy() {
