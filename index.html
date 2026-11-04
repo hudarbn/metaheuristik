@@ -279,26 +279,6 @@
                 <p class="text-slate-400 mt-4 text-base">Membandingkan pencarian optimal antara SCA dan MFO pada dataset GoCJ dan topologi datacenter.</p>
             </div>
 
-            <!-- PENJELASAN METRIK EVALUASI -->
-            <div class="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-slate-300">
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
-                    <strong class="text-sky-400 block mb-1 text-sm">Makespan &darr;</strong>
-                    Waktu eksekusi terlama dari seluruh VM. Merupakan target utama: <span class="text-white font-semibold">Semakin kecil angkanya, semakin cepat</span> seluruh tugas diselesaikan.
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
-                    <strong class="text-emerald-400 block mb-1 text-sm">Utilisasi &uarr;</strong>
-                    Persentase waktu sibuk rata-rata seluruh VM. <span class="text-white font-semibold">Mendekati 100% sangat baik</span> karena menandakan tidak ada VM yang menganggur lama.
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
-                    <strong class="text-amber-400 block mb-1 text-sm">Load Balancing &darr;</strong>
-                    Standar deviasi (penyimpangan) dari beban kerja antar VM. <span class="text-white font-semibold">Semakin mendekati 0, semakin rata</span> pembagian beban tugasnya.
-                </div>
-                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
-                    <strong class="text-rose-400 block mb-1 text-sm">Energi &darr;</strong>
-                    Estimasi pemakaian daya (kWh) berdasarkan model daya linear (keadaan idle vs sibuk). <span class="text-white font-semibold">Semakin kecil, semakin efisien.</span>
-                </div>
-            </div>
-
             <div class="dark-card p-6 md:p-8 mb-10 shadow-2xl">
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="space-y-4">
@@ -383,7 +363,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+            <!-- KARTU HASIL EVALUASI -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
                 <div class="dark-card p-5 text-center relative overflow-hidden">
                     <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Makespan (Detik) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
@@ -417,6 +398,27 @@
                 </div>
             </div>
 
+            <!-- PENJELASAN METRIK EVALUASI (Dipindahkan ke sini) -->
+            <div class="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-slate-300">
+                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                    <strong class="text-sky-400 block mb-1 text-sm">Makespan &darr;</strong>
+                    Waktu eksekusi terlama dari seluruh VM. Merupakan target utama: <span class="text-white font-semibold">Semakin kecil angkanya, semakin cepat</span> seluruh tugas diselesaikan.
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                    <strong class="text-emerald-400 block mb-1 text-sm">Utilisasi &uarr;</strong>
+                    Persentase waktu sibuk rata-rata seluruh VM. <span class="text-white font-semibold">Mendekati 100% sangat baik</span> karena menandakan tidak ada VM yang menganggur lama.
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                    <strong class="text-amber-400 block mb-1 text-sm">Load Balancing &darr;</strong>
+                    Standar deviasi (penyimpangan) dari beban kerja antar VM. <span class="text-white font-semibold">Semakin mendekati 0, semakin rata</span> pembagian beban tugasnya.
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                    <strong class="text-rose-400 block mb-1 text-sm">Energi &darr;</strong>
+                    Estimasi pemakaian daya (kWh) berdasarkan model daya linear (keadaan idle vs sibuk). <span class="text-white font-semibold">Semakin kecil, semakin efisien.</span>
+                </div>
+            </div>
+
+            <!-- GRAFIK -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
                 <div class="dark-card p-6 shadow-xl">
                     <h3 class="font-bold text-white mb-2 text-lg">Grafik Pencarian Optimum Global</h3>
@@ -441,7 +443,7 @@
         </div>
     </section>
 
-    <!-- TEORI & KESIMPULAN (Diperbaiki tipografi rumusnya) -->
+    <!-- TEORI & KESIMPULAN -->
     <section id="teori" class="py-16 bg-slate-100 border-t border-slate-200 shadow-inner">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
@@ -827,7 +829,6 @@
                     }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8', font:{size:10}}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
                 });
 
-                // LOGIKA KESIMPULAN DINAMIS
                 const winnerMakespan = fScaMs < fMfoMs ? "SCA" : "MFO";
                 const winnerMakespanName = winnerMakespan === "SCA" ? "Sine Cosine Algorithm (SCA)" : "Moth-Flame Optimization (MFO)";
                 const diffMakespan = Math.abs(fScaMs - fMfoMs).toFixed(2);
