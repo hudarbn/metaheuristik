@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metaheuristik CTS: SCA & MFO</title>
+    <title>Metaheuristik: SCA & MFO</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,14 +37,12 @@
         .card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 16px; }
         .dark-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; }
         
-        /* Animasi kilat saat tabel update */
         .highlight-update { animation: flashCell 1.5s ease-out; }
         @keyframes flashCell {
             0% { background-color: rgba(14, 165, 233, 0.3); transform: scale(1.02); }
             100% { background-color: transparent; transform: scale(1); }
         }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
@@ -55,7 +53,7 @@
 
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-    <!-- HEADER: Sesuai Identitas PPT Kelompok 13 -->
+    <!-- HEADER: CTS dihapus -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -63,7 +61,7 @@
                     S<span class="text-sky-400">/</span>M
                 </div>
                 <div>
-                    <h1 class="font-bold text-slate-800 leading-tight text-sm sm:text-base">Optimasi Cloud Task Scheduling</h1>
+                    <h1 class="font-bold text-slate-800 leading-tight text-sm sm:text-base">Optimasi Task Scheduling</h1>
                     <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium uppercase tracking-wider">Presentasi Akademik Kelompok 13 - SOKA</p>
                 </div>
             </div>
@@ -102,13 +100,13 @@
                 </div>
             </div>
 
-            <!-- VISUALISASI TRAJEKTORI (Animasi Canvas) -->
+            <!-- VISUALISASI TRAJEKTORI (Tulisan Solusi Terbaik P/Flame dihapus) -->
             <div class="dark-card p-5 shadow-2xl relative">
                 <div class="mb-4">
                     <h3 class="text-lg font-bold flex items-center gap-2 text-white">
                         Pola Pergerakan Agen (Posisi Kontinu)
                     </h3>
-                    <p class="text-sm text-slate-400">Ilustrasi bagaimana nilai desimal agen dimodifikasi mendekati target (*Flame* / *Best Solution*).</p>
+                    <p class="text-sm text-slate-400">Ilustrasi bagaimana nilai desimal agen dimodifikasi mendekati target optimal.</p>
                 </div>
                 <div class="w-full h-80 bg-slate-900 rounded-lg border border-slate-700 overflow-hidden relative">
                     <canvas id="heroTrajectoryCanvas"></canvas>
@@ -127,7 +125,7 @@
         </div>
     </section>
 
-    <!-- SIKLUS ALUR (Berdasarkan Langkah di PPT) -->
+    <!-- SIKLUS ALUR -->
     <section id="konsep" class="py-20 bg-slate-50 border-t border-slate-800 relative">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -138,13 +136,11 @@
 
             <div class="max-w-4xl mx-auto">
                 <div class="relative pl-8 sm:pl-32 py-6">
-                    <!-- Garis Timeline -->
                     <div class="absolute left-12 sm:left-1/2 top-0 bottom-0 w-1 bg-slate-200 transform sm:-translate-x-1/2"></div>
                     
-                    <!-- Loop panah kembali -->
                     <div class="hidden sm:block absolute left-[55%] top-[40%] bottom-[10%] w-32 border-r-2 border-b-2 border-t-2 border-dashed border-sky-400 rounded-r-3xl">
                         <div class="absolute -top-3 left-0 text-sky-500 text-2xl">&#x25C4;</div>
-                        <div class="absolute top-1/2 -right-28 transform -translate-y-1/2 bg-slate-50 px-2 text-sm font-bold text-sky-600 w-24 text-center">T < Maks Iterasi</div>
+                        <div class="absolute top-1/2 -right-28 transform -translate-y-1/2 bg-slate-50 px-2 text-sm font-bold text-sky-600 w-24 text-center">T &lt; Maks Iterasi</div>
                     </div>
 
                     <div class="relative mb-12 sm:w-1/2 sm:ml-auto sm:pl-12">
@@ -176,7 +172,7 @@
                         <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-md relative overflow-hidden">
                             <div class="absolute top-0 right-0 bg-slate-100 text-xs font-bold text-slate-500 px-3 py-1 rounded-bl-lg">Inti Metaheuristik</div>
                             <h3 class="font-bold text-lg text-slate-900 mb-2">Perbarui Posisi & Parameter</h3>
-                            <p class="text-sm text-slate-600">Berdasarkan Solusi Terbaik yang ditemukan, rumus algoritma (SCA atau MFO) akan memodifikasi ulang angka desimal semua agen untuk iterasi berikutnya, berharap tebakan selanjutnya lebih mendekati target optimal.</p>
+                            <p class="text-sm text-slate-600">Berdasarkan Solusi Terbaik yang ditemukan, rumus algoritma (SCA atau MFO) akan memodifikasi ulang angka desimal semua agen untuk iterasi berikutnya.</p>
                         </div>
                     </div>
                 </div>
@@ -184,7 +180,7 @@
         </div>
     </section>
 
-    <!-- SIMULASI MINI (Revisi Penjelasan & Netralitas) -->
+    <!-- SIMULASI MINI -->
     <section id="studi-kasus" class="py-20 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
@@ -206,19 +202,17 @@
                 </div>
             </div>
 
-            <!-- PANEL PANDUAN BARU - Fokus pada Konsep Pemetaan -->
             <div class="mb-8 p-4 bg-sky-50 border-l-4 border-sky-500 rounded-r-lg flex items-start gap-4">
                 <div class="text-2xl mt-0.5">💡</div>
                 <div>
                     <h4 class="font-bold text-sky-900 text-sm">Bagaimana Algoritma Menentukan Task Masuk VM Mana?</h4>
                     <p class="text-sm text-sky-800 mt-1 leading-relaxed">
-                        Perhatikan saat iterasi ditambah: algoritma <strong>tidak memindahkan task secara langsung</strong>. Algoritma memanipulasi rentang nilai pada kolom <span class="font-bold text-sky-600">Posisi (Desimal)</span> agen. Nilai kontinu ini kemudian <strong>dibulatkan (Decoded)</strong>. Perubahan hasil pembulatan inilah yang menyebabkan Indeks VM berubah, sehingga Task terkesan bergeser untuk menyeimbangkan beban *Makespan*.
+                        Algoritma memanipulasi rentang nilai pada kolom <span class="font-bold text-sky-600">Posisi (Desimal)</span> agen. Nilai kontinu ini kemudian <strong>dibulatkan (Decoded)</strong>. Perubahan hasil pembulatan inilah yang menyebabkan Indeks VM berubah untuk menyeimbangkan beban *Makespan*.
                     </p>
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-12 gap-8">
-                <!-- Tabel Agen -->
                 <div class="lg:col-span-7">
                     <div class="card overflow-hidden h-full flex flex-col">
                         <div class="bg-slate-800 px-6 py-4 flex justify-between items-center text-white">
@@ -235,9 +229,7 @@
                                         <th class="p-4 font-semibold text-right">Waktu Eksekusi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="miniCaseTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono">
-                                    <!-- Terisi via JS -->
-                                </tbody>
+                                <tbody id="miniCaseTableBody" class="divide-y divide-slate-100 text-slate-700 font-mono"></tbody>
                             </table>
                         </div>
                         <div id="miniFormulaLog" class="bg-slate-50 border-t border-slate-200 p-4 text-sm text-slate-600 leading-relaxed">
@@ -246,13 +238,12 @@
                     </div>
                 </div>
 
-                <!-- Evaluasi Server -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="card p-6 h-full flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
                                 <div>
-                                    <h3 class="font-bold text-lg text-slate-900 cursor-help" title="Waktu eksekusi yang diperlukan oleh masing-masing server.">Evaluasi Beban VM</h3>
+                                    <h3 class="font-bold text-lg text-slate-900">Evaluasi Beban VM</h3>
                                     <p class="text-xs text-slate-500 font-medium mt-1">Nilai Kualitas: <span class="font-semibold text-slate-700">Fitness = Makespan</span></p>
                                 </div>
                                 <div class="bg-emerald-100 border border-emerald-200 text-emerald-800 px-3 py-1.5 rounded-lg text-center shrink-0">
@@ -260,19 +251,16 @@
                                     <span id="miniMakespanBadge" class="font-mono font-bold text-xl">0.00 s</span>
                                 </div>
                             </div>
-                            <div id="miniVmLoadBars" class="space-y-5">
-                                <!-- Bar VM JS -->
-                            </div>
+                            <div id="miniVmLoadBars" class="space-y-5"></div>
                         </div>
 
-                        <!-- Metrik Tambahan -->
                         <div class="grid grid-cols-2 gap-4 mt-8 pt-4">
                             <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
-                                <span class="block text-[10px] text-slate-500 font-medium mb-1 uppercase tracking-wider cursor-help border-b border-slate-400 border-dotted" title="Rasio waktu sibuk VM terhadap total waktu yang tersedia berdasarkan Makespan.">Resource Utilization</span>
+                                <span class="block text-[10px] text-slate-500 font-medium mb-1 uppercase tracking-wider">Resource Utilization</span>
                                 <span id="miniUtilValue" class="font-mono font-bold text-slate-800 text-xl">0%</span>
                             </div>
                             <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
-                                <span class="block text-[10px] text-slate-500 font-medium mb-1 uppercase tracking-wider cursor-help border-b border-slate-400 border-dotted" title="Standar deviasi dari waktu eksekusi VM.">Load Balancing (StdDev)</span>
+                                <span class="block text-[10px] text-slate-500 font-medium mb-1 uppercase tracking-wider">Load Balancing (StdDev)</span>
                                 <span id="miniStdDevValue" class="font-mono font-bold text-amber-600 text-xl">0.00</span>
                             </div>
                         </div>
@@ -288,10 +276,9 @@
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">Simulator SOKA</span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mt-2">Komparasi Metaheuristik Skala Besar</h2>
-                <p class="text-slate-400 mt-4 text-base">Membandingkan pencarian optimal antara SCA dan MFO pada dataset GoCJ dan topologi <em>datacenter</em> yang lebih besar berdasarkan metrik penelitian.</p>
+                <p class="text-slate-400 mt-4 text-base">Membandingkan pencarian optimal antara SCA dan MFO pada dataset GoCJ dan topologi datacenter.</p>
             </div>
 
-            <!-- CARA PAKAI SIMULATOR -->
             <div class="mb-8 p-4 bg-slate-800/80 border border-slate-700 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-slate-300">
                 <div class="flex items-center gap-3">
                     <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px]">Langkah Pengujian</span>
@@ -301,7 +288,6 @@
 
             <div class="dark-card p-6 md:p-8 mb-10 shadow-2xl">
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Kolom 1: VM -->
                     <div class="space-y-4">
                         <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">1. Infrastruktur Server (VM)</h3>
                         <div>
@@ -329,7 +315,6 @@
                         </div>
                     </div>
 
-                    <!-- Kolom 2: Task -->
                     <div class="space-y-4">
                         <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">2. Karakteristik Beban (Tasks)</h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -359,7 +344,6 @@
                         </div>
                     </div>
 
-                    <!-- Kolom 3: Eksekusi -->
                     <div class="space-y-4 flex flex-col justify-between">
                         <div>
                             <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">3. Kontrol Metaheuristik</h3>
@@ -386,69 +370,44 @@
                 </div>
             </div>
 
-            <!-- Hasil Evaluasi - Netral, Tidak Pakai Tropi Balapan -->
             <div id="simWinnerBanner" class="hidden mb-8 p-5 rounded-xl bg-slate-800 border-l-4 shadow-lg flex items-center gap-4 border-l-slate-500">
                 <div class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-2xl shrink-0">📊</div>
                 <div>
                     <h4 class="font-bold text-white text-lg sm:text-xl">Evaluasi Selesai</h4>
-                    <p class="text-sm text-slate-300 mt-1 leading-relaxed">Berikut adalah performa akhir berdasarkan perhitungan fungsi objektif untuk <strong>Makespan, Utilisasi, Load Balancing, dan Energi</strong> dari masing-masing metode pencarian.</p>
+                    <p class="text-sm text-slate-300 mt-1 leading-relaxed">Berikut adalah performa akhir berdasarkan perhitungan fungsi objektif untuk <strong>Makespan, Utilisasi, Load Balancing, dan Energi</strong> dari masing-masing metode.</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Nilai Maksimum dari Load VM (Fungsi Objektif: Diminimalkan)">Makespan (Detik) &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Makespan (Detik) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">SCA</span>
-                            <b id="metricMakespanSca" class="text-xl sm:text-2xl text-sky-400 transition-all duration-500">0.00</b>
-                        </div>
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">MFO</span>
-                            <b id="metricMakespanMfo" class="text-xl sm:text-2xl text-amber-400 transition-all duration-500">0.00</b>
-                        </div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">SCA</span><b id="metricMakespanSca" class="text-xl sm:text-2xl text-sky-400">0.00</b></div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricMakespanMfo" class="text-xl sm:text-2xl text-amber-400">0.00</b></div>
                     </div>
                 </div>
                 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Efisiensi resource rata-rata (Fungsi Objektif: Dimaksimalkan)">Utilisasi (%) &uarr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Utilisasi (%) &uarr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">SCA</span>
-                            <b id="metricUtilSca" class="text-xl sm:text-2xl text-sky-400 transition-all duration-500">0.0</b>
-                        </div>
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">MFO</span>
-                            <b id="metricUtilMfo" class="text-xl sm:text-2xl text-amber-400 transition-all duration-500">0.0</b>
-                        </div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">SCA</span><b id="metricUtilSca" class="text-xl sm:text-2xl text-sky-400">0.0</b></div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricUtilMfo" class="text-xl sm:text-2xl text-amber-400">0.0</b></div>
                     </div>
                 </div>
 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Standar Deviasi Beban Kerja VM (Fungsi Objektif: Diminimalkan)">Load Balancing &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Load Balancing &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">SCA</span>
-                            <b id="metricStdSca" class="text-xl sm:text-2xl text-sky-400 transition-all duration-500">0.0</b>
-                        </div>
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">MFO</span>
-                            <b id="metricStdMfo" class="text-xl sm:text-2xl text-amber-400 transition-all duration-500">0.0</b>
-                        </div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">SCA</span><b id="metricStdSca" class="text-xl sm:text-2xl text-sky-400">0.0</b></div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricStdMfo" class="text-xl sm:text-2xl text-amber-400">0.0</b></div>
                     </div>
                 </div>
 
                 <div class="dark-card p-5 text-center relative overflow-hidden">
-                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3 cursor-help border-b border-slate-500 border-dotted" title="Perhitungan Model Daya Linear (Fungsi Objektif: Diminimalkan)">Energi (kWh) &darr;</span>
+                    <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Energi (kWh) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">SCA</span>
-                            <b id="metricEnergySca" class="text-lg sm:text-xl text-sky-400 transition-all duration-500">0.00</b>
-                        </div>
-                        <div class="px-2 flex flex-col">
-                            <span class="text-xs text-slate-500 mb-1">MFO</span>
-                            <b id="metricEnergyMfo" class="text-lg sm:text-xl text-amber-400 transition-all duration-500">0.00</b>
-                        </div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">SCA</span><b id="metricEnergySca" class="text-lg sm:text-xl text-sky-400">0.00</b></div>
+                        <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricEnergyMfo" class="text-lg sm:text-xl text-amber-400">0.00</b></div>
                     </div>
                 </div>
             </div>
@@ -456,19 +415,19 @@
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="dark-card p-6 shadow-xl">
                     <h3 class="font-bold text-white mb-2 text-lg">Grafik Pencarian Optimum Global</h3>
-                    <p class="text-sm text-slate-400 mb-6">Memperlihatkan penurunan nilai Makespan (peningkatan kualitas) pada setiap tahap iterasi *update* dari Algoritma.</p>
+                    <p class="text-sm text-slate-400 mb-6">Memperlihatkan penurunan nilai Makespan pada setiap tahap iterasi.</p>
                     <div class="w-full h-80"><canvas id="convergenceChartCanvas"></canvas></div>
                 </div>
                 <div class="dark-card p-6 shadow-xl">
                     <h3 class="font-bold text-white mb-2 text-lg">Distribusi *Load Balancing* pada VM</h3>
-                    <p class="text-sm text-slate-400 mb-6">Melihat pemerataan penyebaran tugas pada server yang tersedia dari solusi final yang dihasilkan.</p>
+                    <p class="text-sm text-slate-400 mb-6">Melihat pemerataan penyebaran tugas pada server yang tersedia.</p>
                     <div class="w-full h-80"><canvas id="vmLoadChartCanvas"></canvas></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TEORI & KESIMPULAN PPT -->
+    <!-- TEORI & KESIMPULAN (Diperbaiki r1 pada Keterbatasan SCA) -->
     <section id="teori" class="py-16 bg-slate-100 border-t border-slate-200 shadow-inner">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
@@ -488,8 +447,8 @@
                         <div>
                             <strong class="text-emerald-600 block mb-1 text-sm">&#10003; Kelebihan:</strong>
                             <ul class="list-disc pl-5 space-y-1">
-                                <li>Struktur matematis sederhana, hanya memakai fungsi Sin/Cos (mudah diimplementasikan).</li>
-                                <li>Parameter kontrol sedikit (variabel $r_2, r_3, r_4$ dibangkitkan acak; bebas *tuning* rumit).</li>
+                                <li>Struktur matematis sederhana, hanya memakai fungsi Sin/Cos.</li>
+                                <li>Parameter kontrol sedikit (variabel $r_2, r_3, r_4$ dibangkitkan acak).</li>
                                 <li>Peralihan eksplorasi ke eksploitasi berjalan bertahap berdasarkan amplitudo $r_1$.</li>
                                 <li>Bebas-gradien, cocok untuk fungsi objektif non-linear.</li>
                             </ul>
@@ -518,13 +477,12 @@
                                 <li>Keseimbangan eksplorasi ruang luas dan penajaman eksploitasi target sangat terukur.</li>
                                 <li>Mekanisme pergerakan fungsi spiral *logarithmic* memberikan fokus eksploitasi yang kuat.</li>
                                 <li>Sistem memori matriks ganda (<em>Moth</em> sebagai pencari dan <em>Flame</em> sebagai target tersimpan).</li>
-                                <li>Sangat fleksibel diadaptasi untuk optimasi kombinatorial multi-objektif.</li>
                             </ul>
                         </div>
                         <div class="pt-3 border-t border-slate-100">
                             <strong class="text-rose-600 block mb-1 text-sm">&#10007; Keterbatasan:</strong>
                             <ul class="list-disc pl-5 space-y-1">
-                                <li>Kalkulasi matriks <em>Flame</em> yang banyak menyebabkan beban komputasi/waktu eksekusi yang lebih berat dibanding SCA.</li>
+                                <li>Kalkulasi matriks <em>Flame</em> yang banyak menyebabkan beban komputasi/waktu eksekusi yang lebih berat.</li>
                                 <li>Tingkat keberhasilan cukup sensitif terhadap <em>tuning</em> ukuran iterasi (T) dan populasi agen (N).</li>
                             </ul>
                         </div>
@@ -534,66 +492,54 @@
         </div>
     </section>
 
-    <!-- ANGGOTA KELOMPOK -->
+    <!-- ANGGOTA KELOMPOK: Dijejer Full Kiri ke Kanan & Warna Biru Semua -->
     <section class="py-12 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
             <h3 class="text-center text-xl font-bold text-slate-800 mb-8">Tim Peneliti - Kelompok 13 SOKA</h3>
             
-            <!-- Grid Foto Anggota -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
                 <!-- Danuja -->
                 <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3">
-                         <!-- Ganti placeholder dengan tag <img> fotomu yang asli dari canva jika ada URL-nya, atau biarkan avatar abstrak -->
-                         <div class="w-full h-full bg-sky-100 flex items-center justify-center text-sky-500 font-bold text-xl">DP</div>
-                    </div>
-                    <h4 class="font-bold text-sm text-slate-800">Danuja Prasasta B.</h4>
-                    <p class="text-xs font-mono text-slate-500">5027241037</p>
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">DP</div>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800">Danuja Prasasta B.</h4>
+                    <p class="text-[11px] font-mono text-slate-500">5027241037</p>
                 </div>
                 
                 <!-- Putu Yudi -->
                 <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3">
-                        <div class="w-full h-full bg-sky-100 flex items-center justify-center text-sky-500 font-bold text-xl">PY</div>
-                    </div>
-                    <h4 class="font-bold text-sm text-slate-800">Putu Yudi N. W.</h4>
-                    <p class="text-xs font-mono text-slate-500">5027241080</p>
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">PY</div>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800">Putu Yudi N. W.</h4>
+                    <p class="text-[11px] font-mono text-slate-500">5027241080</p>
                 </div>
 
                 <!-- Bagus Saka -->
                 <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3">
-                        <div class="w-full h-full bg-sky-100 flex items-center justify-center text-sky-500 font-bold text-xl">IG</div>
-                    </div>
-                    <h4 class="font-bold text-sm text-slate-800">I Gede Bagus S.</h4>
-                    <p class="text-xs font-mono text-slate-500">5027241088</p>
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">IG</div>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800">I Gede Bagus S.</h4>
+                    <p class="text-[11px] font-mono text-slate-500">5027241088</p>
                 </div>
 
-                <!-- Huda -->
+                <!-- Huda (Warna Biru, tidak kuning lagi) -->
                 <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-slate-200 rounded-full border-2 border-amber-200 shadow-sm overflow-hidden mb-3">
-                        <div class="w-full h-full bg-amber-100 flex items-center justify-center text-amber-500 font-bold text-xl">MH</div>
-                    </div>
-                    <h4 class="font-bold text-sm text-slate-800">M. Huda Rabbani</h4>
-                    <p class="text-xs font-mono text-slate-500">5027241098</p>
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">MH</div>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800">M. Huda Rabbani</h4>
+                    <p class="text-[11px] font-mono text-slate-500">5027241098</p>
                 </div>
                 
-                <!-- Raynard (Di Tengah Baris Bawah) -->
-                <div class="text-center md:col-span-4 mt-2">
-                    <div class="w-24 h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3">
-                        <div class="w-full h-full bg-sky-100 flex items-center justify-center text-sky-500 font-bold text-xl">RC</div>
-                    </div>
-                    <h4 class="font-bold text-sm text-slate-800">Raynard Carlent</h4>
-                    <p class="text-xs font-mono text-slate-500">5027241109</p>
+                <!-- Raynard -->
+                <div class="text-center col-span-2 sm:col-span-1">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">RC</div>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800">Raynard Carlent</h4>
+                    <p class="text-[11px] font-mono text-slate-500">5027241109</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER: Diubah menjadi Presentasi Algoritma Metaheuristik SCA dan MFO -->
     <footer class="py-8 bg-slate-950 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center gap-2 text-center">
-            <h4 class="font-bold text-white text-lg tracking-wide uppercase">Presentasi Riset Operasi (SOKA)</h4>
+            <h4 class="font-bold text-white text-lg tracking-wide uppercase">Presentasi Algoritma Metaheuristik SCA dan MFO</h4>
             <p class="text-xs text-slate-400 font-mono">
                 Departemen Teknologi Informasi &bull; Institut Teknologi Sepuluh Nopember (ITS)
             </p>
@@ -602,7 +548,6 @@
 
     <!-- JAVASCRIPT ENGINE -->
     <script>
-        // --- Notifikasi Toast ---
         function showToast(msg, type='info') {
             const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
@@ -617,7 +562,6 @@
             }, 4000);
         }
 
-        // --- Animasi Canvas Visualisasi Trajektori ---
         let animProgress = 0;
         function initHeroTrajectoryCanvas() {
             const canvas = document.getElementById('heroTrajectoryCanvas');
@@ -634,12 +578,10 @@
                 const w = canvas.width, h = canvas.height;
                 ctx.clearRect(0, 0, w, h);
                 
-                // Grid Background
                 ctx.strokeStyle = 'rgba(51, 65, 85, 0.4)'; ctx.lineWidth = 1;
                 for(let x=0; x<w; x+=40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
                 for(let y=0; y<h; y+=40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
 
-                // Titik Acuan Target (Flame/P)
                 const startX = w*0.1, startY = h*0.5, targetX = w*0.8, targetY = h*0.5;
                 ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)'; ctx.setLineDash([5,5]);
                 ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(targetX, targetY); ctx.stroke(); ctx.setLineDash([]);
@@ -647,16 +589,14 @@
                 const maxRad = Math.min(w * 0.4, h * 0.4); 
                 const amplitude = h * 0.35; 
 
-                // Gambar Lintasan SCA (Sine)
                 ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2.5; ctx.beginPath();
                 for(let i=0; i<=100; i++) {
-                    const s = i/100, x = startX + s*(targetX-startX), r1 = 2*(1-s); // r1 turun linear
+                    const s = i/100, x = startX + s*(targetX-startX), r1 = 2*(1-s);
                     const y = startY - Math.sin(s*Math.PI*7)*(amplitude)*(r1/2);
                     i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
                 }
                 ctx.stroke();
 
-                // Gambar Lintasan MFO (Log Spiral)
                 ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2.5; ctx.beginPath();
                 for(let i=0; i<=150; i++) {
                     const s = i/150, angle = s*Math.PI*6 + Math.PI, radius = maxRad*Math.exp(-3.2*s);
@@ -665,31 +605,24 @@
                 }
                 ctx.stroke();
 
-                // Agen Berjalan SCA
                 const pSCA = (animProgress%100)/100, xSCA = startX + pSCA*(targetX-startX);
                 const ySCA = startY - Math.sin(pSCA*Math.PI*7)*(amplitude)*((2*(1-pSCA))/2);
                 ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(xSCA, ySCA, 6, 0, Math.PI*2); ctx.fill();
 
-                // Agen Berjalan MFO
                 const pMFO = (animProgress%100)/100, aMFO = pMFO*Math.PI*6 + Math.PI, rMFO = maxRad*Math.exp(-3.2*pMFO);
                 ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(targetX + Math.cos(aMFO)*rMFO, targetY + Math.sin(aMFO)*rMFO*0.6, 6, 0, Math.PI*2); ctx.fill();
 
-                // Titik Target (P / Flame)
+                // Target titik pusat (tulisan Solusi Terbaik P/Flame sudah dihapus bersih sesuai permintaan)
                 ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(targetX, targetY, 8, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 12px sans-serif'; 
-                ctx.fillText('Solusi Terbaik (P / Flame)', targetX-70, targetY-15);
 
                 animProgress += 0.3; requestAnimationFrame(draw);
             }
             requestAnimationFrame(draw);
         }
 
-        // --- ENGINE SIMULASI MINI (DECODING) ---
-        const mTasksMI = [7000, 5000, 3000, 2000, 1000]; // Sesuaikan dengan slide 21 ilustrasi PPT
+        const mTasksMI = [7000, 5000, 3000, 2000, 1000];
         const mVmsMIPS = [1000, 2000, 4000]; 
-        const mTarget = [2.0, 1.0, 0.0, 2.0, 2.0]; // Pola desimal untuk distribusi tugas yg lebih baik
-        
-        // Posisi awal acak
+        const mTarget = [2.0, 1.0, 0.0, 2.0, 2.0];
         let mCurPos = [2.7, 0.4, 1.9, 2.2, 0.8]; 
         let mIter = 0;
 
@@ -699,10 +632,8 @@
             const vmLoads = [0,0,0], vmTasksList = [[],[],[]];
 
             for (let d=0; d<mTasksMI.length; d++) {
-                // Proses DECODING (Kontinu -> Diskrit) sesuai Step 3 di PPT
                 const vmIdx = Math.max(0, Math.min(2, Math.round(mCurPos[d])));
                 const et = mTasksMI[d] / mVmsMIPS[vmIdx];
-                
                 vmLoads[vmIdx] += et; 
                 vmTasksList[vmIdx].push(`T${d+1}`);
                 
@@ -718,7 +649,6 @@
                 `;
             }
 
-            // Hitung Fitness
             const makespan = Math.max(...vmLoads);
             const util = (vmLoads.reduce((a,b)=>a+b,0) / (makespan*3)) * 100;
             const avg = vmLoads.reduce((a,b)=>a+b,0)/3;
@@ -728,7 +658,6 @@
             document.getElementById('miniUtilValue').textContent = `${util.toFixed(1)}%`;
             document.getElementById('miniStdDevValue').textContent = `${stdDev.toFixed(2)}`;
 
-            // Render Bar Chart VM
             const bars = document.getElementById('miniVmLoadBars'); bars.innerHTML = '';
             for(let j=0; j<3; j++) {
                 const pct = makespan > 0 ? Math.min(100, (vmLoads[j]/makespan)*100) : 0;
@@ -754,33 +683,29 @@
             let logMsg = "";
             
             if(algo === 'SCA') {
-                // Logika pembaruan posisi Sine Cosine
-                const r1 = Math.max(0.1, 2 - tN*(2/maxT)); // Amplitudo r1 menurun linear
+                const r1 = Math.max(0.1, 2 - tN*(2/maxT));
                 for(let d=0; d<mCurPos.length; d++) {
-                    const r2 = Math.PI/3; // Sudut acak disimulasikan statis utk demo
+                    const r2 = Math.PI/3;
                     const step = (mTarget[d] - mCurPos[d]) * (0.4 + 0.2*Math.sin(r2)*r1);
                     mCurPos[d] = Math.max(0, Math.min(2, mCurPos[d] + step));
                 }
-                logMsg = `<strong>[Eksekusi Persamaan SCA]</strong> Rumus Sinus/Cosinus digerakkan. Nilai Kontinu pada kolom biru mengalami pembaruan posisi secara bergelombang. Melalui tahap Decoding, perubahan nilai ini mengakibatkan Indeks VM ter-<em>update</em>.`;
+                logMsg = `<strong>[Eksekusi Persamaan SCA]</strong> Rumus Sinus/Cosinus digerakkan. Nilai Kontinu pada kolom biru mengalami pembaruan posisi. Melalui tahap Decoding, perubahan nilai ini mengakibatkan Indeks VM ter-<em>update</em>.`;
             } else {
-                // Logika pembaruan posisi Moth Flame Spiral
                 const tSp = -0.7 + tN*(-0.3/maxT);
                 for(let d=0; d<mCurPos.length; d++) {
                     const dist = Math.abs(mTarget[d] - mCurPos[d]);
                     mCurPos[d] = Math.max(0, Math.min(2, dist * Math.exp(1*tSp)*Math.cos(2*Math.PI*tSp)*0.6 + mTarget[d]));
                 }
-                logMsg = `<strong>[Eksekusi Persamaan MFO]</strong> Fungsi Spiral Logaritmik digerakkan. Nilai Kontinu (kolom biru) diputar mengerucut mendekati posisi <em>Flame</em> acuan. Melalui tahap Decoding, perubahan desimal ini menghasilkan penugasan VM yang baru.`;
+                logMsg = `<strong>[Eksekusi Persamaan MFO]</strong> Fungsi Spiral Logaritmik digerakkan. Nilai Kontinu diputar mengerucut mendekati posisi <em>Flame</em> acuan.`;
             }
             renderMiniCaseStudy(logMsg);
         }
         
         function resetMiniCaseStudy() {
-            mIter = 0; mCurPos = [2.7, 0.4, 1.9, 2.2, 0.8]; // Reset ke acak
-            renderMiniCaseStudy('Status dikembalikan ke awal inisialisasi populasi acak. Siap untuk simulasi <em>Decoding</em> kembali.');
+            mIter = 0; mCurPos = [2.7, 0.4, 1.9, 2.2, 0.8];
+            renderMiniCaseStudy('Status dikembalikan ke awal inisialisasi populasi acak.');
         }
 
-
-        // --- ENGINE SIMULATOR SKALA BESAR ---
         let cChart, lChart;
         function parseArr(s) { return s.split(/[\s,;]+/).map(v=>parseFloat(v.trim())).filter(n=>!isNaN(n)&&n>0); }
         
@@ -798,7 +723,6 @@
         function generateTasksDataset() {
             const c = parseInt(document.getElementById('taskCountSelect').value)||40;
             const dist = document.getElementById('taskDistSelect').value;
-            // Angka GoCJ Approximation
             const ref = [15000,18000,21000,25000,29000,33000,38000,42000,47000,52000,59000,68000,77000,88000,99000,112000,128000,145000,165000,185000,210000,240000,275000];
             const arr = [];
             for(let i=0; i<c; i++) {
@@ -817,15 +741,6 @@
             return { ms: Math.max(...times), times };
         }
 
-        function setHighlightScore(idSca, idMfo, valSca, valMfo, isMinimization) {
-            // Netral, hapus opacity atau font black untuk "Winner", karena ini presentasi ilmiah
-            const elSca = document.getElementById(idSca);
-            const elMfo = document.getElementById(idMfo);
-            
-            elSca.className = 'text-xl sm:text-2xl transition-all duration-500 inline-block font-semibold text-sky-400';
-            elMfo.className = 'text-xl sm:text-2xl transition-all duration-500 inline-block font-semibold text-amber-400';
-        }
-
         function runFullSimulation() {
             const btn = document.querySelector('button[onclick="runFullSimulation()"]');
             const btnText = document.getElementById('btnRunText');
@@ -842,7 +757,6 @@
                 const initialMs = evalMakespan(Array(tasks.length).fill(0).map(()=>Math.random()*(vms.length-1)), tasks, vms).ms * 1.5;
                 const targetBest = initialMs * 0.45; 
 
-                // Simulasi Evaluasi Pencarian Metrik
                 let curSca = initialMs, curMfo = initialMs;
                 for(let i=0; i<maxIter; i++) {
                     curSca = curSca - (curSca - targetBest)*(Math.random()*0.05 + 0.01);
@@ -853,12 +767,9 @@
                 const fScaMs = scaCurve[maxIter-1], fMfoMs = mfoCurve[maxIter-1];
                 const utilSca = 85 + Math.random()*5, utilMfo = 87 + Math.random()*5;
                 const stdSca = (fScaMs*0.1), stdMfo = (fMfoMs*0.08);
-                
-                // Model Daya Linear (Idle + Load) -> Pendekatan kWh
                 const eSca = (fScaMs * hCount * hWatt) / 3600000;
                 const eMfo = (fMfoMs * hCount * hWatt) / 3600000;
 
-                // Tulis angka ke HTML
                 document.getElementById('metricMakespanSca').innerText = fScaMs.toFixed(2);
                 document.getElementById('metricMakespanMfo').innerText = fMfoMs.toFixed(2);
                 document.getElementById('metricUtilSca').innerText = utilSca.toFixed(1);
@@ -868,15 +779,8 @@
                 document.getElementById('metricEnergySca').innerText = eSca.toFixed(4);
                 document.getElementById('metricEnergyMfo').innerText = eMfo.toFixed(4);
 
-                setHighlightScore('metricMakespanSca', 'metricMakespanMfo', fScaMs, fMfoMs, true);
-                setHighlightScore('metricUtilSca', 'metricUtilMfo', utilSca, utilMfo, false);
-                setHighlightScore('metricStdSca', 'metricStdMfo', stdSca, stdMfo, true);
-                setHighlightScore('metricEnergySca', 'metricEnergyMfo', eSca, eMfo, true);
-
-                // Tampilkan Banner Netral (Bukan Balapan)
                 document.getElementById('simWinnerBanner').classList.remove('hidden');
 
-                // Render Chart 1: Konvergensi
                 if(cChart) cChart.destroy();
                 cChart = new Chart(document.getElementById('convergenceChartCanvas'), {
                     type:'line', data: {
@@ -888,7 +792,6 @@
                     }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}} }
                 });
 
-                // Render Chart 2: Distribusi Load VM
                 if(lChart) lChart.destroy();
                 const numBars = Math.min(vms.length, 18);
                 const labels = vms.slice(0, numBars).map((v,i)=>`VM ${i}`);
