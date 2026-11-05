@@ -183,18 +183,3 @@ Aplikasi ini dibangun sebagai halaman web statis mandiri (*zero-build*) sehingga
 
 ---
 
-## Anggota Kelompok 3 SOKA
-
-| Nama Lengkap | NRP |
-| :--- | :---: |
-| **Danuja Prasasta B.** | `5027241037` |
-| **Putu Yudi N. W.** | `5027241080` |
-| **I Gede Bagus S.** | `5027241088` |
-| **M. Huda Rabbani** | `5027241098` |
-| **Raynard Carlent** | `5027241109` |
-
----
-
-<p align="center">
-  <strong>Departemen Teknologi Informasi &bull; Institut Teknologi Sepuluh Nopember (ITS)</strong>
-</p>
