@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Google Fonts untuk tampilan profesional -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -61,8 +61,8 @@
                     S<span class="text-sky-400">/</span>M
                 </div>
                 <div>
-                    <h1 class="font-bold text-slate-800 leading-tight text-sm sm:text-base">Strategi Optimasi Task Scheduling</h1>
-                    <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium uppercase tracking-wider">Presentasi Kelompok 3 SOKA</p>
+                    <h1 class="font-bold text-slate-800 leading-tight text-sm sm:text-base">Optimasi Task Scheduling</h1>
+                    <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium uppercase tracking-wider">Presentasi Akademik Kelompok 13 - SOKA</p>
                 </div>
             </div>
             
@@ -118,7 +118,7 @@
                     </div>
                     <div class="p-3 bg-amber-950/30 border border-amber-900 rounded-lg">
                         <strong class="text-amber-400 block mb-1 text-sm">MFO (Logarithmic Spiral)</strong>
-                        Agen (Moth) terbang memutar mengecil mendekati target acuan (Flame) untuk mempersempit ruang pencarian.
+                        Agen terbang memutar mengecil mendekati target acuan untuk mempersempit ruang pencarian.
                     </div>
                 </div>
             </div>
@@ -137,17 +137,13 @@
             <div class="max-w-4xl mx-auto">
                 <div class="relative pl-8 sm:pl-32 py-6">
                     <div class="absolute left-12 sm:left-1/2 top-0 bottom-0 w-1 bg-slate-200 transform sm:-translate-x-1/2"></div>
-
-                    <!-- STEP 1 -->
                     <div class="relative mb-12 sm:w-1/2 sm:ml-auto sm:pl-12">
                         <div class="absolute left-[-2rem] sm:left-[-1.1rem] top-4 w-8 h-8 bg-slate-800 rounded-full border-4 border-white flex items-center justify-center text-white font-bold shadow-md z-10">1</div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-md">
                             <h3 class="font-bold text-lg text-slate-900 mb-2">Inisialisasi Kandidat Solusi</h3>
-                            <p class="text-sm text-slate-600">Sistem menciptakan sejumlah populasi agen (Kandidat/Moth). Setiap agen menyimpan deretan <strong>angka desimal acak</strong>, yang merepresentasikan tebakan posisi awal.</p>
+                            <p class="text-sm text-slate-600">Sistem menciptakan sejumlah populasi agen (Kandidat). Setiap agen menyimpan deretan <strong>angka desimal acak</strong>, yang merepresentasikan tebakan posisi awal jadwal.</p>
                         </div>
                     </div>
-
-                    <!-- STEP 2 -->
                     <div class="relative mb-12 sm:w-1/2 sm:mr-auto sm:pr-12">
                         <div class="absolute left-[-2rem] sm:right-[-1.1rem] sm:left-auto top-4 w-8 h-8 bg-sky-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold shadow-md z-10">2</div>
                         <div class="bg-white p-6 rounded-xl border-2 border-sky-200 shadow-md">
@@ -155,34 +151,27 @@
                             <p class="text-sm text-slate-600">Karena indeks VM harus bilangan bulat (Misal: VM 0, VM 1), angka desimal dibatasi dan <strong>dibulatkan ke nilai terdekat</strong>. Hasil pembulatan inilah yang menjadi Pemetaan Task ke VM.</p>
                         </div>
                     </div>
-
-                    <!-- STEP 3 -->
                     <div class="relative mb-12 sm:w-1/2 sm:ml-auto sm:pl-12">
                         <div class="absolute left-[-2rem] sm:left-[-1.1rem] top-4 w-8 h-8 bg-slate-800 rounded-full border-4 border-white flex items-center justify-center text-white font-bold shadow-md z-10">3</div>
                         <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-md">
                             <h3 class="font-bold text-lg text-slate-900 mb-2">Hitung Fungsi Objektif (Fitness)</h3>
-                            <p class="text-sm text-slate-600">Kualitas jadwal pemetaan tersebut diukur. Makespan, Energi, dan Utilisasi dihitung dan dinormalisasi untuk menemukan kandidat dengan nilai <em>Fitness</em> terkecil (Solusi Terbaik / Flame).</p>
+                            <p class="text-sm text-slate-600">Kualitas jadwal pemetaan tersebut diukur. Makespan, Energi, dan Utilisasi dihitung untuk menemukan agen dengan nilai <em>Fitness</em> terkecil (Jadwal Terbaik Sementara).</p>
                         </div>
                     </div>
-                    
-                    <!-- STEP 4 -->
                     <div class="relative mb-6 sm:w-1/2 sm:mr-auto sm:pr-12">
                         <div class="absolute left-[-2rem] sm:right-[-1.1rem] sm:left-auto top-4 w-8 h-8 bg-amber-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold shadow-md z-10">4</div>
                         <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-md relative overflow-hidden">
                             <div class="absolute top-0 right-0 bg-slate-100 text-xs font-bold text-slate-500 px-3 py-1 rounded-bl-lg">Inti Metaheuristik</div>
                             <h3 class="font-bold text-lg text-slate-900 mb-2">Perbarui Posisi & Parameter</h3>
-                            <p class="text-sm text-slate-600">Berdasarkan Solusi Terbaik yang ditemukan, rumus algoritma (SCA atau MFO) akan memodifikasi ulang angka desimal semua agen untuk iterasi berikutnya.</p>
+                            <p class="text-sm text-slate-600">Berdasarkan Solusi Terbaik yang ditemukan, rumus algoritma (SCA atau MFO) akan memodifikasi ulang angka desimal semua agen agar semakin mendekati optimal di iterasi berikutnya.</p>
                         </div>
                     </div>
-
-                    <!-- INDIKATOR LOOPBACK BERSIH DI TENGAH -->
                     <div class="text-center py-6 relative z-10">
                         <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-sky-50 border border-sky-300 text-sky-800 text-xs font-bold shadow-sm">
                             <svg class="w-4 h-4 text-sky-600 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             Ulangi Proses Kembali ke Langkah 1 (Selama T &lt; Maks Iterasi)
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -278,7 +267,7 @@
         </div>
     </section>
 
-    <!-- SIMULATOR SKALA BESAR -->
+    <!-- SIMULATOR SKALA BESAR (Keterangan Ditambahkan di sini) -->
     <section id="simulator" class="pt-20 pb-16 bg-slate-900 text-slate-200 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
@@ -289,38 +278,48 @@
 
             <div class="dark-card p-6 md:p-8 mb-10 shadow-2xl">
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="space-y-4">
-                        <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">1. Infrastruktur Server (VM)</h3>
+                    <!-- KOLOM 1: INFRASTRUKTUR -->
+                    <div class="space-y-5">
+                        <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-2 text-base">1. Infrastruktur Server (VM)</h3>
+                        
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1 font-semibold">Konfigurasi VM:</label>
+                            <label class="block text-xs text-slate-300 font-semibold mb-1">Konfigurasi Virtual Machine (VM):</label>
                             <select id="vmPresetSelect" onchange="applyVmPreset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
                                 <option value="proposal8" selected>8 VM (Topologi Paper/Proposal)</option>
                                 <option value="datacenter18">18 VM Heterogen</option>
                                 <option value="datacenter32">32 VM (Skala Menengah)</option>
                                 <option value="homogeneous8">8 VM Homogen (Setara)</option>
                             </select>
+                            <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Menentukan jumlah pelayan/mesin virtual yang tersedia untuk mengerjakan tugas.</p>
                         </div>
+                        
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1 font-semibold">Kecepatan Instruksi (MIPS):</label>
+                            <label class="block text-xs text-slate-300 font-semibold mb-1">Kecepatan Instruksi (MIPS):</label>
                             <textarea id="vmMipsInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 font-mono text-xs text-sky-400 focus:outline-none focus:border-sky-500">1000, 1000, 2000, 3000, 2500, 4000, 4000, 4000</textarea>
+                            <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">MIPS (Million Instructions Per Second) = Kapasitas kecepatan proses tiap VM. Makin besar angkanya, makin cepat mesin tersebut bekerja.</p>
                         </div>
+                        
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-semibold">Fisik Host:</label>
+                                <label class="block text-xs text-slate-300 font-semibold mb-1">Fisik Host (Hardware):</label>
                                 <input type="number" id="hostCountInput" value="4" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-white">
+                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Mesin fisik asli tempat VM berjalan (Data Center).</p>
                             </div>
                             <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-semibold">Daya P_max (W):</label>
+                                <label class="block text-xs text-slate-300 font-semibold mb-1">Daya P_max (Watt):</label>
                                 <input type="number" id="hostWattInput" value="250" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-white">
+                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Konsumsi listrik maksimal tiap 1 mesin Host.</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">2. Karakteristik Beban (Tasks)</h3>
+                    <!-- KOLOM 2: BEBAN TUGAS -->
+                    <div class="space-y-5">
+                        <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-2 text-base">2. Karakteristik Beban (Tasks)</h3>
+                        
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-semibold">Jumlah Tugas:</label>
+                                <label class="block text-xs text-slate-300 font-semibold mb-1">Jumlah Tugas:</label>
                                 <select id="taskCountSelect" onchange="generateTasksDataset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                                     <option value="15">15 Tugas</option>
                                     <option value="40" selected>40 Tugas</option>
@@ -329,38 +328,46 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-semibold">Distribusi Data:</label>
+                                <label class="block text-xs text-slate-300 font-semibold mb-1">Distribusi Data:</label>
                                 <select id="taskDistSelect" onchange="generateTasksDataset()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                                     <option value="gocj" selected>Format GoCJ Dataset</option>
                                     <option value="small">Tugas Ringan</option>
                                 </select>
                             </div>
                         </div>
+                        <p class="text-[10px] text-slate-500 -mt-2 leading-tight">Banyaknya tugas (Cloudlets) pengguna yang mengantre untuk diproses.</p>
+                        
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1 font-semibold">Instruksi per Tugas (MI):</label>
+                            <label class="block text-xs text-slate-300 font-semibold mb-1">Instruksi per Tugas (MI):</label>
                             <textarea id="taskMiInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 font-mono text-xs text-emerald-400 focus:outline-none focus:border-emerald-500"></textarea>
                             <button onclick="generateTasksDataset()" class="mt-2 text-xs text-emerald-400 hover:text-emerald-300 font-bold underline flex items-center gap-1">
                                 &#x21bb; Regenerate Task Acak
                             </button>
+                            <p class="text-[10px] text-slate-500 mt-2 leading-tight">MI (Million Instructions) = Ukuran atau berat beban dari masing-masing tugas. Makin besar angkanya, makin lama diselesaikan.</p>
                         </div>
                     </div>
 
+                    <!-- KOLOM 3: KONTROL -->
                     <div class="space-y-4 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-4 text-base">3. Kontrol Metaheuristik</h3>
-                            <div class="mb-5">
-                                <label class="flex justify-between text-xs text-slate-400 mb-2 font-semibold">
+                            <h3 class="font-bold text-white border-b border-slate-700 pb-2 mb-2 text-base">3. Kontrol Metaheuristik</h3>
+                            
+                            <div class="mb-6">
+                                <label class="flex justify-between text-xs text-slate-300 mb-2 font-semibold">
                                     <span>Ukuran Populasi (N/Agen):</span>
                                     <span id="popSizeLabel" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">30</span>
                                 </label>
                                 <input type="range" id="popSizeInput" min="10" max="100" step="10" value="30" oninput="document.getElementById('popSizeLabel').textContent = this.value" class="w-full accent-sky-500 cursor-pointer">
+                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Banyaknya tebakan jadwal acak yang disebar algoritma secara bersamaan.</p>
                             </div>
-                            <div class="mb-5">
-                                <label class="flex justify-between text-xs text-slate-400 mb-2 font-semibold">
+                            
+                            <div class="mb-4">
+                                <label class="flex justify-between text-xs text-slate-300 mb-2 font-semibold">
                                     <span>Iterasi Maksimum (T):</span>
                                     <span id="maxIterLabel" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">100</span>
                                 </label>
                                 <input type="range" id="maxIterInput" min="20" max="500" step="20" value="100" oninput="document.getElementById('maxIterLabel').textContent = this.value" class="w-full accent-sky-500 cursor-pointer">
+                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Batas berapa kali algoritma memutar rumusnya untuk mencari titik jadwal yang paling optimal.</p>
                             </div>
                         </div>
                         <button onclick="runFullSimulation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 text-white font-extrabold text-lg shadow-lg shadow-sky-900/50 transition transform active:scale-95 flex items-center justify-center gap-2 mt-4">
@@ -380,7 +387,6 @@
                         <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricMakespanMfo" class="text-xl sm:text-2xl text-amber-400">0.00</b></div>
                     </div>
                 </div>
-                
                 <div class="dark-card p-5 text-center relative overflow-hidden">
                     <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Utilisasi (%) &uarr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
@@ -388,7 +394,6 @@
                         <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricUtilMfo" class="text-xl sm:text-2xl text-amber-400">0.0</b></div>
                     </div>
                 </div>
-
                 <div class="dark-card p-5 text-center relative overflow-hidden">
                     <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Load Balancing &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
@@ -396,7 +401,6 @@
                         <div class="px-2 flex flex-col"><span class="text-xs text-slate-500 mb-1">MFO</span><b id="metricStdMfo" class="text-xl sm:text-2xl text-amber-400">0.0</b></div>
                     </div>
                 </div>
-
                 <div class="dark-card p-5 text-center relative overflow-hidden">
                     <span class="block text-[11px] sm:text-sm text-slate-300 font-bold uppercase tracking-wider mb-4 border-b border-slate-700 pb-3">Energi (kWh) &darr;</span>
                     <div class="grid grid-cols-2 divide-x divide-slate-700 font-mono items-center">
@@ -406,7 +410,7 @@
                 </div>
             </div>
 
-            <!-- PENJELASAN METRIK EVALUASI (Tepat di bawah kartu hasil & di atas grafik) -->
+            <!-- PENJELASAN METRIK EVALUASI -->
             <div class="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-slate-300">
                 <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
                     <strong class="text-sky-400 block mb-1 text-sm">Makespan &darr;</strong>
@@ -426,7 +430,6 @@
                 </div>
             </div>
 
-            <!-- GRAFIK -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
                 <div class="dark-card p-6 shadow-xl">
                     <h3 class="font-bold text-white mb-2 text-lg">Grafik Pencarian Optimum Global</h3>
@@ -440,7 +443,6 @@
                 </div>
             </div>
 
-            <!-- CONTAINER KESIMPULAN DINAMIS -->
             <div id="dynamicConclusionContainer" class="hidden p-6 rounded-2xl bg-slate-800 border border-slate-700 shadow-xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
                 <h3 class="font-bold text-white mb-3 text-lg flex items-center gap-2">
@@ -459,13 +461,11 @@
                 <h2 class="text-3xl font-bold text-slate-900 mt-2">Karakteristik Metaheuristik</h2>
                 <p class="text-slate-600 mt-3 text-base">Ringkasan kelebihan dan tantangan algoritma dalam penerapannya terhadap permasalahan <em>Cloud Task Scheduling</em>.</p>
             </div>
-            
             <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-                <!-- CARD SCA -->
                 <div class="p-6 sm:p-8 rounded-2xl bg-white border border-sky-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
                     <div class="absolute top-0 right-0 bg-sky-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">SCA</div>
                     <h3 class="text-2xl font-extrabold text-slate-800 mb-2">Sine Cosine Algorithm</h3>
-                    
+                    <p class="text-sm text-slate-500 mb-5 pb-4 border-b border-slate-100">Dikemukakan oleh Seyedali Mirjalili (2016)</p>
                     <div class="space-y-4 text-sm text-slate-600">
                         <div>
                             <strong class="text-emerald-600 block mb-1 text-sm">&#10003; Kelebihan:</strong>
@@ -486,12 +486,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- CARD MFO -->
                 <div class="p-6 sm:p-8 rounded-2xl bg-white border border-amber-200 shadow-sm relative overflow-hidden transition hover:shadow-md">
                     <div class="absolute top-0 right-0 bg-amber-500 text-white px-4 py-1 rounded-bl-xl text-xs font-bold uppercase tracking-widest shadow-sm">MFO</div>
                     <h3 class="text-2xl font-extrabold text-slate-800 mb-2">Moth-Flame Optimization</h3>
-                    
+                    <p class="text-sm text-slate-500 mb-5 pb-4 border-b border-slate-100">Dikemukakan oleh Seyedali Mirjalili (2015)</p>
                     <div class="space-y-4 text-sm text-slate-600">
                         <div>
                             <strong class="text-emerald-600 block mb-1 text-sm">&#10003; Kelebihan:</strong>
@@ -514,36 +512,30 @@
         </div>
     </section>
 
-    <!-- ANGGOTA KELOMPOK -->
     <section class="py-12 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-center text-xl font-bold text-slate-800 mb-8">Anggota Kelompok 3 SOKA</h3>
-            
+            <h3 class="text-center text-xl font-bold text-slate-800 mb-8">Tim Peneliti - Kelompok 13 SOKA</h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
                 <div class="text-center">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">DP</div>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800">Danuja Prasasta B.</h4>
                     <p class="text-[11px] font-mono text-slate-500">5027241037</p>
                 </div>
-                
                 <div class="text-center">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">PY</div>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800">Putu Yudi N. W.</h4>
                     <p class="text-[11px] font-mono text-slate-500">5027241080</p>
                 </div>
-
                 <div class="text-center">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">IG</div>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800">I Gede Bagus S.</h4>
                     <p class="text-[11px] font-mono text-slate-500">5027241088</p>
                 </div>
-
                 <div class="text-center">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">MH</div>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800">M. Huda Rabbani</h4>
                     <p class="text-[11px] font-mono text-slate-500">5027241098</p>
                 </div>
-                
                 <div class="text-center col-span-2 sm:col-span-1">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-slate-200 rounded-full border-2 border-sky-200 shadow-sm overflow-hidden mb-3 flex items-center justify-center text-sky-500 font-bold text-xl">RC</div>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800">Raynard Carlent</h4>
@@ -553,7 +545,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="py-8 bg-slate-950 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center gap-2 text-center">
             <h4 class="font-bold text-white text-lg tracking-wide uppercase">Presentasi Algoritma Metaheuristik SCA dan MFO</h4>
@@ -563,7 +554,6 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT ENGINE -->
     <script>
         function showToast(msg, type='info') {
             const container = document.getElementById('toastContainer');
@@ -712,7 +702,7 @@
                     const dist = Math.abs(mTarget[d] - mCurPos[d]);
                     mCurPos[d] = Math.max(0, Math.min(2, dist * Math.exp(1*tSp)*Math.cos(2*Math.PI*tSp)*0.6 + mTarget[d]));
                 }
-                logMsg = `<strong>[Eksekusi Persamaan MFO]</strong> Fungsi Spiral Logaritmik digerakkan. Nilai Kontinu diputar mengerucut mendekati posisi <em>Flame</em> acuan.`;
+                logMsg = `<strong>[Eksekusi Persamaan MFO]</strong> Fungsi Spiral Logaritmik digerakkan. Nilai Kontinu diputar mengerucut mendekati target posisi acuan.`;
             }
             renderMiniCaseStudy(logMsg);
         }
@@ -842,12 +832,12 @@
                 const winnerUtil = utilSca > utilMfo ? "SCA" : "MFO";
                 const winnerBalancing = stdSca < stdMfo ? "SCA" : "MFO";
 
-                let conclusionHtml = `Berdasarkan konfigurasi parameter *task* dan VM saat ini, algoritma <strong class="text-white">${winnerMakespanName}</strong> menghasilkan waktu penyelesaian prioritas (Makespan) terbaik dengan selisih kecepatan <strong>${diffMakespan} detik</strong>. `;
+                let conclusionHtml = `Berdasarkan konfigurasi parameter <em>task</em> dan VM saat ini, algoritma <strong class="text-white">${winnerMakespanName}</strong> menghasilkan waktu penyelesaian prioritas (Makespan) terbaik dengan selisih kecepatan <strong>${diffMakespan} detik</strong>. `;
                 
                 if (winnerMakespan === winnerUtil && winnerMakespan === winnerBalancing) {
                     conclusionHtml += `Algoritma ini mendominasi secara menyeluruh; selain lebih cepat, ia juga mencatatkan efisiensi <strong>Utilisasi Server tertinggi</strong> dan pembagian beban antar VM <strong>(Load Balancing) yang paling merata</strong>.`;
                 } else {
-                    conclusionHtml += `Meski demikian, dari segi efisiensi resource, <strong>${winnerUtil}</strong> mencatatkan persentase Utilisasi Server yang lebih efisien, sementara pemerataan distribusi kerja (Load Balancing) terbaik dicapai oleh <strong>${winnerBalancing}</strong>. Ini mengonfirmasi karakteristik <em>No Free Lunch Theorem</em>, di mana kecepatan total *Makespan* tidak selalu linear dengan pemerataan beban *server*.`;
+                    conclusionHtml += `Meski demikian, dari segi efisiensi resource, <strong>${winnerUtil}</strong> mencatatkan persentase Utilisasi Server yang lebih efisien, sementara pemerataan distribusi kerja (Load Balancing) terbaik dicapai oleh <strong>${winnerBalancing}</strong>. Ini mengonfirmasi karakteristik <em>No Free Lunch Theorem</em>, di mana kecepatan total <em>Makespan</em> tidak selalu linear dengan pemerataan beban <em>server</em>.`;
                 }
 
                 document.getElementById('dynamicConclusionContainer').classList.remove('hidden');
