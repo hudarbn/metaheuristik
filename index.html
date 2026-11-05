@@ -290,25 +290,25 @@
                                 <option value="datacenter32">32 VM (Skala Menengah)</option>
                                 <option value="homogeneous8">8 VM Homogen (Setara)</option>
                             </select>
-                            <p class="text-[10px] text-slate-300 mt-1.5 leading-tight">Menentukan jumlah pelayan/mesin virtual yang tersedia untuk mengerjakan tugas.</p>
+                            <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">Menentukan jumlah pelayan/mesin virtual yang tersedia untuk mengerjakan tugas.</p>
                         </div>
                         
                         <div>
                             <label class="block text-xs text-slate-300 font-semibold mb-1">Kecepatan Instruksi (MIPS):</label>
                             <textarea id="vmMipsInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 font-mono text-xs text-sky-400 focus:outline-none focus:border-sky-500">1000, 1000, 2000, 3000, 2500, 4000, 4000, 4000</textarea>
-                            <p class="text-[10px] text-slate-300 mt-1.5 leading-tight">MIPS (Million Instructions Per Second) = Kapasitas kecepatan proses tiap VM. Makin besar angkanya, makin cepat mesin tersebut bekerja.</p>
+                            <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">MIPS (Million Instructions Per Second) = Kapasitas kecepatan proses tiap VM. Makin besar angkanya, makin cepat mesin tersebut bekerja.</p>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs text-slate-300 font-semibold mb-1">Fisik Host (Hardware):</label>
                                 <input type="number" id="hostCountInput" value="4" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-white">
-                                <p class="text-[10px] text-slate-300 mt-1.5 leading-tight">Mesin fisik asli tempat VM berjalan (Data Center).</p>
+                                <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">Mesin fisik asli tempat VM berjalan (Data Center).</p>
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-300 font-semibold mb-1">Daya P_max (Watt):</label>
                                 <input type="number" id="hostWattInput" value="250" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-white">
-                                <p class="text-[10px] text-slate-300 mt-1.5 leading-tight">Konsumsi listrik maksimal tiap 1 mesin Host.</p>
+                                <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">Konsumsi listrik maksimal tiap 1 mesin Host.</p>
                             </div>
                         </div>
                     </div>
@@ -335,7 +335,7 @@
                                 </select>
                             </div>
                         </div>
-                        <p class="text-[10px] text-slate-500 -mt-2 leading-tight">Banyaknya tugas (Cloudlets) pengguna yang mengantre untuk diproses.</p>
+                        <p class="text-[10px] text-slate-400 -mt-2 leading-tight">Banyaknya tugas (Cloudlets) pengguna yang mengantre untuk diproses.</p>
                         
                         <div>
                             <label class="block text-xs text-slate-300 font-semibold mb-1">Instruksi per Tugas (MI):</label>
@@ -343,7 +343,7 @@
                             <button onclick="generateTasksDataset()" class="mt-2 text-xs text-emerald-400 hover:text-emerald-300 font-bold underline flex items-center gap-1">
                                 &#x21bb; Regenerate Task Acak
                             </button>
-                            <p class="text-[10px] text-slate-500 mt-2 leading-tight">MI (Million Instructions) = Ukuran atau berat beban dari masing-masing tugas. Makin besar angkanya, makin lama diselesaikan.</p>
+                            <p class="text-[10px] text-slate-400 mt-2 leading-tight">MI (Million Instructions) = Ukuran atau berat beban dari masing-masing tugas. Makin besar angkanya, makin lama diselesaikan.</p>
                         </div>
                     </div>
 
@@ -358,7 +358,7 @@
                                     <span id="popSizeLabel" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">30</span>
                                 </label>
                                 <input type="range" id="popSizeInput" min="10" max="100" step="10" value="30" oninput="document.getElementById('popSizeLabel').textContent = this.value" class="w-full accent-sky-500 cursor-pointer">
-                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Banyaknya tebakan jadwal acak yang disebar algoritma secara bersamaan.</p>
+                                <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">Banyaknya tebakan jadwal acak yang disebar algoritma secara bersamaan.</p>
                             </div>
                             
                             <div class="mb-4">
@@ -367,7 +367,7 @@
                                     <span id="maxIterLabel" class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">100</span>
                                 </label>
                                 <input type="range" id="maxIterInput" min="20" max="500" step="20" value="100" oninput="document.getElementById('maxIterLabel').textContent = this.value" class="w-full accent-sky-500 cursor-pointer">
-                                <p class="text-[10px] text-slate-500 mt-1.5 leading-tight">Batas berapa kali algoritma memutar rumusnya untuk mencari titik jadwal yang paling optimal.</p>
+                                <p class="text-[10px] text-slate-400 mt-1.5 leading-tight">Batas berapa kali algoritma memutar rumusnya untuk mencari titik jadwal yang paling optimal.</p>
                             </div>
                         </div>
                         <button onclick="runFullSimulation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 text-white font-extrabold text-lg shadow-lg shadow-sky-900/50 transition transform active:scale-95 flex items-center justify-center gap-2 mt-4">
