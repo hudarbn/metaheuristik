@@ -48,6 +48,74 @@
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #64748b; }
     </style>
+
+    <!-- RESPONSIVE LAYOUT: HP, TABLET, LAPTOP, DESKTOP -->
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-padding-top: 5rem; }
+        body { min-width: 320px; overflow-x: hidden; }
+        img, svg, video, canvas { max-width: 100%; }
+        canvas { display: block; }
+        button, select, a { -webkit-tap-highlight-color: transparent; }
+        button, select { touch-action: manipulation; }
+        #toastContainer { width: min(22rem, calc(100vw - 2rem)); right: 1rem; bottom: 1rem; }
+        .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+        section[id] { scroll-margin-top: 5rem; }
+
+        @media (max-width: 1023px) {
+            header .max-w-7xl { min-height: 4rem; height: auto; }
+            .dark-section .max-w-7xl { gap: 2.5rem; }
+            #studi-kasus .flex-wrap, #simulator .flex-wrap { row-gap: .75rem; }
+        }
+        @media (max-width: 767px) {
+            .dark-section { padding-top: 2.75rem; padding-bottom: 2.75rem; }
+            .dark-section .max-w-7xl,
+            #konsep .max-w-7xl,
+            #studi-kasus .max-w-7xl,
+            #simulator .max-w-7xl,
+            #teori .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+            .dark-section h2 { font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1.15; }
+            .dark-card { padding: 1rem; }
+            .dark-section .h-80 { height: clamp(13rem, 62vw, 20rem); }
+            #konsep, #studi-kasus { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+            #animasi { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+            #animasi .an-toolbar { gap: .9rem; }
+            #animasi .an-toolbar > div:first-child { width: 100%; justify-content: space-between; }
+            #animasi .an-toolbar .an-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); width: 100%; }
+            #animasi .an-toolbar .an-actions button { width: 100%; min-width: 0; min-height: 46px; padding: .65rem .55rem; font-size: .8rem; }
+            #animasi .an-toolbar .an-speed { width: 100%; justify-content: space-between; }
+            #animasi #anSpeed { min-height: 44px; }
+            #animasi .grid.items-stretch { grid-template-columns: minmax(0,1fr); }
+            #animasi .an-step { gap: .6rem; padding: .65rem .5rem; }
+            #animasi .an-step > div { min-width: 0; }
+            #animasi #anText { min-height: 0; }
+            #animasi .rounded-2xl { min-width: 0; }
+            #animasi #anCv { max-width: 100%; }
+            #studi-kasus table { min-width: 36rem; }
+            #simulator .grid.grid-cols-2 { gap: .75rem; }
+            #simulator .grid.grid-cols-2 > * { min-width: 0; }
+            #simulator .h-80 { height: 17rem; }
+        }
+        @media (max-width: 420px) {
+            #animasi .an-toolbar > div:first-child { align-items: flex-start; flex-direction: column; }
+            #animasi .an-toolbar .an-actions button { font-size: .75rem; }
+            #animasi .an-toolbar .an-actions button span { display: none; }
+            #animasi .grid-cols-2 { grid-template-columns: minmax(0,1fr); }
+            #simulator .grid.grid-cols-2 { grid-template-columns: minmax(0,1fr); }
+            #simulator .mb-8.grid.grid-cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+            #animasi .flex.items-center.justify-between { flex-wrap: wrap; }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #animasi .grid.items-stretch { grid-template-columns: minmax(0,1fr); }
+            #animasi #anCv { max-width: min(100%, 560px); }
+            #simulator .grid.grid-cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
+    </style>
+
 </head>
 <body class="antialiased selection:bg-sky-200 selection:text-sky-900">
 
@@ -68,6 +136,7 @@
             
             <nav class="hidden lg:flex gap-6 text-sm font-semibold text-slate-600 items-center">
                 <a href="#konsep" class="hover:text-sky-600 transition">Alur Algoritma</a>
+                <a href="#animasi" class="hover:text-sky-600 transition">Visualisasi</a>
                 <a href="#studi-kasus" class="hover:text-sky-600 transition">Simulasi Mini</a>
                 <a href="#simulator" class="hover:text-sky-600 transition">Simulator Skala Besar</a>
                 <a href="#teori" class="hover:text-sky-600 transition">Analisis Metaheuristik</a>
@@ -176,6 +245,339 @@
             </div>
         </div>
     </section>
+
+    <!-- VISUALISASI INTERAKTIF SCA & MFO -->
+    <style>
+        #animasi { --c: #0ea5e9; }
+        #animasi .an-tab,
+        #animasi .an-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+            min-height: 42px; padding: .625rem 1rem; border-radius: .75rem;
+            font-size: .875rem; font-weight: 700; transition: all .2s ease;
+        }
+        #animasi .an-tab { border: 1px solid #cbd5e1; background: #fff; color: #475569; }
+        #animasi .an-tab:hover { border-color: var(--c); color: var(--c); }
+        #animasi .an-tab.on { background: var(--c); border-color: var(--c); color: #fff; box-shadow: 0 5px 14px rgba(14,165,233,.18); }
+        #animasi .an-btn { background: #0f172a; color: #fff; }
+        #animasi .an-btn:hover { background: #334155; transform: translateY(-1px); }
+        #animasi .an-btn.alt { background: #fff; color: #334155; border: 1px solid #cbd5e1; }
+        #animasi .an-btn.alt:hover { background: #f1f5f9; border-color: #94a3b8; }
+        #animasi .an-tab:focus-visible,
+        #animasi .an-btn:focus-visible,
+        #animasi #anSpeed:focus-visible { outline: 3px solid var(--c); outline-offset: 3px; }
+        #animasi .an-step { display: flex; align-items: flex-start; gap: .75rem; padding: .7rem .75rem; border-radius: .85rem; border: 1px solid transparent; opacity: .62; transition: opacity .2s, background .2s, border-color .2s; }
+        #animasi .an-step b { width: 1.75rem; height: 1.75rem; flex: none; border-radius: 9999px; background: #cbd5e1; color: #fff; display: grid; place-items: center; font-size: .75rem; }
+        #animasi .an-step.on { opacity: 1; background: #f8fafc; border-color: var(--c); }
+        #animasi .an-step.on b { background: var(--c); }
+        #animasi .an-bar { height: .65rem; border-radius: 9999px; background: #e2e8f0; overflow: hidden; }
+        #animasi .an-bar i { display: block; height: 100%; border-radius: inherit; background: var(--c); transition: width .35s ease; }
+        #animasi #anCv { display: block; width: 100%; max-width: 620px; height: auto; aspect-ratio: 1 / 1; margin: 0 auto; }
+        @media (max-width: 640px) {
+            #animasi .an-toolbar { align-items: stretch; }
+            #animasi .an-toolbar .an-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); width: 100%; }
+            #animasi .an-toolbar .an-actions button { width: 100%; }
+            #animasi .an-toolbar .an-speed { width: 100%; justify-content: space-between; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #animasi .an-step, #animasi .an-bar i, #animasi .an-tab, #animasi .an-btn { transition: none; }
+        }
+    </style>
+
+    <section id="animasi" class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-sky-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sky-700">
+                    <span class="h-2 w-2 rounded-full bg-sky-500"></span> Visualisasi Interaktif
+                </span>
+                <h2 class="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">Animasi Proses Kerja Algoritma</h2>
+                <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-600">
+                    Amati bagaimana kandidat solusi bergerak, diterjemahkan menjadi penempatan VM, lalu dievaluasi menggunakan makespan. Contoh dibuat ringkas dengan <strong>2 tugas</strong> (T1 = 7.000 MI, T2 = 5.000 MI) dan <strong>3 VM</strong> (1.000, 2.000, 4.000 MIPS).
+                </p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm mb-6">
+                <div class="an-toolbar flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Pilih algoritma</span>
+                        <div class="flex gap-2" role="group" aria-label="Pilih algoritma">
+                            <button class="an-tab on" data-algo="SCA" type="button" aria-pressed="true">SCA</button>
+                            <button class="an-tab" data-algo="MFO" type="button" aria-pressed="false">MFO</button>
+                        </div>
+                    </div>
+                    <div class="an-actions flex flex-wrap items-center gap-2">
+                        <button id="anPlay" class="an-btn" type="button"><span aria-hidden="true">▶</span> Putar</button>
+                        <button id="anStep" class="an-btn alt" type="button"><span aria-hidden="true">⏭</span> Langkah berikutnya</button>
+                        <button id="anReset" class="an-btn alt" type="button"><span aria-hidden="true">↺</span> Reset</button>
+                    </div>
+                    <label class="an-speed flex items-center gap-3 text-sm font-semibold text-slate-600">
+                        Kecepatan
+                        <select id="anSpeed" class="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700 focus:border-sky-500 focus:outline-none">
+                            <option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid items-stretch gap-6 lg:grid-cols-12">
+                <div class="lg:col-span-7">
+                    <div class="h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+                            <div>
+                                <h3 class="font-bold text-slate-900">Peta Ruang Pencarian</h3>
+                                <p class="mt-1 text-xs text-slate-500">Sumbu X = posisi T1 · Sumbu Y = posisi T2</p>
+                            </div>
+                            <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                                <span class="h-2 w-2 rounded-full" style="background:var(--c)"></span> Agen <span id="anIter" class="font-mono">Iterasi 0 / 12</span>
+                            </span>
+                        </div>
+                        <div class="bg-slate-50 p-2 sm:p-4">
+                            <div class="rounded-xl border border-slate-200 bg-white p-2 sm:p-3">
+                                <canvas id="anCv" role="img" aria-label="Animasi agen bergerak di ruang pencarian dua dimensi"></canvas>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3 border-t border-slate-200 p-4 sm:grid-cols-3">
+                            <div class="flex items-center gap-2 text-xs text-slate-600"><span class="h-3 w-3 rounded-sm bg-emerald-500"></span> Jadwal makespan terbaik</div>
+                            <div class="flex items-center gap-2 text-xs text-slate-600"><span class="h-3 w-3 rounded-full bg-sky-500"></span> Agen / kandidat solusi</div>
+                            <div class="flex items-center gap-2 text-xs text-slate-600"><span class="h-3 w-3 rotate-45 bg-orange-500"></span> Flame pada MFO</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6 lg:col-span-5">
+                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                        <div class="mb-4 flex items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Panduan simulasi</span>
+                                <h3 class="mt-1 text-lg font-bold text-slate-900">Tahap saat ini</h3>
+                            </div>
+                            <span id="anStagePill" class="rounded-full px-3 py-1 text-xs font-bold text-white" style="background:var(--c)">Inisialisasi</span>
+                        </div>
+                        <ol class="space-y-1">
+                            <li class="an-step" data-s="init"><b>1</b><div><div class="font-semibold text-sm text-slate-800">Inisialisasi</div><div class="text-xs leading-relaxed text-slate-500">Agen ditempatkan secara acak di ruang pencarian.</div></div></li>
+                            <li class="an-step" data-s="decode"><b>2</b><div><div class="font-semibold text-sm text-slate-800">Decoding</div><div class="text-xs leading-relaxed text-slate-500">Posisi desimal dibulatkan menjadi indeks VM.</div></div></li>
+                            <li class="an-step" data-s="fitness"><b>3</b><div><div class="font-semibold text-sm text-slate-800">Evaluasi fitness</div><div class="text-xs leading-relaxed text-slate-500">Makespan dihitung untuk memilih kandidat terbaik.</div></div></li>
+                            <li class="an-step" data-s="update"><b>4</b><div><div class="font-semibold text-sm text-slate-800">Pembaruan posisi</div><div class="text-xs leading-relaxed text-slate-500">SCA atau MFO menggeser agen untuk iterasi berikutnya.</div></div></li>
+                        </ol>
+                        <p id="anText" class="mt-4 min-h-[5rem] rounded-xl bg-slate-50 p-3 text-sm leading-relaxed text-slate-700"></p>
+                        <div class="mt-3 rounded-xl border border-slate-200 bg-slate-900 p-3">
+                            <span class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400">Persamaan yang digunakan</span>
+                            <code id="anFormula" class="block break-words text-xs leading-relaxed text-sky-200"></code>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                        <div class="mb-3 flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-slate-900">Parameter algoritma</h3>
+                            <span id="anMVal" class="font-mono text-sm font-bold text-slate-800">2.00</span>
+                        </div>
+                        <p id="anMLabel" class="mb-2 text-xs text-slate-500">Amplitudo r1</p>
+                        <div class="an-bar"><i id="anMBar" style="width:100%"></i></div>
+                        <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div class="rounded-xl bg-slate-50 p-3">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Solusi terbaik</span>
+                                <strong id="anBest" class="mt-1 block text-sm leading-relaxed text-slate-800">Belum dihitung</strong>
+                            </div>
+                            <div class="rounded-xl bg-emerald-50 p-3">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-emerald-700">Optimum kasus</span>
+                                <strong id="anOpt" class="mt-1 block text-sm text-emerald-800">—</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="mx-auto mt-6 max-w-4xl text-center text-xs leading-relaxed text-slate-500">
+                Catatan: visualisasi ini menggunakan kasus ilustratif dua dimensi agar proses perpindahan agen mudah diamati. Nilai makespan dihitung dari pemetaan dua tugas ke tiga VM; lintasan yang terlihat menggambarkan pembaruan posisi algoritma.
+            </p>
+        </div>
+    </section>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const TASKS = [7000, 5000], VMS = [1000, 2000, 4000], N = 6, T = 12, LO = -0.5, HI = 2.5 - 1e-9;
+  const SEED = 191, DUR = { init: 1400, decode: 1500, fitness: 1700, update: 2400 };
+  const NEXT = { init: 'decode', decode: 'fitness', fitness: 'update', update: 'decode' };
+  const COL = { SCA: '#0ea5e9', MFO: '#f59e0b' };
+  /*E*/
+  const clamp = v => v < LO ? LO : v > HI ? HI : v, dec = v => Math.max(0, Math.min(2, Math.floor(v + 0.5)));
+  const cellMs = (a, b) => a === b ? (TASKS[0] + TASKS[1]) / VMS[a] : Math.max(TASKS[0] / VMS[a], TASKS[1] / VMS[b]);
+  const fit = p => cellMs(dec(p[0]), dec(p[1]));
+  const mkRng = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  let S, algo = 'SCA', rnd;
+  function reset() {
+    const r0 = mkRng(SEED); rnd = mkRng(99);
+    S = { iter: 0, pos: Array.from({ length: N }, () => [LO + r0() * 3, LO + r0() * 3]), tgt: null, prev: null, ref: [], trail: [], best: null, flames: null, f: [], msg: '', r1: 2, nF: N, done: false };
+  }
+  function updBest() {
+    S.f = S.pos.map(fit);
+    const old = S.best ? S.best.f : Infinity;
+    if (algo === 'SCA') {
+      let k = 0; S.f.forEach((v, i) => { if (v < S.f[k]) k = i; });
+      if (!S.best || S.f[k] < S.best.f - 1e-9) S.best = { x: S.pos[k].slice(), f: S.f[k] };
+    } else {
+      S.flames = (S.flames || []).concat(S.pos.map((p, i) => ({ x: p.slice(), f: S.f[i] }))).sort((a, b) => a.f - b.f).slice(0, N);
+      S.best = S.flames[0];
+    }
+    S.msg = old === Infinity ? `Terbaik awal ${S.best.f.toFixed(2)} s` : S.best.f < old - 1e-9 ? `Terbaik membaik ${old.toFixed(2)} → ${S.best.f.toFixed(2)} s` : `Terbaik tetap ${S.best.f.toFixed(2)} s`;
+  }
+  function targets() {
+    const t = S.iter + 1; S.prev = S.pos.map(p => p.slice());
+    if (algo === 'SCA') {
+      const r1 = S.r1 = 2 - t * 2 / T;
+      S.tgt = S.pos.map(p => p.map((x, d) => { const r2 = 2 * Math.PI * rnd(), r3 = 2 * rnd(), r4 = rnd(); return clamp(x + r1 * (r4 < .5 ? Math.sin(r2) : Math.cos(r2)) * Math.abs(r3 * S.best.x[d] - x)); }));
+    } else {
+      const nF = S.nF = Math.max(1, Math.round(N - t * (N - 1) / T)), r = -1 - t / T;
+      S.tgt = S.pos.map((p, i) => { const F = S.ref[i] = S.flames[Math.min(i, nF - 1)].x; return p.map((x, d) => { const tt = (r - 1) * rnd() + 1; return clamp(Math.abs(F[d] - x) * Math.exp(tt) * Math.cos(2 * Math.PI * tt) + F[d]); }); });
+    }
+  }
+  const pp = (i, s) => rawPp(i, s).map(clamp); // lintasan dibatasi agar tidak keluar dari kotak-kotak
+  function rawPp(i, s) {
+    const a = S.prev[i], b = S.tgt[i];
+    if (algo === 'SCA') {
+      const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, w = Math.sin(s * Math.PI * 3) * (1 - s) * 0.18 * (S.r1 / 2 + .2) * Math.min(L, 1.5);
+      return [a[0] + dx * s - dy / L * w, a[1] + dy * s + dx / L * w];
+    }
+    const F = S.ref[i], v0 = [a[0] - F[0], a[1] - F[1]], v1 = [b[0] - F[0], b[1] - F[1]], q0 = Math.hypot(...v0), q1 = Math.hypot(...v1);
+    if (q0 < 1e-6 || q1 < 1e-6) return [a[0] + (b[0] - a[0]) * s, a[1] + (b[1] - a[1]) * s];
+    const a0 = Math.atan2(v0[1], v0[0]); let da = Math.atan2(v1[1], v1[0]) - a0; da = Math.atan2(Math.sin(da), Math.cos(da)) + 2 * Math.PI;
+    const q = q0 * Math.pow(q1 / q0, s), an = a0 + da * s; return [F[0] + q * Math.cos(an), F[1] + q * Math.sin(an)];
+  }
+  /*/E*/
+  const ease = s => s < .5 ? 2 * s * s : 1 - Math.pow(-2 * s + 2, 2) / 2;
+  const allMs = []; for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) allMs.push(cellMs(a, b));
+  const MIN = Math.min(...allMs), MAX = Math.max(...allMs);
+  $('anOpt').textContent = `${MIN.toFixed(2)} s (T1→VM2, T2→VM1)`;
+
+  let stage = 'init', prog = 0, playing = false, stepMode = false, finished = false, visible = false, started = false, speed = 1;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv = $('anCv'), cx = cv.getContext('2d'); let W = 0;
+  function fitCanvas() { const w = Math.max(1, Math.min(cv.parentElement.clientWidth - 12, 620)), d = devicePixelRatio || 1; cv.style.width = w + 'px'; cv.style.height = w + 'px'; cv.width = w * d; cv.height = w * d; cx.setTransform(d, 0, 0, d, 0, 0); W = w; }
+  const P = { l: 46, b: 36, t: 12, r: 12 };
+  const X = v => P.l + (v - LO) / 3 * (W - P.l - P.r), Y = v => P.t + (1 - (v - LO) / 3) * (W - P.t - P.b);
+  const FONT = s => `${s} "JetBrains Mono", monospace`;
+
+  function halo(txt, x, y, color) { cx.lineWidth = 3; cx.strokeStyle = '#fff'; cx.strokeText(txt, x, y); cx.fillStyle = color; cx.fillText(txt, x, y); }
+  function draw() {
+    if (!W) return;
+    const c = COL[algo]; cx.clearRect(0, 0, W, W);
+    for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) {
+      const ms = cellMs(a, b), t = (ms - MIN) / (MAX - MIN), x0 = X(a - .5), y0 = Y(b + .5), w = X(a + .5) - x0, h = Y(b - .5) - y0;
+      cx.fillStyle = ms === MIN ? 'rgba(16,185,129,.32)' : `rgba(244,63,94,${.05 + .22 * t})`; cx.fillRect(x0, y0, w, h);
+      cx.strokeStyle = '#cbd5e1'; cx.lineWidth = 1; cx.strokeRect(x0, y0, w, h);
+      cx.textAlign = 'left'; cx.font = FONT('600 11px'); cx.fillStyle = '#64748b'; cx.fillText(`T1→VM${a} · T2→VM${b}`, x0 + 8, y0 + 16);
+      cx.font = FONT('700 15px'); cx.fillStyle = ms === MIN ? '#047857' : '#334155'; cx.fillText(ms.toFixed(2) + ' s', x0 + 8, y0 + h - 10);
+    }
+    cx.font = FONT('600 11px'); cx.fillStyle = '#475569'; cx.textAlign = 'center';
+    for (let a = 0; a < 3; a++) { cx.fillText('VM' + a, X(a), W - P.b + 15); cx.textAlign = 'right'; cx.fillText('VM' + a, P.l - 8, Y(a) + 4); cx.textAlign = 'center'; }
+    cx.fillText('Posisi T1 (dibulatkan menjadi indeks VM)', P.l + (W - P.l - P.r) / 2, W - 5);
+    cx.save(); cx.translate(12, P.t + (W - P.t - P.b) / 2); cx.rotate(-Math.PI / 2); cx.fillText('Posisi T2', 0, 0); cx.restore();
+
+    const upd = stage === 'update', e = ease(prog);
+    const pts = S.pos.map((p, i) => upd ? pp(i, e) : p);
+    if (stage === 'decode' || stage === 'fitness') {
+      cx.strokeStyle = c; cx.lineWidth = 2.5; cx.globalAlpha = .4 + .6 * Math.sin(prog * Math.PI);
+      pts.forEach(p => { const a = dec(p[0]), b = dec(p[1]); cx.strokeRect(X(a - .5), Y(b + .5), X(a + .5) - X(a - .5), Y(b - .5) - Y(b + .5)); });
+      cx.globalAlpha = 1;
+    }
+    cx.lineWidth = 1.5; cx.strokeStyle = c;
+    S.pos.forEach((_, i) => {
+      if (upd) { cx.globalAlpha = .55; cx.beginPath(); const K = Math.ceil(e * 28); for (let k = 0; k <= K; k++) { const q = pp(i, Math.min(e, k / 28)); k ? cx.lineTo(X(q[0]), Y(q[1])) : cx.moveTo(X(q[0]), Y(q[1])); } cx.stroke(); }
+      else if (S.trail[i]) { cx.globalAlpha = .25; cx.beginPath(); S.trail[i].forEach((q, k) => k ? cx.lineTo(X(q[0]), Y(q[1])) : cx.moveTo(X(q[0]), Y(q[1]))); cx.stroke(); }
+    });
+    cx.globalAlpha = 1;
+    if (S.best && stage !== 'init') {
+      if (algo === 'SCA') { const q = S.best.x; cx.strokeStyle = '#10b981'; cx.lineWidth = 2.5; cx.setLineDash([4, 3]); cx.beginPath(); cx.arc(X(q[0]), Y(q[1]), 15, 0, 6.3); cx.stroke(); cx.setLineDash([]); cx.textAlign = 'left'; cx.font = FONT('700 12px'); halo('P', X(q[0]) + 17, Y(q[1]) - 13, '#047857'); }
+      else S.flames.slice(0, upd ? S.nF : stage === 'fitness' ? N : S.nF).forEach((f, j) => { const x = X(f.x[0]), y = Y(f.x[1]), s = j ? 9 : 12; cx.beginPath(); cx.moveTo(x, y - s); cx.lineTo(x + s, y); cx.lineTo(x, y + s); cx.lineTo(x - s, y); cx.closePath(); cx.fillStyle = j ? 'rgba(249,115,22,.25)' : 'rgba(249,115,22,.55)'; cx.fill(); cx.strokeStyle = '#ea580c'; cx.lineWidth = 2; cx.stroke(); if (!j) { cx.font = FONT('700 12px'); cx.textAlign = 'left'; halo('F1', x + 14, y - 12, '#c2410c'); } });
+    }
+    pts.forEach((p, i) => {
+      cx.globalAlpha = stage === 'init' ? prog : 1; cx.beginPath(); cx.arc(X(p[0]), Y(p[1]), 7, 0, 6.3); cx.fillStyle = c; cx.fill(); cx.strokeStyle = '#fff'; cx.lineWidth = 2; cx.stroke();
+      cx.font = FONT('600 11px'); cx.textAlign = 'left';
+      if (stage === 'decode') halo(`VM${dec(p[0])}|VM${dec(p[1])}`, X(p[0]) + 10, Y(p[1]) - 10, '#334155');
+      if (stage === 'fitness') halo(S.f[i].toFixed(2) + ' s', X(p[0]) + 10, Y(p[1]) - 10, '#334155');
+    });
+    cx.globalAlpha = 1;
+  }
+
+  const TXT = {
+    init: () => `${N} agen ditebar acak. Setiap titik adalah satu kandidat jadwal: sumbu x adalah posisi desimal T1 dan sumbu y adalah posisi desimal T2.`,
+    decode: () => 'Posisi desimal dibulatkan menjadi indeks VM. Kotak yang ditempati agen adalah jadwal diskritnya; label VM|VM menunjukkan VM untuk T1 dan T2.',
+    fitness: () => S.done ? `Selesai setelah ${T} iterasi. ${S.msg}.` : `Makespan tiap jadwal dihitung. ${algo === 'SCA' ? 'Agen terbaik menjadi P (cincin hijau).' : 'Posisi terbaik disimpan sebagai flame (belah ketupat) dan diurutkan.'} ${S.msg}.`,
+    update: () => algo === 'SCA' ? `Tiap agen berayun dengan gelombang sin/cos di sekitar P. Amplitudo r1 = ${S.r1.toFixed(2)}, makin kecil seiring iterasi sehingga ayunan mengerucut.` : `Tiap moth terbang spiral mengelilingi flame miliknya. Flame aktif ${S.nF} dari ${N}; spiral menyempit di setiap iterasi.`
+  };
+  const FORM = { SCA: 'X′ = X + r1·sin(r2)·|r3·P − X|   (cos jika r4 ≥ 0,5)', MFO: 'S = D·e^(b·t)·cos(2π·t) + F,   D = |F − X|' };
+  function ui() {
+    $('animasi').style.setProperty('--c', COL[algo]);
+    document.querySelectorAll('.an-tab').forEach(b => {
+      const active = b.dataset.algo === algo;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('.an-step').forEach(li => li.classList.toggle('on', li.dataset.s === stage));
+    const stageNames = { init: 'Inisialisasi', decode: 'Decoding', fitness: 'Evaluasi fitness', update: 'Pembaruan posisi' };
+    $('anStagePill').textContent = stageNames[stage];
+    $('anIter').textContent = `Iterasi ${S.iter} / ${T}`;
+    $('anText').textContent = TXT[stage](); $('anFormula').textContent = FORM[algo];
+    $('anMLabel').textContent = algo === 'SCA' ? 'Amplitudo r1 (menurun linear)' : 'Flame aktif';
+    $('anMVal').textContent = algo === 'SCA' ? S.r1.toFixed(2) : `${S.nF} / ${N}`;
+    $('anMBar').style.width = (algo === 'SCA' ? S.r1 / 2 : S.nF / N) * 100 + '%';
+    const b = S.best; $('anBest').textContent = !b || stage === 'init' ? 'belum dihitung' : `T1→VM${dec(b.x[0])}, T2→VM${dec(b.x[1])} · ${b.f.toFixed(2)} s${b.f <= MIN + 1e-9 ? ' (optimum)' : ''}`;
+    $('anPlay').textContent = S.done ? 'Ulangi' : playing ? 'Jeda' : 'Putar';
+  }
+  function enter(st) { stage = st; prog = 0; finished = false; if (st === 'fitness') updBest(); if (st === 'update') { targets(); S.trail = []; } ui(); }
+  function endStage() {
+    if (stage === 'update') { S.trail = S.pos.map((_, i) => Array.from({ length: 29 }, (_, k) => pp(i, k / 28))); S.pos = S.tgt; S.iter++; }
+    if (stage === 'fitness' && S.iter >= T) S.done = true;
+    if (S.done) { playing = false; ui(); return; }
+    if (stepMode) { playing = false; stepMode = false; finished = true; ui(); } else enter(NEXT[stage]);
+  }
+  function restart(play) { reset(); stage = 'init'; prog = 0; finished = false; stepMode = false; playing = play; ui(); }
+  let last = 0;
+  (function loop(now) {
+    const dt = Math.min(now - last, 60); last = now;
+    // Jangan mengunci progres animasi berdasarkan IntersectionObserver.
+    // Pada section yang lebih tinggi dari viewport, threshold besar dapat
+    // membuat visible selalu false sehingga tombol Putar tidak pernah berjalan.
+    if (playing && !S.done) {
+      prog += dt * speed / DUR[stage];
+      if (prog >= 1) { prog = 1; endStage(); }
+    }
+    draw();
+    requestAnimationFrame(loop);
+  })(0);
+
+  document.querySelectorAll('.an-tab').forEach(b => b.addEventListener('click', () => { algo = b.dataset.algo; restart(!reduced); }));
+  $('anPlay').addEventListener('click', () => { if (S.done) return restart(true); if (!playing && finished) enter(NEXT[stage]); playing = !playing; stepMode = false; ui(); });
+  $('anStep').addEventListener('click', () => {
+    if (S.done) return;
+    // Langkah Berikutnya memajukan tepat satu tahap secara manual,
+    // tanpa mengharuskan pengguna menekan tombol Putar.
+    playing = false;
+    stepMode = false;
+    if (stage === 'update') {
+      S.trail = S.pos.map((_, i) => Array.from({ length: 29 }, (_, k) => pp(i, k / 28)));
+      S.pos = S.tgt;
+      S.iter++;
+    }
+    if (stage === 'fitness' && S.iter >= T) {
+      S.done = true;
+      prog = 1;
+      ui();
+      draw();
+      return;
+    }
+    enter(NEXT[stage]);
+    prog = 1;
+    ui();
+    draw();
+  });
+  $('anReset').addEventListener('click', () => restart(false));
+  $('anSpeed').addEventListener('change', e => { speed = +e.target.value; });
+  new ResizeObserver(() => { fitCanvas(); draw(); }).observe(cv.parentElement);
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible && !started) { started = true; if (!reduced) { playing = true; ui(); } } }, { threshold: 0.01 }).observe($('animasi'));
+  reset(); fitCanvas(); ui();
+})();
+</script>
+<!-- ===== AKHIR TAMBAHAN ===== -->
 
     <!-- SIMULASI MINI -->
     <section id="studi-kasus" class="py-20 bg-white border-t border-slate-200">
